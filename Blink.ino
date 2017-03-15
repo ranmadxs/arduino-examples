@@ -12,12 +12,8 @@
   modified 8 May 2014
   by Scott Fitzgerald
  */
-
-#define HIGH 0x1
-#define LOW  0x0
-
-#define INPUT 0x0
-#define OUTPUT 0x1
+#include <Print.h>
+#include <Arduino.h>
 
 // the setup function runs once when you press reset or power the board
 void setup() {
