@@ -43,7 +43,15 @@ int segE = A0; //Display pin 5
 int segF = 7; //Display pin 11
 int segG = 8; //Display pin 15
 
-void setup() {                
+String command = "0000";
+
+// El pin 7 del display es el punto despues del numero (DP)
+// El pin 4 y el pin 12 del diplay deben estar en HIGH para los dos puntos (L1 y L2)
+// El pin 10 y el pin 9 del display deben estar en High para el punto superior (L3)
+
+void setup() {      
+  Serial.begin(9600);
+            
   pinMode(segA, OUTPUT);
   pinMode(segB, OUTPUT);
   pinMode(segC, OUTPUT);
@@ -56,15 +64,20 @@ void setup() {
   pinMode(digit2, OUTPUT);
   pinMode(digit3, OUTPUT);
   pinMode(digit4, OUTPUT);
-  
+
   pinMode(13, OUTPUT);
 }
 
 void loop() {
-  
-  //long startTime = millis();
-
-  displayNumber(millis()/1000);
+  while (Serial.available()) {
+    if (Serial.available() >0) {
+      command = Serial.readString();
+      Serial.println(command);
+      //command += c;        
+    }
+  }
+  displayNumber(command.toInt());
+  //delay(8000);
 
   //while( (millis() - startTime) < 2000) {
   //displayNumber(1217);
