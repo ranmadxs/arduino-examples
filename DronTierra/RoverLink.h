@@ -14,7 +14,7 @@ class RoverLink {
         //Constructor de la clase
     RoverLink();
  
-    //Funcion blinking: enciende el led 'pin', espera 'time' segundos y lo apaga
+    //Funcion que obtiene API Doc
     String getIndex();
   
   private:
