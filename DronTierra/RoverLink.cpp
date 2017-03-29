@@ -129,6 +129,7 @@ th {\
     <td></td>\
   </tr>\ 
 </table>\
+<hr/>\
 <p id='rcorners'>GET</p>\
 <h3>ROVER_MOVE_MANUAL_BODY</h3>\
 <p>Comando para efectuar un movimiento del Rover, tomando como referencia \
