@@ -3,7 +3,8 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 #include <ArduinoJson.h>
-#include <RoverLink.h>
+#include "RoverLink.h"
+
 //Derecha
 static int PinOUTA   = 5; // (D1)
 static int PinOUTB   = 4; // (D2)
@@ -12,16 +13,17 @@ static int PinOUTB   = 4; // (D2)
 static int PinOUTC   = 0; // (D3)
 static int PinOUTD   = 2; // (D4)
 
+//const char* ssid = "yai";
+//const char* password = "1101000000";
 
-const char* ssid = "yai";
-const char* password = "1101000000";
-
-//const char* ssid = "VTR-YAI-5Ghz";
-//const char* password = "Pana8bc1108";
+const char* ssid = "VTR-YAI-5Ghz";
+const char* password = "Pana8bc1108";
 
 String input = "{\"sensor\":\"gps\",\"time\":1351824120,\"data\":[48.756080,2.302038]}";
 String ipESP = "";
 int count= 0;
+RoverLink roverLn;
+
 DynamicJsonBuffer jsonBuffer;
 
 ESP8266WebServer server(80);
@@ -29,8 +31,11 @@ ESP8266WebServer server(80);
 const int led = 13;
 
 void handleRoot() {
+  String temp;
+  temp = roverLn.getIndex();
   digitalWrite(led, 1);
-  server.send(200, "text/plain", "hello from esp8266!");
+  //server.send(200, "text/plain", "hello from esp8266!");
+  server.send ( 200, "text/html", temp );
   digitalWrite(led, 0);
 }
 
