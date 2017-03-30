@@ -51,9 +51,7 @@ th, td {\
     background: #F09A05;\
 }\
 \
-.red-\
-\
-tr:nth-child(even){background-color: #f2f2f2}\
+.red-tr:nth-child(even){background-color: #f2f2f2}\
 \
 th {\
     background-color: #4CAF50;\
@@ -106,21 +104,8 @@ th {\
     <td>Mover Atrás</td>\
   </tr>  \
 </table>\
-<h3>Rover Serial Enumeration</h3>\
-<table>\
-  <tr>\
-    <th>Name</th>\
-    <th>Value</th>\
-    <th>Description</th>\
-  </tr>\
-  <tr>\
-    <td>ROVER_SERIAL_CMD_GET_IP</td>\
-    <td>3001</td>\
-    <td>Obtiene la ip del Rover por comunicaci&oacute;n serial</td>\
-  </tr>\
-</table>\
 <hr/>\
-<h3>ROVER_MOVE_MANUAL_BODY</h3>\
+<h3>ROVER_MOVE_MANUAL_BODY (ID: 100001)</h3> \
 <p id='rcorners'>GET / POST</p>\
 <p id='rcorners_serial'>SERIAL</p>\
 <p>Comando para efectuar un movimiento del Rover, tomando como referencia la direcci&oacute;n que tenga en el momento de enviar el comando.</p>\
@@ -166,8 +151,7 @@ th {\
     <td></td>\
   </tr>   \
 </table>\
-<hr/>\
-<h3>ROVER_STOP</h3>\
+<h3>ROVER_STOP (ID: 100002)</h3>\
 <p id='rcorners'>GET / POST</p>\
 <p id='rcorners_serial'>SERIAL</p>\
 <p>Detiene el Rover</p>\
@@ -190,7 +174,7 @@ th {\
   <tr>\
     <td>P3</td>\
     <td>int</td>\
-    <td>Indica la distancia que recorre</td>\
+    <td>Indica la distancia que recorre antes de detenerse</td>\
   </tr>  \
   <tr>\
     <td>P4</td>\
@@ -213,6 +197,70 @@ th {\
     <td></td>\
   </tr>   \
 </table>\
+<h3>ROVER_SERIAL_CMD_GET_IP (ID: 100003)</h3>\
+<p id='rcorners_serial'>SERIAL</p>\
+<p>Comando que nos entrega informaci&oacute;n del dispositivo de red.</p>\
+<table>\
+  <tr>\
+    <th>Parameter</th>\
+    <th>Value</th>\
+    <th>Description</th>\
+  </tr>\
+  <tr>\
+    <td>P1</td>\
+    <td>boolean</td>\
+    <td>Si se encuentra en true devuelve la MAC</td>\
+  </tr>\
+  <tr>\
+    <td>P2</td>\
+    <td>None</td>\
+    <td></td>\
+  </tr>  \
+  <tr>\
+    <td>P3</td>\
+    <td>None</td>\
+    <td></td>\
+  </tr>  \
+  <tr>\
+    <td>P4</td>\
+    <td>None</td>\
+    <td></td>\
+  </tr>  \
+  <tr>\
+    <td>P5</td>\
+    <td>None</td>\
+    <td></td>\
+  </tr>  \
+  <tr>\
+    <td>P6</td>\
+    <td>None</td>\
+    <td></td>\
+  </tr> \
+  <tr>\
+    <td>P7</td>\
+    <td>None</td>\
+    <td></td>\
+  </tr>   \
+</table>\
+<hr />\
+<h3>Request Message</h3>\
+<pre>\
+{\
+  'COMMAND':'COMMAND_ID', \
+  'P1':'VALUE', \
+  'P2':'VALUE', \
+  'P3':'VALUE', \
+  'P4':'VALUE', \
+  'P5':'VALUE', \
+  'P6':'VALUE', \
+  'P7':'VALUE' \
+}\
+</pre>\
+<p>Example:</p>\
+<pre>\
+{'COMMAND':'100003', 'P1':'false', 'P2':'None', 'P3':'None', 'P4':'None', \
+  'P5':'None', 'P6':'None', 'P7':'None'}\
+</pre>\
 </body>\
 </html>\
 ";

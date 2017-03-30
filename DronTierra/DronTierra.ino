@@ -21,6 +21,7 @@ const char* password = "1101000000";
 
 String input = "{\"sensor\":\"gps\",\"time\":1351824120,\"data\":[48.756080,2.302038]}";
 String ipESP = "";
+byte mac[6];
 int count= 0;
 RoverLink roverLn;
 
@@ -159,7 +160,20 @@ void serialController(){
       command = serialIn.toInt();      
       switch (command) {
         case ROVER_SERIAL_CMD_GET_IP:
-          Serial.println("HTTP server listen on ip "  + ipESP);
+          Serial.println("IP: "  + ipESP);
+          WiFi.macAddress(mac);
+          Serial.print("MAC: ");
+          Serial.print(mac[5],HEX);
+          Serial.print(":");
+          Serial.print(mac[4],HEX);
+          Serial.print(":");
+          Serial.print(mac[3],HEX);
+          Serial.print(":");
+          Serial.print(mac[2],HEX);
+          Serial.print(":");
+          Serial.print(mac[1],HEX);
+          Serial.print(":");
+          Serial.println(mac[0],HEX);          
           break;
         default:
           Serial.println("ERROR: Unknow command");
