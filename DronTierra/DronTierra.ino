@@ -146,6 +146,28 @@ void loop(void){
     Serial.println("HTTP server listen on ip "  + ipESP);
     count = 2;
   }
+  serialController();
+}
+
+void serialController(){
+  String serialIn = "";
+  int command = 0;
+  if (Serial.available() >0) {
+    serialIn = Serial.readString();    
+    if (serialIn.length() >0){
+      //TODO: La logica del comando debe ser por json de entrada
+      command = serialIn.toInt();      
+      switch (command) {
+        case ROVER_SERIAL_CMD_GET_IP:
+          Serial.println("HTTP server listen on ip "  + ipESP);
+          break;
+        default:
+          Serial.println("ERROR: Unknow command");
+          break;
+      }
+    }
+  }
+  
 }
 
 void MotorHorario(int pin1, int pin2)
