@@ -8,7 +8,8 @@
 #define ROVER_BODY_MOVE_TYPE_FORWARD	  2003
 #define ROVER_BODY_MOVE_TYPE_BACK		    2004
 
-#define ROVER_SERIAL_CMD_GET_IP         3001
+#define ROVER_STOP                      100002
+#define ROVER_SERIAL_CMD_GET_IP         100003
 
 class RoverLink {
   public:

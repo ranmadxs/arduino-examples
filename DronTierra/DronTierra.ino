@@ -13,13 +13,13 @@ static int PinOUTB   = 4; // (D2)
 static int PinOUTC   = 0; // (D3)
 static int PinOUTD   = 2; // (D4)
 
-const char* ssid = "yai";
-const char* password = "1101000000";
+//const char* ssid = "yai";
+//const char* password = "1101000000";
 
-//const char* ssid = "VTR-YAI-5Ghz";
-//const char* password = "Pana8bc1108";
+const char* ssid = "VTR-YAI-5Ghz";
+const char* password = "Pana8bc1108";
 
-String input = "{\"sensor\":\"gps\",\"time\":1351824120,\"data\":[48.756080,2.302038]}";
+String json = "";
 String ipESP = "";
 byte mac[6];
 int count= 0;
@@ -121,12 +121,6 @@ void setup(void){
     message += "\nArguments: ";
     message += server.args();
     message += "\n";
-    JsonObject& root = jsonBuffer.parseObject(input);
-    String sensor = root["sensor"];
-    String output;
-    root.printTo(output);
-    Serial.print(output);
-    Serial.print("\n");
     for (uint8_t i=0; i<server.args(); i++){
       message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
     }    
@@ -157,7 +151,16 @@ void serialController(){
     serialIn = Serial.readString();    
     if (serialIn.length() >0){
       //TODO: La logica del comando debe ser por json de entrada
-      command = serialIn.toInt();      
+      //command = serialIn.toInt();      
+      JsonObject& root = jsonBuffer.parseObject(serialIn);
+      //String commandAux = root["COMMAND"];
+      //String output;
+      //root.printTo(output);
+      //Serial.print(output);
+      //Serial.print(commandAux);
+      String commandRoot = root["COMMAND"];
+      Serial.print(commandRoot);
+      command = commandRoot.toInt();
       switch (command) {
         case ROVER_SERIAL_CMD_GET_IP:
           Serial.println("IP: "  + ipESP);
