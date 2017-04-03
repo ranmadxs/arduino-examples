@@ -1,6 +1,5 @@
 #include <Arduino.h> 
 
-
 #define ROVER_TYPE_2WD					        1001
 
 #define ROVER_BODY_MOVE_TYPE_LEFT		    2001
@@ -16,9 +15,6 @@ class RoverLink {
 
         //Constructor de la clase
     RoverLink();
- 
-    //Funcion que obtiene API Doc
-    String getIndex();
   
   private:
 };
