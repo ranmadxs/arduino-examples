@@ -4,6 +4,7 @@
 #include <ESP8266mDNS.h>
 #include <ArduinoJson.h>
 #include "RoverLink.h"
+#include "YaiOS.h"
 
 //Derecha
 static int PinOUTA   = 5; // (D1)
@@ -24,6 +25,7 @@ String ipESP = "";
 byte mac[6];
 int count= 0;
 RoverLink roverLn;
+YaiOS yaiOS;
 
 DynamicJsonBuffer jsonBuffer;
 
@@ -33,7 +35,7 @@ const int led = 13;
 
 void handleRoot() {
   String temp;
-  temp = roverLn.getIndex();
+  temp = yaiOS.getIndex();
   digitalWrite(led, 1);
   //server.send(200, "text/plain", "hello from esp8266!");
   server.send ( 200, "text/html", temp );
