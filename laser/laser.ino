@@ -12,7 +12,7 @@ void loop () {
    sensorValue = analogRead(sensorPin);
    float voltage= sensorValue * (5.0 / 1023.0);
    Serial.println(voltage);
-   delay (2000); // delay one second
+   delay (500); // delay one second
    digitalWrite (2, LOW); // turn off the laser head
-   delay (1000); // delay one second
+   delay (500); // delay one second
 }
