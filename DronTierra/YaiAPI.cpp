@@ -3,9 +3,7 @@
 //https://www.w3schools.com/code/tryit.asp?filename=FE0ZZ9W9N3UO
 //sed -e "s/$/\\\/g" roverDoc.htm > roverDocv2.htm
 
-YaiOS::YaiOS(){}
-
-String YaiOS::getIndex(){
+String YaiOS::getAPI(){
   //char indexHtml[800];
   String indexHtml =
 "<!DOCTYPE html>\
