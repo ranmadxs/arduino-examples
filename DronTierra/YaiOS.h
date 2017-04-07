@@ -3,9 +3,11 @@
 class YaiOS {
   public:
 	YaiOS();
-	//Funcion que obtiene el home (index)
+	//Funcion que obtiene el html home (index)
 	String getIndex();
-    //Funcion que obtiene API Doc
-    String getAPI();
+  //Funcion que obtiene html API Doc
+  String getAPI();
+  //Obtiene HTML del Joistick del rover
+  String getRoverJoystick();
   private:
 };
