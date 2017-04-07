@@ -34,12 +34,21 @@ ESP8266WebServer server(80);
 const int led = 13;
 
 void handleRoot() {
-  String temp;
-  temp = yaiOS.getIndex();
+  String htmlSrc;
+  htmlSrc = yaiOS.getIndex();
   digitalWrite(led, 1);
   //server.send(200, "text/plain", "hello from esp8266!");
-  server.send ( 200, "text/html", temp );
+  server.send ( 200, "text/html", htmlSrc );
   digitalWrite(led, 0);
+}
+
+void handleAPI(){
+	  String htmlSrc;
+	  htmlSrc = yaiOS.getAPI();
+	  digitalWrite(led, 1);
+	  //server.send(200, "text/plain", "hello from esp8266!");
+	  server.send ( 200, "text/html", htmlSrc );
+	  digitalWrite(led, 0);
 }
 
 void handleNotFound(){
@@ -87,6 +96,8 @@ void setup(void){
   }
 
   server.on("/", handleRoot);
+
+  server.on("/api", handleAPI);
 
   server.on("/move", [](){
     
