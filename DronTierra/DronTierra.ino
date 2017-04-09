@@ -20,14 +20,8 @@ static int PinOUTD   = 2; // (D4)
 const char* ssid = "VTR-YAI-5Ghz";
 const char* password = "Pana8bc1108";
 
-String json = "";
-String ipESP = "";
-byte mac[6];
-int count= 0;
 RoverLink roverLn;
 YaiOS yaiOS;
-
-DynamicJsonBuffer jsonBuffer;
 
 ESP8266WebServer server(80);
 
@@ -93,11 +87,14 @@ void setup(void){
     Serial.print(".");
   }
   Serial.println("");
-  Serial.print("Connected to ");
+  Serial.print("Connected to");
   Serial.println(ssid);
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
-
+  yaiOS.setClientIP(WiFi.localIP().toString());
+  byte mac[6];
+  WiFi.macAddress(mac);
+  yaiOS.setMac(mac);
   if (MDNS.begin("esp8266")) {
     Serial.println("MDNS responder started");
   }
@@ -106,7 +103,7 @@ void setup(void){
 
   server.on("/api", handleAPI);
 
-  server.on("/roverJoistick", handleRoverJoystick);
+  server.on("/roverJoystick", handleRoverJoystick);
 
   server.on("/move", [](){
     
@@ -152,17 +149,11 @@ void setup(void){
   server.onNotFound(handleNotFound);
 
   server.begin();
-  Serial.println("HTTP server started");
-  count = 1;
+  Serial.println("HTTP server started");  
 }
 
 void loop(void){
   server.handleClient();
-  if (count == 1){
-    ipESP = WiFi.localIP().toString();
-    Serial.println("HTTP server listen on ip "  + ipESP);
-    count = 2;
-  }
   serialController();
 }
 
@@ -172,38 +163,7 @@ void serialController(){
   if (Serial.available() >0) {
     serialIn = Serial.readString();    
     if (serialIn.length() >0){
-      //TODO: La logica del comando debe ser por json de entrada
-      //command = serialIn.toInt();      
-      JsonObject& root = jsonBuffer.parseObject(serialIn);
-      //String commandAux = root["COMMAND"];
-      //String output;
-      //root.printTo(output);
-      //Serial.print(output);
-      //Serial.print(commandAux);
-      String commandRoot = root["COMMAND"];
-      //Serial.print(commandRoot);
-      command = commandRoot.toInt();
-      switch (command) {
-        case ROVER_SERIAL_CMD_GET_IP:
-          Serial.println("IP: "  + ipESP);
-          WiFi.macAddress(mac);
-          Serial.print("MAC: ");
-          Serial.print(mac[5],HEX);
-          Serial.print(":");
-          Serial.print(mac[4],HEX);
-          Serial.print(":");
-          Serial.print(mac[3],HEX);
-          Serial.print(":");
-          Serial.print(mac[2],HEX);
-          Serial.print(":");
-          Serial.print(mac[1],HEX);
-          Serial.print(":");
-          Serial.println(mac[0],HEX);          
-          break;
-        default:
-          Serial.println("ERROR: Unknow command");
-          break;
-      }
+      yaiOS.executeCommand(serialIn);
     }
   }
   
