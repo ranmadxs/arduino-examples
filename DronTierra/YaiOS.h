@@ -50,6 +50,10 @@ class YaiOS {
         if (i < 5) macStr += ':';
       }
     }
+
+    void setMac(String macIN){
+    	macStr = macIN;
+    }
     
   private:
 

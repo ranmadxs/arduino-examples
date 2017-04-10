@@ -14,11 +14,11 @@ static int PinOUTB   = 4; // (D2)
 static int PinOUTC   = 0; // (D3)
 static int PinOUTD   = 2; // (D4)
 
-//const char* ssid = "yai";
-//const char* password = "1101000000";
+const char* ssid = "yai";
+const char* password = "1101000000";
 
-const char* ssid = "VTR-YAI-5Ghz";
-const char* password = "Pana8bc1108";
+//const char* ssid = "VTR-YAI-5Ghz";
+//const char* password = "Pana8bc1108";
 
 RoverLink roverLn;
 YaiOS yaiOS;
@@ -92,9 +92,7 @@ void setup(void){
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
   yaiOS.setClientIP(WiFi.localIP().toString());
-  byte mac[6];
-  WiFi.macAddress(mac);
-  yaiOS.setMac(mac);
+  yaiOS.setMac(WiFi.macAddress());
   if (MDNS.begin("esp8266")) {
     Serial.println("MDNS responder started");
   }
