@@ -5,3 +5,10 @@
 
 RoverLink::RoverLink(){}
 
+void RoverLink::motorStop(int roverType){
+  digitalWrite (PinOUTA, LOW);
+  digitalWrite (PinOUTB, LOW);
+  digitalWrite (PinOUTC, LOW);
+  digitalWrite (PinOUTD, LOW);
+}
+
