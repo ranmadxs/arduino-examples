@@ -4,6 +4,7 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
+#include "RoverLink.h"
 
 #define ROVER_TYPE_2WD                  1001
 
@@ -17,7 +18,7 @@
 #define YAI_SERIAL_CMD_GET_IP           100003
 
 class YaiOS {
-  public:    
+  public:
 
    	YaiOS();
   	//Funcion que obtiene el html home (index)
@@ -56,7 +57,7 @@ class YaiOS {
     }
     
   private:
-
+    RoverLink roverLn;
     String clientIP;
     String macStr;
     

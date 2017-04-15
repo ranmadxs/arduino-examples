@@ -3,7 +3,7 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 #include <ArduinoJson.h>
-#include "RoverLink.h"
+//#include "RoverLink.h"
 #include "YaiOS.h"
 
 //const char* ssid = "yai";
@@ -12,7 +12,6 @@
 const char* ssid = "VTR-YAI-5Ghz";
 const char* password = "Pana8bc1108";
 
-RoverLink roverLn;
 YaiOS yaiOS;
 
 ESP8266WebServer server(80);

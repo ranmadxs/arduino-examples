@@ -6,6 +6,8 @@
 RoverLink::RoverLink(){}
 
 void RoverLink::motorStop(int roverType){
+
+  Serial.println("RoverLink::motorStop");
   digitalWrite (PinOUTA, LOW);
   digitalWrite (PinOUTB, LOW);
   digitalWrite (PinOUTC, LOW);

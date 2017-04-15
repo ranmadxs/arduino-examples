@@ -1,4 +1,6 @@
 #include "YaiOS.h"
+#include <ArduinoJson.h>
+//#include "RoverLink.h"
 
 
 DynamicJsonBuffer dynJsonBuffer;
@@ -23,6 +25,7 @@ void YaiOS::executeCommand(String jsonCommand){
     Serial.println("Stop in " + p2);
     delay(tiempoStop);
     Serial.println("CALL RoverLink Stop NOW ");
+    roverLn.motorStop(p3.toInt());
   }
 
 }
