@@ -27,10 +27,10 @@ void handleRoot() {
 }
 
 void handleJS() {
-  String htmlSrc;
-  htmlSrc = yaiOS.getJS();
+  String htmlJS;
+  htmlJS = yaiOS.getJS();
   digitalWrite(led, 1);
-  server.send ( 200, "text/html", htmlSrc );
+  server.send ( 200, "application/javascript", htmlJS );
   digitalWrite(led, 0);  
 }
 
@@ -99,7 +99,7 @@ void setup(void){
 
   server.on("/api", handleAPI);
 
-  server.on("/jquery", handleJS);
+  server.on("/yai.js", handleJS);
 
   server.on("/roverJoystick", handleRoverJoystick);
 

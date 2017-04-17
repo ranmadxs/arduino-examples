@@ -1,6 +1,6 @@
 #include "YaiOS.h"
 
-//https://www.w3schools.com/code/tryit.asp?filename=FEG6J56F3G5X
+//https://www.w3schools.com/code/tryit.asp?filename=FEPI2ZDHI171
 //sed -e "s/$/\\\/g" roverDoc.html > roverDocv2.html
 
 String YaiOS::getRoverJoystick(){
@@ -8,6 +8,7 @@ String YaiOS::getRoverJoystick(){
   "\ 
 <html>\
 <head>\
+<script type='application/javascript' src='../yai.js'></script>\
 <style type='text/css'>\
 .contenedorTableDiv {\
     display: table;\
@@ -154,30 +155,30 @@ a:hover .left:after, a:hover .top:after, a:hover .bottom:after, a:hover .right:a
     <div class='contenidos'>\
         <div class='columna'></div>\
         <div class='columna'>\
-          <a href='#'>\
-            <span class='top'></span>\
+          <a href='javascript:void(0);'>\
+            <span class='top' onmousedown=\"mouseDown('TOP')\" onmouseup='mouseUp()'></span>\
           </a>        \
         </div>\
         <div class='columna'></div>\
     </div>\
     <div class='contenidos'>\
         <div class='columna'>\
-          <a href='#'>\
-            <span class='left'></span>\
+          <a href='javascript:void(0);'>\
+            <span class='left' onmousedown=\"mouseDown('LEFT')\" onmouseup='mouseUp()'></span>\
           </a>        \
         </div>\
-        <div class='columna'>STOP</div>\
+        <div class='columna' id='actionDiv'>STOP</div>\
         <div class='columna'>\
-          <a href='#'>\
-            <span class='right'></span>\
+          <a href='javascript:void(0);'>\
+            <span class='right' onmousedown=\"mouseDown('RIGHT')\" onmouseup='mouseUp()'></span>\
           </a>        \
         </div>\
     </div>\
     <div class='contenidos'>\
         <div class='columna'></div>\
         <div class='columna'>\
-          <a href='#'>\
-            <span class='bottom'></span>\
+          <a href='javascript:void(0);'>\
+            <span class='bottom' onmousedown=\"mouseDown('BOTTOM')\" onmouseup='mouseUp()'></span>\
           </a>        \
         </div>\
         <div class='columna'></div>\
