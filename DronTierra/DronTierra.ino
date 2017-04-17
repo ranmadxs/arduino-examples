@@ -6,11 +6,11 @@
 //#include "RoverLink.h"
 #include "YaiOS.h"
 
-//const char* ssid = "yai";
-//const char* password = "1101000000";
+const char* ssid = "yai";
+const char* password = "1101000000";
 
-const char* ssid = "VTR-YAI-5Ghz";
-const char* password = "Pana8bc1108";
+//const char* ssid = "VTR-YAI-5Ghz";
+//const char* password = "Pana8bc1108";
 
 YaiOS yaiOS;
 
@@ -85,7 +85,7 @@ void setup(void){
     Serial.print(".");
   }
   Serial.println("");
-  Serial.print("Connected to");
+  Serial.print("Connected to: ");
   Serial.println(ssid);
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());

@@ -1,6 +1,6 @@
 #include "YaiOS.h"
 
-//https://www.w3schools.com/code/tryit.asp?filename=FE0ZZ9W9N3UO
+//https://www.w3schools.com/code/tryit.asp?filename=FEQAR3LCJCAL
 //sed -e "s/$/\\\/g" roverDoc.htm > roverDocv2.htm
 
 String YaiOS::getAPI(){
@@ -25,7 +25,7 @@ th, td {\
 #rcorners {\
     font-family: Arial;\
     font-size: 12px;\
- color: white;\
+	color: white;\
     border-radius: 4px;\
     padding-bottom: 5px;     \
     padding-top: 2px;   \
@@ -39,7 +39,7 @@ th, td {\
 #rcorners_serial {\
     font-family: Arial;\
     font-size: 12px;\
-  color: white;\
+	color: white;\
     border-radius: 4px;\
     padding-bottom: 5px;     \
     padding-top: 2px;   \
@@ -100,7 +100,7 @@ th {\
   <tr>\
     <td>ROVER_BODY_MOVE_TYPE_BACK</td>\
     <td>2004</td>\
-    <td>Mover Atrás</td>\
+    <td>Mover Atr&aacute;s</td>\
   </tr>  \
 </table>\
 <hr/>\
@@ -122,7 +122,7 @@ th {\
   <tr>\
     <td>P2</td>\
     <td>int</td>\
-    <td>Tiempo en que se detiene, 0 se detiene inmediato</td>\
+    <td>Tiempo en que se detiene en milisegundos, 0 se detiene inmediato</td>\
   </tr>  \
   <tr>\
     <td>P3</td>\
@@ -150,6 +150,14 @@ th {\
     <td></td>\
   </tr>   \
 </table>\
+<h3>Try it out!</h3>\
+<pre>\
+curl -X GET --header \"Accept: application/json;charset=UTF-8\" \"http://"+ YaiOS::getClientIP()+"/cmd?COMMAND=100001&P1=1001&P2=0&P3=0&P4=2003&P5=None&P6=None&P7=None\"\
+</pre>\
+<h4>Http Request</h4>\
+<pre>\
+http://"+ YaiOS::getClientIP()+"/cmd?COMMAND=100001&P1=1001&P2=0&P3=0&P4=2003&P5=None&P6=None&P7=None\
+</pre>\
 <h3>ROVER_STOP (ID: 100002)</h3>\
 <p id='rcorners'>GET / POST</p>\
 <p id='rcorners_serial'>SERIAL</p>\
@@ -168,7 +176,7 @@ th {\
   <tr>\
     <td>P2</td>\
     <td>int</td>\
-    <td>Tiempo en que se detiene, 0 se detiene inmediato</td>\
+    <td>Tiempo en que se detiene en milisegundos, 0 se detiene inmediato</td>\
   </tr>  \
   <tr>\
     <td>P3</td>\
@@ -196,7 +204,16 @@ th {\
     <td></td>\
   </tr>   \
 </table>\
+<h3>Try it out!</h3>\
+<pre>\
+curl -X GET --header \"Accept: application/json;charset=UTF-8\" \"http://"+ YaiOS::getClientIP()+"/cmd?COMMAND=100002&P1=1001&P2=0&P3=None&P4=None&P5=None&P6=None&P7=None\"\
+</pre>\
+<h4>Http Request</h4>\
+<pre>\
+http://"+ YaiOS::getClientIP()+"/cmd?COMMAND=100003&P1=1001&P2=0&P3=None&P4=None&P5=None&P6=None&P7=None\
+</pre>\
 <h3>ROVER_SERIAL_CMD_GET_IP (ID: 100003)</h3>\
+<p id='rcorners'>GET / POST</p>\
 <p id='rcorners_serial'>SERIAL</p>\
 <p>Comando que nos entrega informaci&oacute;n del dispositivo de red.</p>\
 <table>\
@@ -241,8 +258,16 @@ th {\
     <td></td>\
   </tr>   \
 </table>\
+<h3>Try it out!</h3>\
+<pre>\
+curl -X GET --header \"Accept: application/json;charset=UTF-8\" \"http://"+ YaiOS::getClientIP()+"/cmd?COMMAND=100003&P1=false&P2=None&P3=None&P4=None&P5=None&P6=None&P7=None\"\
+</pre>\
+<h4>Http Request</h4>\
+<pre>\
+http://"+ YaiOS::getClientIP()+"/cmd?COMMAND=100003&P1=false&P2=None&P3=None&P4=None&P5=None&P6=None&P7=None\
+</pre>\
 <hr />\
-<h3>Request Message</h3>\
+<h3>Serial Json Message</h3>\
 <pre>\
 {\
   'COMMAND':'COMMAND_ID', \

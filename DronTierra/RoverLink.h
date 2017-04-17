@@ -17,6 +17,10 @@ class RoverLink {
     //Detiene el Rover
 
     void motorStop(int roverType);
+
+    void motorMove(int roverType, int moveType);
   
   private:
+
+    void motorHalt2WD();
 };
