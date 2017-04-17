@@ -5,20 +5,22 @@
 
 DynamicJsonBuffer dynJsonBuffer;
 
-void YaiOS::executeCommand(String jsonCommand){
+String YaiOS::executeCommand(String jsonCommand){
   JsonObject& root = dynJsonBuffer.parseObject(jsonCommand);
   String commandRoot = root["COMMAND"];
   boolean respCommand = false;
   String p1 = root["P1"];
   String p2 = root["P2"];
   String p3 = root["P3"];
+  String content = "{";
+  String resultStr = "OK";
   //Serial.print(commandRoot);
   int command = commandRoot.toInt();
   if(command == YAI_SERIAL_CMD_GET_IP){
-	respCommand = true;
-    Serial.println("IP: "  + YaiOS::getClientIP());
+	respCommand = true;    
+    content += "'IP':'"+ YaiOS::getClientIP()+"'";
     if(root["P1"] == "true"){
-      Serial.println("MAC: "  + YaiOS::getMac());
+      content += ", 'MAC':'"+ YaiOS::getMac()+"'";
     }    
   }
   
@@ -36,7 +38,11 @@ void YaiOS::executeCommand(String jsonCommand){
   }
 
   if(!respCommand){
-	Serial.println("Command not found ");
+    resultStr = "NOK";
+    content = "'Command not found'";
   }
-
+  content += "}";
+  String jsonResult = "{'result':'"+resultStr+"', 'content':"+content+"}";
+  Serial.println(jsonResult);
+  return jsonResult;
 }

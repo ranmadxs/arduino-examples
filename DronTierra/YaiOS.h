@@ -31,7 +31,7 @@ class YaiOS {
     String getJS();
   
     //Execute jsonCommand
-    void executeCommand(String command);
+    String executeCommand(String command);
 
     String getClientIP(){
       return clientIP;

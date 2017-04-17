@@ -134,20 +134,18 @@ void setup(void){
 //  cmd?COMMAND=100003&P1=false&P2=None&P3=None&P4=None&P5=None&P6=None&P7=None
   server.on("/cmd", [](){
     digitalWrite(LED_BUILTIN, HIGH);    
-    String message = "CMD \n \n";
+    String message = "";
     String jsonCommand = "{";
-    message += "\nArguments: ";
-    message += server.args();
-    message += "\n";
     for (uint8_t i=0; i<server.args(); i++){
       jsonCommand += "'"+server.argName(i) + "':'" + server.arg(i)+"'";
       if(i + 1 < server.args()){
         jsonCommand += ", ";
       }
-    }
-        
+    }    
     jsonCommand += "}";
-    message += "\n" + jsonCommand;
+    message += " >> " + jsonCommand;
+    String responseMsg = yaiOS.executeCommand(jsonCommand);        
+    message += "\n \n << " + responseMsg;
     server.send(200, "text/plain", message);
   });
 
