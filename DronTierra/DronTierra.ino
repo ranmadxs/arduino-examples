@@ -137,15 +137,15 @@ void setup(void){
     String message = "";
     String jsonCommand = "{";
     for (uint8_t i=0; i<server.args(); i++){
-      jsonCommand += "'"+server.argName(i) + "':'" + server.arg(i)+"'";
+      jsonCommand += "\""+server.argName(i) + "\":\"" + server.arg(i)+"\"";
       if(i + 1 < server.args()){
         jsonCommand += ", ";
       }
     }    
     jsonCommand += "}";
-    message += " >> " + jsonCommand;
+    message += " << " + jsonCommand;
     String responseMsg = yaiOS.executeCommand(jsonCommand);        
-    message += "\n \n << " + responseMsg;
+    message += "\n \n >> " + responseMsg;
     server.send(200, "text/plain", message);
   });
 

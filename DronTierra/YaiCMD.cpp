@@ -18,9 +18,9 @@ String YaiOS::executeCommand(String jsonCommand){
   int command = commandRoot.toInt();
   if(command == YAI_SERIAL_CMD_GET_IP){
 	respCommand = true;    
-    content += "'IP':'"+ YaiOS::getClientIP()+"'";
+    content += "\"IP\":\""+ YaiOS::getClientIP()+"\"";
     if(root["P1"] == "true"){
-      content += ", 'MAC':'"+ YaiOS::getMac()+"'";
+      content += ", \"MAC\":\""+ YaiOS::getMac()+"\"";
     }    
   }
   
@@ -39,10 +39,10 @@ String YaiOS::executeCommand(String jsonCommand){
 
   if(!respCommand){
     resultStr = "NOK";
-    content = "'Command not found'";
+    content = "\"Command not found\"";
   }
   content += "}";
-  String jsonResult = "{'result':'"+resultStr+"', 'content':"+content+"}";
+  String jsonResult = "{\"result\":\""+resultStr+"\", \"content\":"+content+"}";
   Serial.println(jsonResult);
   return jsonResult;
 }
