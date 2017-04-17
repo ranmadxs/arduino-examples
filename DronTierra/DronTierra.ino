@@ -22,9 +22,16 @@ void handleRoot() {
   String htmlSrc;
   htmlSrc = yaiOS.getIndex();
   digitalWrite(led, 1);
-  //server.send(200, "text/plain", "hello from esp8266!");
   server.send ( 200, "text/html", htmlSrc );
   digitalWrite(led, 0);
+}
+
+void handleJS() {
+  String htmlSrc;
+  htmlSrc = yaiOS.getJS();
+  digitalWrite(led, 1);
+  server.send ( 200, "text/html", htmlSrc );
+  digitalWrite(led, 0);  
 }
 
 void handleAPI(){
@@ -91,6 +98,8 @@ void setup(void){
   server.on("/", handleRoot);
 
   server.on("/api", handleAPI);
+
+  server.on("/jquery", handleJS);
 
   server.on("/roverJoystick", handleRoverJoystick);
 

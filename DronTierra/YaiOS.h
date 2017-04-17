@@ -27,6 +27,8 @@ class YaiOS {
     String getAPI();
     //Obtiene HTML del Joistick del rover
     String getRoverJoystick();
+
+    String getJS();
   
     //Execute jsonCommand
     void executeCommand(String command);
