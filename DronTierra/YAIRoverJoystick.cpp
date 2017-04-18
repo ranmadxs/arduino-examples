@@ -1,7 +1,8 @@
 #include "YaiOS.h"
+#include "YaiConstants.h"
 
 //https://www.w3schools.com/code/tryit.asp?filename=FEQ6NAHD1Y2M
-//sed -e "s/$/\\\/g" roverDoc.html > roverDocv2.html
+//sed -e "s/$/\\\/g" roverDoc.htm > roverDocv2.htm
 
 String YaiOS::getRoverJoystick(){
   String html = 
@@ -183,7 +184,7 @@ String YaiOS::getRoverJoystick(){
 		          <div class='columna'></div>\
 		          <div class='columna'>\
 		            <a href='javascript:void(0);'>\
-		              <span class='top' onclick=\"actionMove('TOP')\"></span>\
+		              <span class='top' onclick=\"actionMove('"+String(ROVER_BODY_MOVE_TYPE_FORWARD)+"', '"+String(ROVER_TYPE_2WD)+"')\"></span>\
 		            </a>        \
 		          </div>\
 		          <div class='columna'></div>\
@@ -191,17 +192,17 @@ String YaiOS::getRoverJoystick(){
 		      <div class='contenidos'>\
 		          <div class='columna'>\
 		            <a href='javascript:void(0);'>\
-		              <span class='left' onclick=\"actionMove('LEFT')\"></span>\
+		              <span class='left' onclick=\"actionMove('"+String(ROVER_BODY_MOVE_TYPE_LEFT)+"', '"+String(ROVER_TYPE_2WD)+"')\"></span>\
 		            </a>        \
 		          </div>\
 		          <div class='columna'>\
 		            <a href='javascript:void(0);'>\
-		              <span class='center' onclick=\"actionMove('CENTER')\"></span>\
+		              <span class='center' onclick=\"actionStop('"+String(ROVER_TYPE_2WD)+"')\"></span>\
 		            </a>                \
 		          </div>\
 		          <div class='columna'>\
 		            <a href='javascript:void(0);'>\
-		              <span class='right' onclick=\"actionMove('RIGHT')\"></span>\
+		              <span class='right' onclick=\"actionMove('"+String(ROVER_BODY_MOVE_TYPE_RIGHT)+"', '"+String(ROVER_TYPE_2WD)+"')\"></span>\
 		            </a>        \
 		          </div>\
 		      </div>\
@@ -209,7 +210,7 @@ String YaiOS::getRoverJoystick(){
 		          <div class='columna'></div>\
 		          <div class='columna'>\
 		            <a href='javascript:void(0);'>\
-		              <span class='bottom' onclick=\"actionMove('BOTTOM')\"></span>\
+		              <span class='bottom' onclick=\"actionMove('"+String(ROVER_BODY_MOVE_TYPE_BACK)+"', '"+String(ROVER_TYPE_2WD)+"')\"></span>\
 		            </a>        \
 		          </div>\
 		          <div class='columna'></div>\
@@ -218,6 +219,6 @@ String YaiOS::getRoverJoystick(){
 		  </center>\
 		  </body>\
 		  </html>\
-  ";
+   ";
   return html;
 }

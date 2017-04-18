@@ -133,7 +133,6 @@ void setup(void){
 
 //  cmd?COMMAND=100003&P1=false&P2=None&P3=None&P4=None&P5=None&P6=None&P7=None
   server.on("/cmd", [](){
-    digitalWrite(LED_BUILTIN, HIGH);    
     String message = "";
     String jsonCommand = "{";
     for (uint8_t i=0; i<server.args(); i++){
