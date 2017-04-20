@@ -8,6 +8,9 @@ static int PinOUTB   = 4; // (D2)
 static int PinOUTC   = 0; // (D3)
 static int PinOUTD   = 2; // (D4)  <- Este es el que apaga el Lolin
 
+//Laser
+static int PinLaser = 14; // (D5)
+
 class RoverLink {
   public:
 
@@ -18,7 +21,9 @@ class RoverLink {
 
     void motorStop(int roverType);
 
-    void motorMove(int roverType, int moveType);
+    String motorMove(int roverType, int moveType);
+
+    void laser(boolean active);
   
   private:
 

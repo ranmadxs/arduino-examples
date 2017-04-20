@@ -1,6 +1,8 @@
 #include "YaiOS.h"
 
+//TODO: Debo agregar la doc del laser
 //https://www.w3schools.com/code/tryit.asp?filename=FEQAR3LCJCAL
+//https://saeedalipoor.github.io/icono/
 //sed -e "s/$/\\\/g" roverDoc.htm > roverDocv2.htm
 
 String YaiOS::getAPI(){
@@ -9,6 +11,7 @@ String YaiOS::getAPI(){
 "<!DOCTYPE html>\
 <html>\
 <head>\
+<link rel='stylesheet' href='../yai.css'>\
 <style>\
 table {\
     border-collapse: collapse;\
@@ -25,7 +28,7 @@ th, td {\
 #rcorners {\
     font-family: Arial;\
     font-size: 12px;\
-	color: white;\
+ color: white;\
     border-radius: 4px;\
     padding-bottom: 5px;     \
     padding-top: 2px;   \
@@ -39,7 +42,7 @@ th, td {\
 #rcorners_serial {\
     font-family: Arial;\
     font-size: 12px;\
-	color: white;\
+  color: white;\
     border-radius: 4px;\
     padding-bottom: 5px;     \
     padding-top: 2px;   \
@@ -59,7 +62,7 @@ th {\
 </style>\
 </head>\
 <body>\
-\
+<a href='../'><i class='icono-home'></i></a>\
 <h2>YaiOS API</h2>\
 <hr/>\
 <h3>Rover Type Enumeration</h3>\

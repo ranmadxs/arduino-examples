@@ -20,7 +20,7 @@ class YaiOS {
     String getRoverJoystick();
 
     String getJS();
-  
+   
     //Execute jsonCommand
     String executeCommand(String command);
 

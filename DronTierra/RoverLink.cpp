@@ -7,37 +7,47 @@
 
 RoverLink::RoverLink(){}
 
+void RoverLink::laser(boolean active){
+  if(active){
+    digitalWrite(PinLaser, HIGH);
+  }else{
+    digitalWrite(PinLaser, LOW);
+  }
+  
+}
+
 void RoverLink::motorStop(int roverType){
   digitalWrite(LED_BUILTIN, HIGH);
   Serial.println("RoverLink::motorStop");
   RoverLink::motorHalt2WD();
 }
 
-void RoverLink::motorMove(int roverType, int moveType){
-
-  Serial.println("RoverLink::motorMove");
+String RoverLink::motorMove(int roverType, int moveType){
+  String direction = "None";
+  Serial.println("RoverLink::motorMove="+String(moveType));
   digitalWrite(LED_BUILTIN, LOW);
   RoverLink::motorHalt2WD();
   if(moveType == ROVER_BODY_MOVE_TYPE_FORWARD){
-	 Serial.println("FORWARD");
+	 direction = "FORWARD";
 	 digitalWrite (PinOUTB, HIGH);
 	 digitalWrite (PinOUTD, HIGH);
   }
   if(moveType == ROVER_BODY_MOVE_TYPE_BACK){
-	 Serial.println("BACK");
+	 direction = "BACK";
 	 digitalWrite (PinOUTA, HIGH);
 	 digitalWrite (PinOUTC, HIGH);
   }
 
   if(moveType == ROVER_BODY_MOVE_TYPE_LEFT){
-	Serial.println("LEFT");
-	digitalWrite (PinOUTB, HIGH);
+	 direction = "LEFT";
+	 digitalWrite (PinOUTB, HIGH);
   }
 
   if(moveType == ROVER_BODY_MOVE_TYPE_RIGHT){
-	Serial.println("RIGHT");
-	digitalWrite (PinOUTD, HIGH);
+	 direction = "RIGHT";
+	 digitalWrite (PinOUTD, HIGH);
   }
+  return direction;
 }
 
 void RoverLink::motorHalt2WD(){

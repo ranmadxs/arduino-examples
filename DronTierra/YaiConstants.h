@@ -8,3 +8,4 @@
 #define ROVER_MOVE_MANUAL_BODY          100001
 #define ROVER_STOP                      100002
 #define YAI_SERIAL_CMD_GET_IP           100003
+#define LASER_ACTION                    100004 // -> P1: activo: true o false, P2: tiempo de ejecutar accion laser en ms

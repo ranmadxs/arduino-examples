@@ -6,52 +6,41 @@
 //#include "RoverLink.h"
 #include "YaiOS.h"
 
-const char* ssid = "yai";
-const char* password = "1101000000";
+//const char* ssid = "yai";
+//const char* password = "1101000000";
 
-//const char* ssid = "VTR-YAI-5Ghz";
-//const char* password = "Pana8bc1108";
+const char* ssid = "VTR-YAI-5Ghz";
+const char* password = "Pana8bc1108";
 
 YaiOS yaiOS;
 
 ESP8266WebServer server(80);
 
-const int led = 13;
-
 void handleRoot() {
   String htmlSrc;
   htmlSrc = yaiOS.getIndex();
-  digitalWrite(led, 1);
   server.send ( 200, "text/html", htmlSrc );
-  digitalWrite(led, 0);
 }
 
 void handleJS() {
-  String htmlJS;
-  htmlJS = yaiOS.getJS();
-  digitalWrite(led, 1);
-  server.send ( 200, "application/javascript", htmlJS );
-  digitalWrite(led, 0);  
+  String htmlSrc;
+  htmlSrc = yaiOS.getJS();
+  server.send ( 200, "application/javascript", htmlSrc );
 }
 
 void handleAPI(){
 	  String htmlSrc;
 	  htmlSrc = yaiOS.getAPI();
-	  digitalWrite(led, 1);
 	  server.send ( 200, "text/html", htmlSrc );
-	  digitalWrite(led, 0);
 }
 
 void handleRoverJoystick(){
     String htmlSrc;
     htmlSrc = yaiOS.getRoverJoystick();
-    digitalWrite(led, 1);    
     server.send ( 200, "text/html", htmlSrc );
-    digitalWrite(led, 0);  
 }
 
 void handleNotFound(){
-  digitalWrite(led, 1);
   String message = "File Not Found\n\n";
   message += "URI: ";
   message += server.uri();
@@ -64,7 +53,6 @@ void handleNotFound(){
     message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
   }
   server.send(404, "text/plain", message);
-  digitalWrite(led, 0);
 }
 
 void setup(void){  
@@ -73,8 +61,8 @@ void setup(void){
   pinMode(PinOUTB, OUTPUT);
   pinMode(PinOUTC, OUTPUT);
   pinMode(PinOUTD, OUTPUT);
+  pinMode(PinLaser, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
-  digitalWrite(led, 1);
   Serial.begin(115200);
   WiFi.begin(ssid, password);
   Serial.println("");
@@ -103,35 +91,6 @@ void setup(void){
 
   server.on("/roverJoystick", handleRoverJoystick);
 
-  server.on("/move", [](){
-    
-    digitalWrite(LED_BUILTIN, LOW);        
-    if(server.args()>0){
-      if(server.argName(0) == "CMD"){
-        server.send(200, "text/plain", "MOVE >> " + server.arg(0)); 
-        if(server.arg(0) == "FORWARD"){
-          MotorAntihorario(PinOUTA, PinOUTB);
-          MotorAntihorario(PinOUTC, PinOUTD);
-        }
-        if(server.arg(0) == "BACK"){
-          MotorHorario(PinOUTA, PinOUTB);
-          MotorHorario(PinOUTC, PinOUTD);          
-        }        
-        if(server.arg(0) == "LEFT"){
-          MotorAntihorario(PinOUTA, PinOUTB);
-          digitalWrite (PinOUTC, LOW);
-          digitalWrite (PinOUTD, LOW);     
-        }        
-        if(server.arg(0) == "RIGHT"){
-          MotorAntihorario(PinOUTC, PinOUTD);
-          digitalWrite (PinOUTA, LOW);
-          digitalWrite (PinOUTB, LOW);     
-        }        
-      }
-    }
-  });
-
-//  cmd?COMMAND=100003&P1=false&P2=None&P3=None&P4=None&P5=None&P6=None&P7=None
   server.on("/cmd", [](){
     String message = "";
     String jsonCommand = "{";
@@ -145,19 +104,6 @@ void setup(void){
     message += " << " + jsonCommand;
     String responseMsg = yaiOS.executeCommand(jsonCommand);        
     message += "\n \n >> " + responseMsg;
-    server.send(200, "text/plain", message);
-  });
-
-  server.on("/stop", [](){
-    MotorStop();
-    digitalWrite(LED_BUILTIN, HIGH);    
-    String message = "LED OFF \n\n";
-    message += "\nArguments: ";
-    message += server.args();
-    message += "\n";
-    for (uint8_t i=0; i<server.args(); i++){
-      message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
-    }    
     server.send(200, "text/plain", message);
   });
 
@@ -182,23 +128,4 @@ void serialController(){
     }
   }
   
-}
-
-void MotorHorario(int pin1, int pin2)
-{
-  digitalWrite (pin1, HIGH);
-  digitalWrite (pin2, LOW);
-}
-void MotorAntihorario(int pin1, int pin2)
-{
-  digitalWrite (pin1, LOW);
-  digitalWrite (pin2, HIGH);
-}
-
-void MotorStop()
-{
-  digitalWrite (PinOUTA, LOW);
-  digitalWrite (PinOUTB, LOW);
-  digitalWrite (PinOUTC, LOW);
-  digitalWrite (PinOUTD, LOW);
 }
