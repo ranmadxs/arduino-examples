@@ -6,10 +6,10 @@ static int PinOUTB   = 4; // (D2)
 
 //Izquierda
 static int PinOUTC   = 0; // (D3)
-static int PinOUTD   = 2; // (D4)  <- Este es el que apaga el Lolin
+static int PinOUTD   = 14; // (D5)  
 
 //Laser
-static int PinLaser = 14; // (D5)
+static int PinLaser = 12; // (D6)
 
 class RoverLink {
   public:

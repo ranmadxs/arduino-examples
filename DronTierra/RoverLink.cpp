@@ -10,8 +10,10 @@ RoverLink::RoverLink(){}
 void RoverLink::laser(boolean active){
   if(active){
     digitalWrite(PinLaser, HIGH);
+    digitalWrite(LED_BUILTIN, LOW);
   }else{
     digitalWrite(PinLaser, LOW);
+    digitalWrite(LED_BUILTIN, HIGH);
   }
   
 }
