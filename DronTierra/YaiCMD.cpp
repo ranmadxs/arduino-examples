@@ -29,7 +29,6 @@ String YaiOS::executeCommand(String jsonCommand){
   if (command == LASER_ACTION){
     respCommand = true; 
     int tiempoStop = p2.toInt();
-    Serial.println("Laser activo("+p1+") en " + p2 + " [ms]");
     content += "{\"laserStatus\": "+p1+", \"time\": " + p2 + "}";
     delay(tiempoStop);
     boolean activar = false;
@@ -42,8 +41,6 @@ String YaiOS::executeCommand(String jsonCommand){
   if (command == ROVER_STOP){
 	respCommand = true;
     int tiempoStop = p2.toInt();
-    //Serial.println("Type " + p1);
-    Serial.println("Stop in " + p2);
     delay(tiempoStop);    
     roverLn.motorStop(p1.toInt());
     content += "{\"time:\":" + p2 + ", \"move\":\"STOP\"}";
@@ -52,9 +49,6 @@ String YaiOS::executeCommand(String jsonCommand){
   if (command == ROVER_MOVE_MANUAL_BODY){
 	  respCommand = true;
 	  int tiempoStop = p2.toInt();
-	  //Serial.println("Type " + p1);
-	  Serial.println("moveIn in " + p2);
-	  //Serial.println("to " + p4);
 	  delay(tiempoStop);	  
 	  moveResponse = roverLn.motorMove(p1.toInt(), p4.toInt());    
     content += "{\"time:\":" + p2 + ", \"move\":\""+moveResponse+"\"}";

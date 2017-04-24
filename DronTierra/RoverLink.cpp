@@ -20,13 +20,12 @@ void RoverLink::laser(boolean active){
 
 void RoverLink::motorStop(int roverType){
   digitalWrite(LED_BUILTIN, HIGH);
-  Serial.println("RoverLink::motorStop");
+  //Serial.println("RoverLink::motorStop");
   RoverLink::motorHalt2WD();
 }
 
 String RoverLink::motorMove(int roverType, int moveType){
   String direction = "None";
-  Serial.println("RoverLink::motorMove="+String(moveType));
   digitalWrite(LED_BUILTIN, LOW);
   RoverLink::motorHalt2WD();
   if(moveType == ROVER_BODY_MOVE_TYPE_FORWARD){
