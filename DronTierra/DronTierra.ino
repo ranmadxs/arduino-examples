@@ -63,7 +63,8 @@ void setup(void){
   pinMode(PinOUTD, OUTPUT);
   pinMode(PinLaser, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
-  Serial.begin(115200);
+  //Serial.begin(115200);
+  Serial.begin(9600);
   WiFi.begin(ssid, password);
   Serial.println("");
 

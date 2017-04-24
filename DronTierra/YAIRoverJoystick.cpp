@@ -7,18 +7,17 @@
 
 String YaiOS::getRoverJoystick(){
   String html = 
-  "\ 
-<html>\
+  "<html>\
 <head>\
 <script type='application/javascript' src='../yai.js'></script>\
 <style type='text/css'>\
-#cross {\
+.cross {\
   background: #333;\
   height: 80px;\
   position: relative;\
   width: 10px;\
 }\
-#cross:after {\
+.cross:after {\
   background: #333;\
   content: '';\
   height: 10px;\
@@ -27,19 +26,21 @@ String YaiOS::getRoverJoystick(){
   top: 35px;\
   width: 80px;  \
 }\
-#cross:hover{\
+.cross:hover{\
   background:#e74c3c;\
 }\
-#cross:hover:after {\
+.cross:hover:after {\
   background:#e74c3c;\
 }\
 \
 .contenedorTableDiv {\
+    top: 10%;\
     display: table;\
-    border: 0px solid #000;\
+    border: 2px solid #000;\
     width: 333px;\
     text-align: center;\
-    margin: 0 auto;\
+    margin: 2px;\
+  	float: left;\
 }\
 .contenidos {\
     display: table-row;\
@@ -96,7 +97,7 @@ a:hover .center:after {\
 \
 .left:after {\
   content: '';\
-  display: inline-block;\
+	display: inline-block;\
   margin-top: 1.05em;\
   margin-left: 0.6em;\
   width: 1.4em;\
@@ -139,7 +140,7 @@ a:hover .center:after {\
 \
 .top:after {\
   content: '';\
-  display: inline-block;\
+	display: inline-block;\
   margin-top: 1.4em;\
   width: 1.4em;\
   height: 1.4em;\
@@ -161,7 +162,7 @@ a:hover .center:after {\
 \
 .bottom:after {\
   content: '';\
-  display: inline-block;\
+	display: inline-block;\
   margin-top: 0.6em;\
   width: 1.4em;\
   height: 1.4em;\
@@ -193,16 +194,57 @@ a:hover .center:after {\
   -moz-transform: rotate(45deg);\
   -webkit-transform: rotate(45deg);\
   transform: rotate(45deg);\
-}   \
+}		\
 </style>\
 </head>\
 <body>\
 <center>\
-<div class='contenedorTableDiv'>\
+<div class='contenedorTableDiv'>Joystick 1\
+    <div class='contenidos'>\
+        <div class='columna'>\
+        	<a href='javascript:void(0);'>\
+        		<div class='cross' onclick=\"actionLaser()\"></div>\
+            </a>\
+        </div>\
+        <div class='columna'>\
+          <a href='javascript:void(0);'>\
+            <span class='top' onclick=\"actCmd('"+String(ROVER_BODY_MOVE_TYPE_FORWARD)+"', '"+String(SERVO_TYPE_SG90)+"')\"></span>\
+          </a>        \
+        </div>\
+        <div class='columna'></div>\
+    </div>\
     <div class='contenidos'>\
         <div class='columna'>\
           <a href='javascript:void(0);'>\
-            <div id='cross' onclick=\"actionLaser()\"></div>\
+            <span class='left' onclick=\"actCmd('"+String(ROVER_BODY_MOVE_TYPE_LEFT)+"', '"+String(SERVO_TYPE_SG90)+"')\"></span>\
+          </a>        \
+        </div>\
+        <div class='columna'>\
+          <a href='javascript:void(0);'>\
+            <span class='center' onclick=\"actionStop('"+String(SERVO_TYPE_SG90)+"')\"></span>\
+          </a>                \
+        </div>\
+        <div class='columna'>\
+          <a href='javascript:void(0);'>\
+            <span class='right' onclick=\"actCmd('"+String(ROVER_BODY_MOVE_TYPE_RIGHT)+"', '"+String(SERVO_TYPE_SG90)+"')\"></span>\
+          </a>        \
+        </div>\
+    </div>\
+    <div class='contenidos'>\
+        <div class='columna'></div>\
+        <div class='columna'>\
+          <a href='javascript:void(0);'>\
+            <span class='bottom' onclick=\"actCmd('"+String(ROVER_BODY_MOVE_TYPE_BACK)+"', '"+String(SERVO_TYPE_SG90)+"')\"></span>\
+          </a>        \
+        </div>\
+        <div class='columna'></div>\
+    </div>\
+</div>\
+<div class='contenedorTableDiv'>Joystick 2\
+    <div class='contenidos'>\
+        <div class='columna'>\
+        	<a href='javascript:void(0);'>\
+        		<div class='cross' onclick=\"actionLaser()\"></div>\
             </a>\
         </div>\
         <div class='columna'>\
@@ -241,7 +283,7 @@ a:hover .center:after {\
 </div>\
 </center>\
 </body>\
-</html>\  
+</html>\
    ";
   return html;
 }

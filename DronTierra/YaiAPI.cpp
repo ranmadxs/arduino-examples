@@ -1,6 +1,6 @@
 #include "YaiOS.h"
-
-//https://www.w3schools.com/code/tryit.asp?filename=FEY5T1NVL7UZ
+//TODO: Terminar DOC de Servos
+//https://www.w3schools.com/code/tryit.asp?filename=FEY9MS5IGZ4S
 //https://saeedalipoor.github.io/icono/
 //sed -e "s/$/\\\/g" roverDoc.htm > roverDocv2.htm
 
@@ -73,7 +73,12 @@ th {\
     <td>ROVER_TYPE_2WD</td>\
     <td>1001</td>\
     <td>Tipo Rover con dos ruedas de tracci&oacute;n y una de gu&iacute;a sin tracci&oacute;n</td>\
-  </tr>\
+  </tr>   \
+  <tr>\
+    <td>SERVO_TYPE_SG90</td>\
+    <td>2001</td>\
+    <td>Tipo servo SG90, 130&deg;</td>\
+  </tr> \
 </table>\
 <h3>Rover Body Move Type Enumeration</h3>\
 <table>\
@@ -84,24 +89,47 @@ th {\
   </tr>\
   <tr>\
     <td>ROVER_BODY_MOVE_TYPE_LEFT</td>\
-    <td>2001</td>\
+    <td>10001</td>\
     <td>Mover Izquierda</td>\
   </tr>\
   <tr>\
     <td>ROVER_BODY_MOVE_TYPE_RIGHT</td>\
-    <td>2002</td>\
+    <td>10002</td>\
     <td>Mover Derecha</td>\
   </tr>\
   <tr>\
     <td>ROVER_BODY_MOVE_TYPE_FORWARD</td>\
-    <td>2003</td>\
+    <td>10003</td>\
     <td>Mover Adelante</td>\
   </tr>\
   <tr>\
     <td>ROVER_BODY_MOVE_TYPE_BACK</td>\
-    <td>2004</td>\
+    <td>10004</td>\
     <td>Mover Atr&aacute;s</td>\
+  </tr> \
+  <tr>\
+    <td colspan='3'><b>==== Servo =====</b></td>\
   </tr>  \
+  <tr>\
+    <td>SERVO_DIRECTION_VERTICAL</td>\
+    <td>20001</td>\
+    <td>Mover Servo Vertical</td>\
+  </tr> \
+  <tr>\
+    <td>SERVO_DIRECTION_HORIZONTAL</td>\
+    <td>20002</td>\
+    <td>Mover Servo Horizontal</td>\
+  </tr> \
+  <tr>\
+    <td>SERVO_CLOCKWISE</td>\
+    <td>21002</td>\
+    <td>Mover Servo en sentido Horario</td>\
+  </tr> \
+  <tr>\
+    <td>SERVO_COUNTER_CLOCKWISE</td>\
+    <td>21001</td>\
+    <td>Mover Servo en sentido antihorario</td>\
+  </tr>   \
 </table>\
 <hr/>\
 <h3>ROVER_MOVE_MANUAL_BODY (ID: 100001)</h3> \
@@ -152,11 +180,11 @@ th {\
 </table>\
 <h3>Try it out!</h3>\
 <pre>\
-curl -X GET --header \"Accept: application/json;charset=UTF-8\" \"http://"+ YaiOS::getClientIP()+"/cmd?COMMAND=100001&P1=1001&P2=0&P3=0&P4=2003&P5=None&P6=None&P7=None\"\
+curl -X GET --header \"Accept: application/json;charset=UTF-8\" \"http://"+ YaiOS::getClientIP()+"/cmd?COMMAND=100001&P1=1001&P2=0&P3=0&P4=10003&P5=None&P6=None&P7=None\"\
 </pre>\
 <h4>Http Request</h4>\
 <pre>\
-http://"+ YaiOS::getClientIP()+"/cmd?COMMAND=100001&P1=1001&P2=0&P3=0&P4=2003&P5=None&P6=None&P7=None\
+http://"+ YaiOS::getClientIP()+"/cmd?COMMAND=100001&P1=1001&P2=0&P3=0&P4=10003&P5=None&P6=None&P7=None\
 </pre>\
 <h3>ROVER_STOP (ID: 100002)</h3>\
 <p id='rcorners'>GET / POST</p>\
