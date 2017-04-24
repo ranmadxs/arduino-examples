@@ -1,17 +1,14 @@
 #include "YaiOS.h"
 
-//TODO: Debo agregar la doc del laser
-//https://www.w3schools.com/code/tryit.asp?filename=FEQAR3LCJCAL
+//https://www.w3schools.com/code/tryit.asp?filename=FEY5T1NVL7UZ
 //https://saeedalipoor.github.io/icono/
 //sed -e "s/$/\\\/g" roverDoc.htm > roverDocv2.htm
 
 String YaiOS::getAPI(){
-  //char indexHtml[800];
   String indexHtml =
 "<!DOCTYPE html>\
 <html>\
 <head>\
-<link rel='stylesheet' href='../yai.css'>\
 <style>\
 table {\
     border-collapse: collapse;\
@@ -28,7 +25,7 @@ th, td {\
 #rcorners {\
     font-family: Arial;\
     font-size: 12px;\
- color: white;\
+	color: white;\
     border-radius: 4px;\
     padding-bottom: 5px;     \
     padding-top: 2px;   \
@@ -42,7 +39,7 @@ th, td {\
 #rcorners_serial {\
     font-family: Arial;\
     font-size: 12px;\
-  color: white;\
+	color: white;\
     border-radius: 4px;\
     padding-bottom: 5px;     \
     padding-top: 2px;   \
@@ -62,7 +59,7 @@ th {\
 </style>\
 </head>\
 <body>\
-<a href='../'><i class='icono-home'></i></a>\
+\
 <h2>YaiOS API</h2>\
 <hr/>\
 <h3>Rover Type Enumeration</h3>\
@@ -213,7 +210,7 @@ curl -X GET --header \"Accept: application/json;charset=UTF-8\" \"http://"+ YaiO
 </pre>\
 <h4>Http Request</h4>\
 <pre>\
-http://"+ YaiOS::getClientIP()+"/cmd?COMMAND=100003&P1=1001&P2=0&P3=None&P4=None&P5=None&P6=None&P7=None\
+http://"+ YaiOS::getClientIP()+"/cmd?COMMAND=100002&P1=1001&P2=0&P3=None&P4=None&P5=None&P6=None&P7=None\
 </pre>\
 <h3>ROVER_SERIAL_CMD_GET_IP (ID: 100003)</h3>\
 <p id='rcorners'>GET / POST</p>\
@@ -268,6 +265,60 @@ curl -X GET --header \"Accept: application/json;charset=UTF-8\" \"http://"+ YaiO
 <h4>Http Request</h4>\
 <pre>\
 http://"+ YaiOS::getClientIP()+"/cmd?COMMAND=100003&P1=false&P2=None&P3=None&P4=None&P5=None&P6=None&P7=None\
+</pre>\
+<h3>LASER_ACTION (ID: 100004)</h3>\
+<p id='rcorners'>GET / POST</p>\
+<p id='rcorners_serial'>SERIAL</p>\
+<p>Comando que nos entrega informaci&oacute;n del dispositivo de red.</p>\
+<table>\
+  <tr>\
+    <th>Parameter</th>\
+    <th>Value</th>\
+    <th>Description</th>\
+  </tr>\
+  <tr>\
+    <td>P1</td>\
+    <td>boolean</td>\
+    <td>Indica el estado del laser, true=activo, false=inactivo</td>\
+  </tr>\
+  <tr>\
+    <td>P2</td>\
+    <td>int</td>\
+    <td>Tiempo en [ms] en ejecutar la acci&oacute;n del laser</td>\
+  </tr>  \
+  <tr>\
+    <td>P3</td>\
+    <td>None</td>\
+    <td></td>\
+  </tr>  \
+  <tr>\
+    <td>P4</td>\
+    <td>None</td>\
+    <td></td>\
+  </tr>  \
+  <tr>\
+    <td>P5</td>\
+    <td>None</td>\
+    <td></td>\
+  </tr>  \
+  <tr>\
+    <td>P6</td>\
+    <td>None</td>\
+    <td></td>\
+  </tr> \
+  <tr>\
+    <td>P7</td>\
+    <td>None</td>\
+    <td></td>\
+  </tr>   \
+</table>\
+<h3>Try it out!</h3>\
+<pre>\
+curl -X GET --header \"Accept: application/json;charset=UTF-8\" \"http://"+ YaiOS::getClientIP()+"/cmd?COMMAND=100004&P1=true&P2=0&P3=None&P4=None&P5=None&P6=None&P7=None\"\
+</pre>\
+<h4>Http Request</h4>\
+<pre>\
+http://"+ YaiOS::getClientIP()+"/cmd?COMMAND=100004&P1=true&P2=0&P3=None&P4=None&P5=None&P6=None&P7=None\
 </pre>\
 <hr />\
 <h3>Serial Json Message</h3>\
