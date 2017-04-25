@@ -3,14 +3,16 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 #include <ArduinoJson.h>
-//#include "RoverLink.h"
 #include "YaiOS.h"
 
-const char* ssid = "yai";
-const char* password = "1101000000";
+const int totalWifi = 3;
+const int retryWifi = 15;
 
-//const char* ssid = "VTR-YAI-5Ghz";
-//const char* password = "Pana8bc1108";
+char* arrayWifi[totalWifi][2] = {
+  {"yai", "1101000000"},
+  {"VTR-YAI-5Ghz", "Pana8bc1108"},
+  {"GalaxyJ1", "1101000000"}
+};
 
 YaiOS yaiOS;
 
@@ -65,14 +67,30 @@ void setup(void){
   digitalWrite(LED_BUILTIN, HIGH);
   //Serial.begin(115200);
   Serial.begin(9600);
-  WiFi.begin(ssid, password);
   Serial.println("");
 
-  // Wait for connection
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
+  char* ssid;
+  char* password;
+
+//  while (WiFi.status() != WL_CONNECTED) {
+  for (int j = 0; j<totalWifi; j++){
+	  Serial.print("Conectando a " + String(arrayWifi[j][0]) + " ");
+      ssid = arrayWifi[j][0];
+      password = arrayWifi[j][1];
+      WiFi.begin(ssid, password);
+      for (int k = 0; k < retryWifi; k++){
+    	  if(WiFi.status() == WL_CONNECTED){
+    		  k = retryWifi;
+    		  j = totalWifi;
+    		  Serial.print(" Conectado!!!");
+    	  }else{
+    		  delay(500);
+    		  Serial.print(".");
+    	  }
+      }
+      Serial.println("");
   }
+//  }
   Serial.println("");
   Serial.print("Connected to: ");
   Serial.println(ssid);
