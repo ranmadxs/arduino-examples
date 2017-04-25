@@ -1,9 +1,10 @@
 #include "YaiOS.h"
 #include "YaiConstants.h"
 
-//https://www.w3schools.com/code/tryit.asp?filename=FESPZGAB5D4Y
+// https://www.w3schools.com/code/tryit.asp?filename=FEZB9ANCQUIB
 //https://codepen.io/sampeniak/pen/Imhpy
 //sed -e "s/$/\\\/g" roverDoc.htm > roverDocv2.htm
+// Reversa sed s'/.$//' roverDoc.htm > roverDocv2.htm
 
 String YaiOS::getRoverJoystick(){
   String html = 

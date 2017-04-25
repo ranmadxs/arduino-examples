@@ -7,6 +7,10 @@ DynamicJsonBuffer dynJsonBuffer;
 
 String YaiOS::executeCommand(String jsonCommand){
   JsonObject& root = dynJsonBuffer.parseObject(jsonCommand);
+  String inputCommand;
+  root.printTo(inputCommand);
+  Serial.println("<< " + inputCommand);
+
   String commandRoot = root["COMMAND"];
   String moveResponse = "";
   boolean respCommand = false;
@@ -14,6 +18,9 @@ String YaiOS::executeCommand(String jsonCommand){
   String p2 = root["P2"];
   String p3 = root["P3"];
   String p4 = root["P4"];
+  String p5 = root["P5"];
+  String p6 = root["P6"];
+  String p7 = root["P7"];
   String content = "";
   String resultStr = "OK";
   //Serial.print(commandRoot);
@@ -59,6 +66,6 @@ String YaiOS::executeCommand(String jsonCommand){
     content = "\"Command not found\"";
   }
   String jsonResult = "{\"result\":\""+resultStr+"\", \"content\":"+content+"}";
-  Serial.println(jsonResult);
+  Serial.println(">> " + jsonResult);
   return jsonResult;
 }

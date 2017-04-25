@@ -10,8 +10,7 @@
 
 class YaiOS {
   public:
-
-   	YaiOS();
+   	YaiOS(){};
   	//Funcion que obtiene el html home (index)
   	String getIndex();
     //Funcion que obtiene html API Doc

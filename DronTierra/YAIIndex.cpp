@@ -1,7 +1,5 @@
 #include "YaiOS.h"
 
-YaiOS::YaiOS(){}
-
 //https://www.w3schools.com/code/tryit.asp?filename=FEDGLL9EGXWO
 //sed -e "s/$/\\\/g" roverDoc.htm > roverDocv2.htm
 //http://patorjk.com/software/taag/

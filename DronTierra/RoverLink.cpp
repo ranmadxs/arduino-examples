@@ -24,6 +24,9 @@ void RoverLink::motorStop(int roverType){
   RoverLink::motorHalt2WD();
 }
 
+
+//TODO: Debe generalizarse por movimiento de rueda y no por el sentido,
+//es decir que ruedas pertenecn a que tipo de movimiento por tipo de rover
 String RoverLink::motorMove(int roverType, int moveType){
   String direction = "None";
   digitalWrite(LED_BUILTIN, LOW);
