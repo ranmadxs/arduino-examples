@@ -72,7 +72,6 @@ void setup(void){
   char* ssid;
   char* password;
 
-//  while (WiFi.status() != WL_CONNECTED) {
   for (int j = 0; j<totalWifi; j++){
 	  Serial.print("Conectando a " + String(arrayWifi[j][0]) + " ");
       ssid = arrayWifi[j][0];
@@ -90,7 +89,9 @@ void setup(void){
       }
       Serial.println("");
   }
-//  }
+  while (WiFi.status() != WL_CONNECTED) {
+      Serial.print(".");
+  }
   Serial.println("");
   Serial.print("Connected to: ");
   Serial.println(ssid);
