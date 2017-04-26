@@ -5,6 +5,7 @@
 
 DynamicJsonBuffer dynJsonBuffer;
 
+//TODO: Refactor del tiempo se debe factorizar
 String YaiOS::executeCommand(String jsonCommand){
   JsonObject& root = dynJsonBuffer.parseObject(jsonCommand);
   String inputCommand;
@@ -12,7 +13,7 @@ String YaiOS::executeCommand(String jsonCommand){
   Serial.println("<< " + inputCommand);
 
   String commandRoot = root["COMMAND"];
-  String moveResponse = "";
+  String responseSvc = "";
   boolean respCommand = false;
   String p1 = root["P1"];
   String p2 = root["P2"];
@@ -25,6 +26,15 @@ String YaiOS::executeCommand(String jsonCommand){
   String resultStr = "OK";
   //Serial.print(commandRoot);
   int command = commandRoot.toInt();
+  
+  if(command == SERVO_ACTION_ANGLE){
+	  respCommand = true;
+	  int tiempoStop = p2.toInt();
+	  delay(tiempoStop);
+	  responseSvc = servoLn.servoAngle(p1.toInt(), p3.toInt(), p4.toInt());
+	  content += "{\"time:\":" + p2 + ", \"servo\":\""+responseSvc+"\"}";
+  }
+  
   if(command == YAI_SERIAL_CMD_GET_IP){
 	respCommand = true;    
     content += "{\"IP\":\""+ YaiOS::getClientIP()+"\"";
@@ -50,15 +60,15 @@ String YaiOS::executeCommand(String jsonCommand){
     int tiempoStop = p2.toInt();
     delay(tiempoStop);    
     roverLn.motorStop(p1.toInt());
-    content += "{\"time:\":" + p2 + ", \"move\":\"STOP\"}";
+    content += "{\"time:\":" + p2 + ", \"rover\":\"STOP\"}";
   }
 
   if (command == ROVER_MOVE_MANUAL_BODY){
 	  respCommand = true;
 	  int tiempoStop = p2.toInt();
 	  delay(tiempoStop);	  
-	  moveResponse = roverLn.motorMove(p1.toInt(), p4.toInt());    
-    content += "{\"time:\":" + p2 + ", \"move\":\""+moveResponse+"\"}";
+	  responseSvc = roverLn.motorMove(p1.toInt(), p4.toInt());
+	  content += "{\"time:\":" + p2 + ", \"rover\":\""+responseSvc+"\"}";
   }
 
   if(!respCommand){

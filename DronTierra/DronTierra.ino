@@ -57,6 +57,7 @@ void handleNotFound(){
   server.send(404, "text/plain", message);
 }
 
+//TODO: Los pin mode se deben hacer dentro del roverLink
 void setup(void){  
   pinMode(LED_BUILTIN, OUTPUT); 
   pinMode(PinOUTA, OUTPUT);

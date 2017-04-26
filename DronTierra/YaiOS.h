@@ -5,6 +5,7 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 #include "RoverLink.h"
+#include "ServoLink.h"
 #include "YaiConstants.h"
 
 
@@ -50,6 +51,7 @@ class YaiOS {
     
   private:
     RoverLink roverLn;
+    ServoLink servoLn;
     String clientIP;
     String macStr;
     

@@ -7,19 +7,32 @@ static int PinServoH   = 13; // (D7)
 static int PinServoV   = 15; // (D8)
 
 class ServoLink{
+
   public:
+
 	ServoLink(){
 	  servoH.attach(PinServoH);
 	  servoV.attach(PinServoV);
 	  posH = 0;
 	  posV = 0;
 	  speed = 15;
-	  maxAngle = 0;
+	  maxAngle = 180;
 	};
 
     String servoMove(int servoType, int servoDirection, int servoMovement, int speed);
 
     String servoAngle(int servoType, int servoDirection, int angle);
+
+  private:
+
+    Servo servoH;
+    Servo servoV;
+    int speed;
+    int maxAngle;
+    int posH;
+    int posV;
+
+  protected:
 
     int getMaxAngle(int servoType){
     	return maxAngle;
@@ -83,14 +96,4 @@ class ServoLink{
     	return direction;
     };
 
-  private:
-  
-  protected:
-    Servo servoH;
-    Servo servoV;
-    int speed;
-    int maxAngle;
-    int posH;
-    int posV;
-  
 };
