@@ -17,6 +17,9 @@ class ServoLink{
 	  posV = 0;
 	  speed = 15;
 	  maxAngle = 180;
+	  //parte detenido
+	  stopFlagH = true;
+	  stopFlagV = true;
 	};
 
     String servoMove(int servoType, int servoDirection, int servoMovement, int speed);
@@ -31,6 +34,10 @@ class ServoLink{
     int maxAngle;
     int posH;
     int posV;
+    boolean stopFlagH;
+    boolean stopFlagV;
+
+    ThreadController threadController;
 
   protected:
 
