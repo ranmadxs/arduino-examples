@@ -3,7 +3,8 @@
 #include "YaiConstants.h"
 
 //default speed = 15
-// Esto debe hacerse conm thread si no dejo tomado el hilo
+// Esto debe hacerse conm thread si no dejo tomado el hilo,
+// creo dos thread uno que haga move simepre que no este stop y el otro que haga el stop.
 String ServoLink::servoMove(int servoType, int servoDirection, int servoMovement, int speed){
   String result = "";
   if (speed == 0){
