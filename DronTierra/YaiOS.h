@@ -20,7 +20,11 @@ class YaiOS {
     String getRoverJoystick();
 
     String getJS();
-   
+
+    void callBack(){
+      servoLn.callBackMovement();
+    };
+
     //Execute jsonCommand
     String executeCommand(String command);
 

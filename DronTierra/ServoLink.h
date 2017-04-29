@@ -18,13 +18,24 @@ class ServoLink{
 	  speed = 15;
 	  maxAngle = 180;
 	  //parte detenido
-	  stopFlagH = true;
-	  stopFlagV = true;
+	  moveFlagH = false;
+	  moveFlagV = false;
 	};
 
-    String servoMove(int servoType, int servoDirection, int servoMovement, int speed);
+    void callBackMovement(){
+      if(moveFlagH){
+        Serial.println(" >> Moviendo Horizontal << ");
+      }
+      if(moveFlagV){
+        Serial.println(" >> Moviendo Vertical << ");
+      }
+    }
+
+    String servoMove(int servoType, int servoDirection, int servoMovement, int speedDelay);
 
     String servoAngle(int servoType, int servoDirection, int angle);
+
+    String servoStop(int servoType, int servoDirection);
 
   private:
 
@@ -34,10 +45,8 @@ class ServoLink{
     int maxAngle;
     int posH;
     int posV;
-    boolean stopFlagH;
-    boolean stopFlagV;
-
-    ThreadController threadController;
+    boolean moveFlagH;
+    boolean moveFlagV;
 
   protected:
 

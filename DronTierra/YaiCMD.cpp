@@ -35,6 +35,22 @@ String YaiOS::executeCommand(String jsonCommand){
 	  content += "{\"time:\":" + p2 + ", \"servo\":\""+responseSvc+"\"}";
   }
   
+  if(command == SERVO_ACTION_CONTINUOUS){
+	  respCommand = true;
+	  int tiempoStop = p2.toInt();
+	  delay(tiempoStop);
+	  responseSvc = servoLn.servoMove(p1.toInt(), p3.toInt(), p4.toInt(), p5.toInt());
+	  content += "{\"time:\":" + p2 + ", \"servo\":\""+responseSvc+"\"}";
+  }
+
+  if(command == SERVO_STOP){
+	  respCommand = true;
+	  int tiempoStop = p2.toInt();
+	  delay(tiempoStop);
+	  responseSvc = servoLn.servoStop(p1.toInt(), p3.toInt());
+	  content += "{\"time:\":" + p2 + ", \"servo\":\""+responseSvc+"\"}";
+  }
+
   if(command == YAI_SERIAL_CMD_GET_IP){
 	respCommand = true;    
     content += "{\"IP\":\""+ YaiOS::getClientIP()+"\"";

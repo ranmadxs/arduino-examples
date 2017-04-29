@@ -4,17 +4,26 @@
 #include <ESP8266mDNS.h>
 #include <ArduinoJson.h>
 #include "YaiOS.h"
+#include <Thread.h>
+#include <ThreadController.h>
 
 const int totalWifi = 3;
 const int retryWifi = 15;
 
 char* arrayWifi[totalWifi][2] = {
-  {"yai", "1101000000"},
   {"VTR-YAI-5Ghz", "Pana8bc1108"},
+  {"yai", "1101000000"},
   {"GalaxyJ1", "1101000000"}
 };
 
 YaiOS yaiOS;
+
+Thread threadRun;
+ThreadController threadController;
+
+void callBAckThread(){
+  yaiOS.callBack();
+}
 
 ESP8266WebServer server(80);
 
@@ -70,6 +79,11 @@ void setup(void){
   Serial.begin(9600);
   Serial.println("");
 
+  threadRun.onRun(callBAckThread);   
+  threadRun.setInterval(10);
+  
+  threadController.add(&threadRun);
+  
   char* ssid;
   char* password;
 
@@ -137,6 +151,7 @@ void setup(void){
 void loop(void){
   server.handleClient();
   serialController();
+  threadController.run();
 }
 
 void serialController(){

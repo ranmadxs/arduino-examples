@@ -5,27 +5,39 @@
 //default speed = 15
 // Esto debe hacerse conm thread si no dejo tomado el hilo,
 // creo dos thread uno que haga move simepre que no este stop y el otro que haga el stop.
-String ServoLink::servoMove(int servoType, int servoDirection, int servoMovement, int speed){
+String ServoLink::servoMove(int servoType, int servoDirection, int servoMovement, int speedDeplay){
   String result = "";
-  if (speed == 0){
-	  speed =  ServoLink::getSpeed(servoDirection);
-  }
-  int maxAngle = ServoLink::getMaxAngle(servoType);
 
   int pos;
   String direction = "None";
-  if (servoDirection == SERVO_DIRECTION_HORIZONTAL || servoDirection == SERVO_DIRECTION_ALL){
-	  for(pos = posH; pos < maxAngle; pos += 1){
-		  //myservo.write(pos);
-		  delay(speed);
-	  }
+  if (SERVO_DIRECTION_HORIZONTAL == servoDirection){
+	direction = "HORIZONTAL";
+	moveFlagH = true;
   }
-
-
-  return result;
+  if (SERVO_DIRECTION_VERTICAL == servoDirection){
+	direction = "VERTICAL";
+	moveFlagV = true;
+  }
+  return "{\"action\":\"move\", \"direction\":\""+direction+"\"}";
 }
 
-//TODO: Generalizar lo antes posible para sacar los dos if y el ALL debe manejarse con threads
+String ServoLink::servoStop(int servoType, int servoDirection){
+	String direction = "None";
+	if (SERVO_DIRECTION_HORIZONTAL == servoDirection){
+		direction = "HORIZONTAL";
+		Serial.println(" STOP Horizontal !! ");
+		moveFlagH = false;
+	}
+	if (SERVO_DIRECTION_VERTICAL == servoDirection){
+		direction = "VERTICAL";
+		Serial.println(" STOP Vertical !! ");
+		moveFlagV = false;
+	}
+
+	return "{\"action\":\"stop\", \"direction\":\""+direction+"\"}";
+}
+
+//TODO: Generalizar lo antes posible para sacar los dos if
 //TODO: Implementar all despues
 String ServoLink::servoAngle(int servoType, int servoDirection, int angle){
   int maxAngle = ServoLink::getMaxAngle(servoType);
