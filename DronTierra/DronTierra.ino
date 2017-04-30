@@ -18,6 +18,7 @@ char* arrayWifi[totalWifi][2] = {
 
 YaiOS yaiOS;
 
+//TODO: Llevarse los thread a yaoiOS
 Thread threadRun;
 ThreadController threadController;
 
@@ -80,7 +81,7 @@ void setup(void){
   Serial.println("");
 
   threadRun.onRun(callBAckThread);   
-  threadRun.setInterval(10);
+  threadRun.setInterval(15);
   
   threadController.add(&threadRun);
   

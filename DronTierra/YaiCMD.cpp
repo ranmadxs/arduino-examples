@@ -32,7 +32,7 @@ String YaiOS::executeCommand(String jsonCommand){
 	  int tiempoStop = p2.toInt();
 	  delay(tiempoStop);
 	  responseSvc = servoLn.servoAngle(p1.toInt(), p3.toInt(), p4.toInt());
-	  content += "{\"time:\":" + p2 + ", \"servo\":\""+responseSvc+"\"}";
+	  content += "{\"time:\":" + p2 + ", \"servo\":"+responseSvc+"}";
   }
   
   if(command == SERVO_ACTION_CONTINUOUS){
@@ -40,7 +40,7 @@ String YaiOS::executeCommand(String jsonCommand){
 	  int tiempoStop = p2.toInt();
 	  delay(tiempoStop);
 	  responseSvc = servoLn.servoMove(p1.toInt(), p3.toInt(), p4.toInt(), p5.toInt());
-	  content += "{\"time:\":" + p2 + ", \"servo\":\""+responseSvc+"\"}";
+	  content += "{\"time:\":" + p2 + ", \"servo\":"+responseSvc+"}";
   }
 
   if(command == SERVO_STOP){
@@ -48,7 +48,7 @@ String YaiOS::executeCommand(String jsonCommand){
 	  int tiempoStop = p2.toInt();
 	  delay(tiempoStop);
 	  responseSvc = servoLn.servoStop(p1.toInt(), p3.toInt());
-	  content += "{\"time:\":" + p2 + ", \"servo\":\""+responseSvc+"\"}";
+	  content += "{\"time:\":" + p2 + ", \"servo\":"+responseSvc+"}";
   }
 
   if(command == YAI_SERIAL_CMD_GET_IP){

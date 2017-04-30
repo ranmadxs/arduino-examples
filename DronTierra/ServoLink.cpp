@@ -3,50 +3,66 @@
 #include "YaiConstants.h"
 
 //default speed = 15
-// Esto debe hacerse conm thread si no dejo tomado el hilo,
 // creo dos thread uno que haga move simepre que no este stop y el otro que haga el stop.
 String ServoLink::servoMove(int servoType, int servoDirection, int servoMovement, int speedDeplay){
   String result = "";
-
+  ServoLink::setServoType(servoType, servoDirection);
+  ServoLink::setSpeedDelay(servoDirection, speedDeplay);
   int pos;
   String direction = "None";
   if (SERVO_DIRECTION_HORIZONTAL == servoDirection){
 	direction = "HORIZONTAL";
-	moveFlagH = true;
+	directionFlagH = true;
+	movementServoH = servoMovement;
   }
   if (SERVO_DIRECTION_VERTICAL == servoDirection){
 	direction = "VERTICAL";
-	moveFlagV = true;
+	directionFlagV = true;
+	movementServoV = servoMovement;
   }
   return "{\"action\":\"move\", \"direction\":\""+direction+"\"}";
 }
 
 String ServoLink::servoStop(int servoType, int servoDirection){
-	String direction = "None";
+	ServoLink::setServoType(servoType, servoDirection);
+	String directionName = "None";
 	if (SERVO_DIRECTION_HORIZONTAL == servoDirection){
-		direction = "HORIZONTAL";
-		Serial.println(" STOP Horizontal !! ");
-		moveFlagH = false;
+		directionName = "\"HORIZONTAL\"";
+		directionFlagH = false;
 	}
 	if (SERVO_DIRECTION_VERTICAL == servoDirection){
-		direction = "VERTICAL";
-		Serial.println(" STOP Vertical !! ");
-		moveFlagV = false;
+		directionName = "\"VERTICAL\"";
+		directionFlagV = false;
+	}
+	if(SERVO_DIRECTION_ALL == servoDirection){
+		directionName = "[\"VERTICAL\", \"HORIZONTAL\"]";
+		directionFlagV = false;
+		directionFlagH = false;
 	}
 
-	return "{\"action\":\"stop\", \"direction\":\""+direction+"\"}";
+	return "{\"action\":\"stop\", \"direction\":"+directionName+"}";
 }
 
-//TODO: Generalizar lo antes posible para sacar los dos if
-//TODO: Implementar all despues
 String ServoLink::servoAngle(int servoType, int servoDirection, int angle){
+  ServoLink::setServoType(servoType, servoDirection);
   int maxAngle = ServoLink::getMaxAngle(servoType);
+  String directionName = "None";
   if(angle > maxAngle){
 	  angle = maxAngle;
   }
-  ServoLink::setPosition(servoDirection, angle);
-  String direction = ServoLink::write(servoDirection, angle);
-  String result = "{ \"direction\":\""+direction+"\", \"angle:\":"+String(angle)+"}";
+  if(SERVO_DIRECTION_ALL == servoDirection){
+    ServoLink::setPosition(SERVO_DIRECTION_HORIZONTAL, angle);
+    ServoLink::setPosition(SERVO_DIRECTION_VERTICAL, angle);
+    directionName = "[";
+    directionName += "\"" + ServoLink::write(SERVO_DIRECTION_HORIZONTAL, angle) + "\", ";
+    directionName += "\"" + ServoLink::write(SERVO_DIRECTION_VERTICAL, angle) + "\"";
+    directionName += "]";
+  }else{
+    ServoLink::setPosition(servoDirection, angle);   
+    directionName = "\"" + ServoLink::write(servoDirection, angle) + "\"";
+  }
+ 
+  String result = "{ \"direction\":"+directionName+", \"angle:\":"+String(angle)+"}";
   return result;
   
 }
