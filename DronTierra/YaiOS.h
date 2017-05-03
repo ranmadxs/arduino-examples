@@ -21,7 +21,7 @@ class YaiOS {
 
     String getJS();
 
-    void callBack(){
+    void callBackServoMovement(){
       servoLn.callBackMovement();
     };
 
