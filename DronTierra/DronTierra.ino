@@ -19,11 +19,12 @@ char* arrayWifi[totalWifi][2] = {
 YaiOS yaiOS;
 
 //TODO: Llevarse los thread a yaoiOS
-Thread threadRun;
+int TIME_INTERVAL_SERVO = 15;
+Thread threadServoRun;
 ThreadController threadController;
 
-void callBAckThread(){
-  yaiOS.callBack();
+void callBackServoThread(){
+  yaiOS.callBackServoMovement();
 }
 
 ESP8266WebServer server(80);
@@ -80,10 +81,10 @@ void setup(void){
   Serial.begin(9600);
   Serial.println("");
 
-  threadRun.onRun(callBAckThread);   
-  threadRun.setInterval(10);
+  threadServoRun.onRun(callBackServoThread);   
+  threadServoRun.setInterval(TIME_INTERVAL_SERVO);
   
-  threadController.add(&threadRun);
+  threadController.add(&threadServoRun);
   
   char* ssid;
   char* password;
