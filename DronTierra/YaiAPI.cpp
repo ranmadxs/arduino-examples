@@ -1,7 +1,6 @@
 #include "YaiOS.h"
 //TODO: Terminar DOC de Servos
-//https://www.w3schools.com/code/tryit.asp?filename=FEY9MS5IGZ4S
-// ----> Revisar esta https://www.w3schools.com/code/tryit.asp?filename=FEY9MS5IGZ4S
+//https://www.w3schools.com/code/tryit.asp?filename=FF03CIFR8WLN
 //https://saeedalipoor.github.io/icono/
 //sed -e "s/$/\\\/g" roverDoc.htm > roverDocv2.htm
 
