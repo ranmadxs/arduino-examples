@@ -16,6 +16,7 @@ class YaiOS {
   	String getIndex();
     //Funcion que obtiene html API Doc
     String getAPI();
+    String getAPIServo();
     //Obtiene HTML del Joistick del rover
     String getRoverJoystick();
 

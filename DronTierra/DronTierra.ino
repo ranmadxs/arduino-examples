@@ -47,6 +47,12 @@ void handleAPI(){
 	  server.send ( 200, "text/html", htmlSrc );
 }
 
+void handleAPIServo(){
+    String htmlSrc;
+    htmlSrc = yaiOS.getAPIServo();
+    server.send ( 200, "text/html", htmlSrc );
+}
+
 void handleRoverJoystick(){
     String htmlSrc;
     htmlSrc = yaiOS.getRoverJoystick();
@@ -123,6 +129,8 @@ void setup(void){
   server.on("/", handleRoot);
 
   server.on("/api", handleAPI);
+
+  server.on("/apiServo", handleAPIServo);
 
   server.on("/yai.js", handleJS);
 

@@ -61,6 +61,7 @@ String htmlContent =
 	<div class='vinculos'>\
     <ul>\
 	   <li><a href='/api'>API Reference </a></li>\
+     <li><a href='/apiServo'>API Servo Reference </a></li>\
      <li><a href='/roverJoystick'>Rover</a></li>\
     </ul>\
 	</div>\
