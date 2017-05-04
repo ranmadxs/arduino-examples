@@ -32,7 +32,7 @@ void serialController(){
     Serial.print("<<" + comando);
     int cmd = comando.toInt();
     if(cmd == READ){
-      Serial.println(">>Lectura de archivo ejemplo.txt");  
+      Serial.println(">>Lectura de archivo ejemplo.txt");
       myFile = SD.open("in/ejemplo.txt");
       if (myFile) {        
         while (myFile.available()) {
