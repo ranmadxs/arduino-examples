@@ -81,7 +81,7 @@ void setup(void){
   Serial.println("");
 
   threadRun.onRun(callBAckThread);   
-  threadRun.setInterval(15);
+  threadRun.setInterval(10);
   
   threadController.add(&threadRun);
   

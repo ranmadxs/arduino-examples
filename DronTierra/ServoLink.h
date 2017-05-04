@@ -15,8 +15,8 @@ class ServoLink{
 	  servoV.attach(PinServoV);
 	  posH = 0;
 	  posV = 0;
-	  speedDelayServoH = 15;
-	  speedDelayServoV = 15;
+	  speedDelayServoH = 2;
+	  speedDelayServoV = 2;
 	  maxAngle = 180;
 	  //parte detenido
 	  directionFlagH = false;
@@ -37,12 +37,13 @@ class ServoLink{
       String result = "";
       int speed;
       int servoType = typeServo;
+      int delta = 0;
       if(directionFlagH){
         direction = "HORIZONTAL";
         speed = speedDelayServoH;
         servoDirection = SERVO_DIRECTION_HORIZONTAL;
         servoMovement = movementServoH;
-        movement = moveContinuous(servoType, servoDirection, servoMovement);
+        movement = moveContinuous(servoType, servoDirection, servoMovement, speed);
         result = "{\"direction\":\""+direction+"\", \"speed\":"+String(speed)+", "+movement+"}";
         Serial.println(result);
 
@@ -52,7 +53,7 @@ class ServoLink{
     	  speed = speedDelayServoV;
     	  servoDirection = SERVO_DIRECTION_VERTICAL;
     	  servoMovement = movementServoV;
-    	  movement = moveContinuous(servoType, servoDirection, servoMovement);
+    	  movement = moveContinuous(servoType, servoDirection, servoMovement, speed);
         result = "{\"direction\":\""+direction+"\", \"speed\":"+String(speed)+", "+movement+"}";
         Serial.println(result);
       }
@@ -144,16 +145,16 @@ class ServoLink{
     	return direction;
     }
 
-    String moveContinuous(int servoType, int servoDirection, int servoMovement){
+    String moveContinuous(int servoType, int servoDirection, int servoMovement, int delta){
     	String movement = "None";
     	int posCurrent = getPosition(servoDirection);
-        int pos = -1;
+        int pos = 0;
         int maxPos = getMaxAngle(servoType);
         int minPos = 0;
 
         if (servoMovement == SERVO_CLOCKWISE){
         	movement = "HORARIO";
-        	pos = posCurrent + 1;
+        	pos = posCurrent + delta;
         	if(pos > maxPos){
         		pos = maxPos;
         	}
@@ -163,7 +164,7 @@ class ServoLink{
 
     	if (servoMovement == SERVO_COUNTER_CLOCKWISE){
     		movement = "ANTI_HORARIO";
-    		pos = posCurrent - 1;
+    		pos = posCurrent - delta;
     		if (pos < minPos){
     			pos = 0;
     		}
