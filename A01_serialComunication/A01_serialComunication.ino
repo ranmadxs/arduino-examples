@@ -1,41 +1,34 @@
 // Serial test script
-//entregado por Arduino (entre 0 y 1023).
-int setPoint = 55;
+
+int i = 0;
 String readString;
 
 void setup()
 {
-
+  pinMode(13 , OUTPUT);
   Serial.begin(9600);  // initialize serial communications at 9600 bps
-
+  digitalWrite(13, LOW);
 }
 
 void loop()
 {
+  String command = "";
   while(!Serial.available()) {}
-  // serial read section
-  while (Serial.available())
-  {
-    if (Serial.available() >0)
-    {
-      char c = Serial.read();  //gets one byte from serial buffer
-      readString += c; //makes the string readString
+  while (Serial.available()) {
+    if (Serial.available() >0) {
+      Serial.print("Arduino received: ");  
+      command = Serial.readString();
+      Serial.println(command);           
     }
   }
 
-  if (readString.length() >0)
-  {
-    Serial.print("Arduino received: ");  
-    Serial.println(readString); //see what was received
+  if (command.toInt() == 1){
+    Serial.print("WIIIIIIIIIIIIIIIIII");
+    digitalWrite(13, HIGH);
+  }else{
+    digitalWrite(13, LOW);
   }
+  Serial.flush();
 
   delay(500);
-
-  // serial write section
-
-  char ard_sends = '1';
-  Serial.print("Arduino sends: ");
-  Serial.println(ard_sends);
-  Serial.print("\n");
-  Serial.flush();
 }

@@ -17,6 +17,7 @@ void setup()
 void loop() {
   myFile = SD.open("datalog.txt", FILE_WRITE);//abrimos  el archivo
   i++;
+  /*
   if (myFile) {
     Serial.println("Escribiendo SD: ");
     myFile.print("Tiempo(ms)=");
@@ -27,5 +28,6 @@ void loop() {
   }else {
     Serial.println("Error al abrir el archivo");
   }
+  */
   delay(100);
 }

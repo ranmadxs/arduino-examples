@@ -15,7 +15,13 @@ class RoverLink {
   public:
 
     //Constructor de la clase
-    RoverLink();
+	RoverLink(){
+		pinMode(PinOUTA, OUTPUT);
+		pinMode(PinOUTB, OUTPUT);
+		pinMode(PinOUTC, OUTPUT);
+		pinMode(PinOUTD, OUTPUT);
+		pinMode(PinLaser, OUTPUT);
+	};
 
     //Detiene el Rover
 

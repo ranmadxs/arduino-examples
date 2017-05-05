@@ -4,8 +4,8 @@
 #include <ESP8266mDNS.h>
 #include <SD.h>
 
-const char* ssid = "yai";
-const char* password = "1101000000";
+const char* ssid = "VTR-YAI-5Ghz";
+const char* password = "Pana8bc1108";
 
 File myFile;
 int i;

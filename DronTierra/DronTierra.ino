@@ -76,13 +76,7 @@ void handleNotFound(){
 
 //TODO: Los pin mode se deben hacer dentro del roverLink
 void setup(void){  
-  pinMode(LED_BUILTIN, OUTPUT); 
-  pinMode(PinOUTA, OUTPUT);
-  pinMode(PinOUTB, OUTPUT);
-  pinMode(PinOUTC, OUTPUT);
-  pinMode(PinOUTD, OUTPUT);
-  pinMode(PinLaser, OUTPUT);
-  digitalWrite(LED_BUILTIN, HIGH);
+
   //Serial.begin(115200);
   Serial.begin(9600);
   Serial.println("");
