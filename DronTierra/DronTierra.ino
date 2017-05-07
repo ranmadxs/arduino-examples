@@ -149,7 +149,7 @@ void setup(void){
   server.onNotFound(handleNotFound);
 
   server.begin();
-  Serial.println("HTTP server started");  
+  Serial.println("HTTP server started");
 }
 
 void loop(void){
