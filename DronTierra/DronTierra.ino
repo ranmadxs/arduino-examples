@@ -79,16 +79,17 @@ void setup(void){
 
   //Serial.begin(115200);
   Serial.begin(9600);
-  Serial.println("");
+  yaiOS.init();  
+  yaiOS.logInfo("SD card inicializada");
 
   threadServoRun.onRun(callBackServoThread);   
-  threadServoRun.setInterval(TIME_INTERVAL_SERVO);
-  
+  threadServoRun.setInterval(TIME_INTERVAL_SERVO);    
   threadController.add(&threadServoRun);
+  yaiOS.logInfo("Thread servo inicializado");
   
   char* ssid;
   char* password;
-
+    
   for (int j = 0; j<totalWifi; j++){
 	  Serial.print("Conectando a " + String(arrayWifi[j][0]) + " ");
       ssid = arrayWifi[j][0];
@@ -118,8 +119,11 @@ void setup(void){
   yaiOS.setMac(WiFi.macAddress());
   if (MDNS.begin("esp8266")) {
     Serial.println("MDNS responder started");
-  }
+  }  
 
+  yaiOS.logInfo("Servidor WEB inicializado");
+  yaiOS.logInfo("IP: " + yaiOS.getClientIP());
+  
   server.on("/", handleRoot);
 
   server.on("/api", handleAPI);
@@ -162,7 +166,7 @@ void serialController(){
   String serialIn = "";
   int command = 0;
   if (Serial.available() >0) {
-    serialIn = Serial.readString();    
+    serialIn = Serial.readStringUntil('\n');
     if (serialIn.length() >0){
       yaiOS.executeCommand(serialIn);
     }

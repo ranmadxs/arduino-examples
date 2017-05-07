@@ -3,8 +3,8 @@
 #include "YaiConstants.h"
 
 //Servo pins
-static int PinServoH   = 13; // (D7)
-static int PinServoV   = 15; // (D8)
+static int PinServoH   = 5; // (D1)
+static int PinServoV   = 0; // (D3)
 
 class ServoLink{
 

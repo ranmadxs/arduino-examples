@@ -1,7 +1,5 @@
 #include "YaiOS.h"
 #include <ArduinoJson.h>
-//#include "RoverLink.h"
-
 
 DynamicJsonBuffer dynJsonBuffer;
 
@@ -13,10 +11,11 @@ String YaiOS::executeCommand(String jsonCommand){
   JsonObject& root = dynJsonBuffer.parseObject(jsonCommand);
   String inputCommand;
   boolean propagate = false;
-  root.printTo(inputCommand); 
+  root.printTo(inputCommand);
   if(root.containsKey("COMMAND")){
     propagate = true;
     Serial.println("<< " + inputCommand);
+    logInfo("<< " + jsonCommand);
   }
   if(root.containsKey("RESULT")){
     propagate = false;
@@ -92,8 +91,10 @@ String YaiOS::executeCommand(String jsonCommand){
   String csvCommand = commandRoot+","+p1+","+p2+","+p3+","+p4+","+p5+","+p6+","+p7;  
   if(propagate){
     Serial.println(csvCommand);
+    logDebug("Propagando: " + csvCommand);
   }else{
     Serial.println(jsonResult);
+    logInfo(">> " + jsonResult);
   }
   return jsonResult;
 }
