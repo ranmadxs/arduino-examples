@@ -13,7 +13,10 @@ static int PinSDCard = 4;
 class YaiParam{
 	public:
 		YaiParam(){};
-
+		void YaiParamInit(String _nombre, String _valor){
+			nombre = _nombre;
+			valor = _valor;
+		};
 		String nombre;
 		String valor;
 };
@@ -22,11 +25,12 @@ class YaiParam{
 class YaiOS {
   public:
    	YaiOS(){
-      
    		logEnabled = false;
    	};
 
-    void init(){
+   	String baseDocYai(String fileName);
+
+    void initSD(){
       if (!SD.begin(PinSDCard)) {
         logEnabled = false;
         Serial.println("No se pudo inicializar SD Card");
@@ -91,7 +95,7 @@ class YaiOS {
     //Obtiene HTML del Joistick del rover
     String getRoverJoystick();
 
-    String getJS();
+    String getYoistickJS();
 
     void callBackServoMovement(){
       servoLn.callBackMovement();

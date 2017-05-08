@@ -37,7 +37,7 @@ void handleRoot() {
 
 void handleJS() {
   String htmlSrc;
-  htmlSrc = yaiOS.getJS();
+  htmlSrc = yaiOS.getYoistickJS();
   server.send ( 200, "application/javascript", htmlSrc );
 }
 
@@ -79,7 +79,8 @@ void setup(void){
 
   //Serial.begin(115200);
   Serial.begin(9600);
-  yaiOS.init();  
+  Serial.println("");
+  yaiOS.initSD();  
   yaiOS.logInfo("SD card inicializada");
 
   threadServoRun.onRun(callBackServoThread);   
