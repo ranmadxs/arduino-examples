@@ -10,6 +10,15 @@
 
 static int PinSDCard = 4;
 
+class YaiParam{
+	public:
+		YaiParam(){};
+
+		String nombre;
+		String valor;
+};
+
+
 class YaiOS {
   public:
    	YaiOS(){
@@ -26,6 +35,36 @@ class YaiOS {
         Serial.println("SD Card Inicializado!!!");        
       }
 
+    };
+
+    String parseSDFile(String fileName, YaiParam params[], int totalParams){
+    	String strReturn = "No content SD "+ fileName;
+    	String varName;
+    	char ltr;
+    	if (logEnabled){
+			String SD_Read = "";
+			File myFile;
+			logDebug("Abriendo archivo :: " + fileName);
+			myFile = SD.open(fileName);
+			if (myFile) {
+				while (myFile.available()) {
+					ltr = myFile.read();
+			    	SD_Read += ltr;
+				}
+				if (totalParams > 0){
+					for (int i = 0; i < totalParams; i++) {
+						varName = "${" +params[i].nombre+ "}";
+						SD_Read.replace(varName, params[i].valor);
+					}
+				}
+				strReturn = SD_Read;
+			}else {
+				logError("Error al abrir el archivo handleRoot");
+			}
+			myFile.close();
+    	}
+
+    	return strReturn;
     };
 
    	void logInfo(String msgLog){
@@ -92,6 +131,8 @@ class YaiOS {
     String macStr;
     File logFile;
     boolean logEnabled;    
+
+	int paramsYai;
 
     void logBase(String tipo, String msgLog){
        if(logEnabled){
