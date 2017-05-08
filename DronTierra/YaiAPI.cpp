@@ -7,7 +7,7 @@ String YaiOS::getAPI(){
 	return baseDocYai("html/api.htm");
 }
 
-//https://www.w3schools.com/code/tryit.asp?filename=FF03D1LDUA4N
+//https://www.w3schools.com/code/tryit.asp?filename=FFEO7P26WP4M
 //https://saeedalipoor.github.io/icono/
 //sed -e "s/$/\\\/g" roverDoc.htm > roverDocv2.htm
 String YaiOS::getAPIServo(){
