@@ -4,8 +4,12 @@
 #include <ESP8266mDNS.h>
 #include <SD.h>
 
-const char* ssid = "VTR-YAI-5Ghz";
-const char* password = "Pana8bc1108";
+//const char* ssid = "VTR-YAI-5Ghz";
+//const char* password = "Pana8bc1108";
+const char* ssid = "yai";
+const char* password = "1101000000";
+
+//  {"yai", "1101000000"},
 
 File myFile;
 int i;
@@ -17,7 +21,8 @@ ESP8266WebServer server(80);
 
 void handleRoot() {
   Serial.println(">> >> handleRoot de archivo html/pagina.htm");
-  myFile = SD.open("html/pagina.htm");
+  String nombrePagina = "html/pagina.htm";
+  myFile = SD.open(nombrePagina);
   String SD_Read = "";
   char ltr;
   if (myFile) {
@@ -28,7 +33,9 @@ void handleRoot() {
   }else {
       Serial.println("Error al abrir el archivo handleRoot");
   }
-
+  String nombreVariable = "${variable}";
+  String valorASerEvaluado = "Valor variable evaluado";
+  SD_Read.replace(nombreVariable, valorASerEvaluado);
 
   //server.send(myFile);
   myFile.close();
