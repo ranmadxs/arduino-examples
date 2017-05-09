@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 long tiempo;
 int disparador = 9;   // triger
 int entrada = 8;      // echo
