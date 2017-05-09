@@ -27,6 +27,16 @@ String YaiOS::getYoistickJS(){
 	return baseDocYai("js/yoistick.js");
 }
 
+//https://www.w3schools.com/code/tryit.asp?filename=FFFGAIJLXX0Y
+//sed -e "s/$/\\\/g" roverDoc.htm > roverDocv2.htm
+//http://patorjk.com/software/taag/
+//Font Name: Slant Relif
+//Font Name: Small Slant
+String YaiOS::getIndex(){
+	return baseDocYai("html/index.htm");
+}
+
+
 String YaiOS::baseDocYai(String fileName){
 	  int totalParamsPass = 17;
 	  YaiParam paramsYai[totalParamsPass];
