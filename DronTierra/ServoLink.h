@@ -44,7 +44,7 @@ class ServoLink{
         servoDirection = SERVO_DIRECTION_HORIZONTAL;
         servoMovement = movementServoH;
         movement = moveContinuous(servoType, servoDirection, servoMovement, speed);
-        result = "{\"direction\":\""+direction+"\", \"speed\":"+String(speed)+", "+movement+"}";
+        result = "{\"DIRECTION\":\""+direction+"\", \"SPEED\":"+String(speed)+", "+movement+"}";
         Serial.println(result);
 
       }
@@ -54,7 +54,7 @@ class ServoLink{
     	  servoDirection = SERVO_DIRECTION_VERTICAL;
     	  servoMovement = movementServoV;
     	  movement = moveContinuous(servoType, servoDirection, servoMovement, speed);
-        result = "{\"direction\":\""+direction+"\", \"speed\":"+String(speed)+", "+movement+"}";
+        result = "{\"DIRECTION\":\""+direction+"\", \"SPEED\":"+String(speed)+", "+movement+"}";
         Serial.println(result);
       }
     }
@@ -146,6 +146,9 @@ class ServoLink{
     }
 
     String moveContinuous(int servoType, int servoDirection, int servoMovement, int delta){
+      if (delta < 1){
+        delta = 1;
+      }
     	String movement = "None";
     	int posCurrent = getPosition(servoDirection);
         int pos = 0;

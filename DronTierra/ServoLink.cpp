@@ -20,7 +20,7 @@ String ServoLink::servoMove(int servoType, int servoDirection, int servoMovement
 	directionFlagV = true;
 	movementServoV = servoMovement;
   }
-  return "{\"action\":\"move\", \"direction\":\""+direction+"\"}";
+  return "{\"ACTION\":\"MOVE\", \"DIRECTION\":\""+direction+"\"}";
 }
 
 String ServoLink::servoStop(int servoType, int servoDirection){
@@ -40,7 +40,7 @@ String ServoLink::servoStop(int servoType, int servoDirection){
 		directionFlagH = false;
 	}
 
-	return "{\"action\":\"stop\", \"direction\":"+directionName+"}";
+	return "{\"ACTION\":\"STOP\", \"DIRECTION\":"+directionName+"}";
 }
 
 String ServoLink::servoAngle(int servoType, int servoDirection, int angle){
@@ -62,7 +62,7 @@ String ServoLink::servoAngle(int servoType, int servoDirection, int angle){
     directionName = "\"" + ServoLink::write(servoDirection, angle) + "\"";
   }
  
-  String result = "{ \"direction\":"+directionName+", \"angle:\":"+String(angle)+"}";
+  String result = "{ \"DIRECTION\":"+directionName+", \"ANGLE:\":"+String(angle)+"}";
   return result;
   
 }

@@ -14,7 +14,7 @@ String YaiOS::getAPIServo(){
 	return baseDocYai("html/servo.htm");
 }
 
-// https://www.w3schools.com/code/tryit.asp?filename=FFEVLFSD602O
+// https://www.w3schools.com/code/tryit.asp?filename=FFEXQDZ6ZVAN
 //https://codepen.io/sampeniak/pen/Imhpy
 //sed -e "s/$/\\\/g" roverDoc.htm > roverDocv2.htm
 // Reversa sed s'/.$//' roverDoc.htm > roverDocv2.htm
@@ -28,7 +28,7 @@ String YaiOS::getYoistickJS(){
 }
 
 String YaiOS::baseDocYai(String fileName){
-	  int totalParamsPass = 10;
+	  int totalParamsPass = 17;
 	  YaiParam paramsYai[totalParamsPass];
 	  YaiParam yaiParam;
 	  yaiParam.nombre = "clientIp";
@@ -61,7 +61,27 @@ String YaiOS::baseDocYai(String fileName){
     yaiParam.nombre = "ROVER_TYPE_2WD";
     yaiParam.valor = String(ROVER_TYPE_2WD);
     paramsYai[9] = yaiParam;
-
+    yaiParam.nombre = "SERVO_ACTION_CONTINUOUS";
+    yaiParam.valor = String(SERVO_ACTION_CONTINUOUS);
+    paramsYai[10] = yaiParam;
+    yaiParam.nombre = "SERVO_STOP";
+    yaiParam.valor = String(SERVO_STOP);
+    paramsYai[11] = yaiParam;
+    yaiParam.nombre = "SERVO_CLOCKWISE";
+    yaiParam.valor = String(SERVO_CLOCKWISE);
+    paramsYai[12] = yaiParam;
+    yaiParam.nombre = "SERVO_COUNTER_CLOCKWISE";
+    yaiParam.valor = String(SERVO_COUNTER_CLOCKWISE);
+    paramsYai[13] = yaiParam;        
+    yaiParam.nombre = "SERVO_DIRECTION_HORIZONTAL";
+    yaiParam.valor = String(SERVO_DIRECTION_HORIZONTAL);
+    paramsYai[14] = yaiParam; 
+    yaiParam.nombre = "SERVO_DIRECTION_VERTICAL";
+    yaiParam.valor = String(SERVO_DIRECTION_VERTICAL);
+    paramsYai[15] = yaiParam;     
+    yaiParam.nombre = "SERVO_DIRECTION_ALL";
+    yaiParam.valor = String(SERVO_DIRECTION_ALL);
+    paramsYai[16] = yaiParam;     
 	  String indexHtml = parseSDFile(fileName, paramsYai, totalParamsPass);
 	  return indexHtml;
 }
