@@ -14,24 +14,54 @@ String YaiOS::getAPIServo(){
 	return baseDocYai("html/servo.htm");
 }
 
-String YaiOS::baseDocYai(String fileName){
-	  int totalParamsPass = 1;
-	  YaiParam paramsYai[totalParamsPass];
-	  YaiParam yaiParam1, yaiParam2, yaiParam3, yaiParam4;
-	  yaiParam1.YaiParamInit("clientIp", getClientIP());
-	  yaiParam1.YaiParamInit("ROVER_STOP", String(ROVER_STOP));
-	  yaiParam1.YaiParamInit("ROVER_MOVE_MANUAL_BODY", String(ROVER_MOVE_MANUAL_BODY));
-	  yaiParam1.YaiParamInit("LASER_ACTION", String(LASER_ACTION));
+// https://www.w3schools.com/code/tryit.asp?filename=FFEVLFSD602O
+//https://codepen.io/sampeniak/pen/Imhpy
+//sed -e "s/$/\\\/g" roverDoc.htm > roverDocv2.htm
+// Reversa sed s'/.$//' roverDoc.htm > roverDocv2.htm
 
-	  paramsYai[0] = yaiParam1;
-	  paramsYai[1] = yaiParam2;
-	  paramsYai[2] = yaiParam3;
-	  paramsYai[3] = yaiParam4;
-
-	  String indexHtml = parseSDFile(fileName, paramsYai, totalParamsPass);
-	  return indexHtml;
+String YaiOS::getRoverJoystick(){
+	return baseDocYai("html/yoistick.htm");
 }
 
 String YaiOS::getYoistickJS(){
 	return baseDocYai("js/yoistick.js");
+}
+
+String YaiOS::baseDocYai(String fileName){
+	  int totalParamsPass = 10;
+	  YaiParam paramsYai[totalParamsPass];
+	  YaiParam yaiParam;
+	  yaiParam.nombre = "clientIp";
+	  yaiParam.valor = getClientIP();
+	  paramsYai[0] = yaiParam;
+	  yaiParam.nombre = "ROVER_STOP";
+	  yaiParam.valor = String(ROVER_STOP);
+	  paramsYai[1] = yaiParam;
+	  yaiParam.nombre = "ROVER_MOVE_MANUAL_BODY";
+	  yaiParam.valor = String(ROVER_MOVE_MANUAL_BODY);
+	  paramsYai[2] = yaiParam;
+	  yaiParam.nombre = "LASER_ACTION";
+	  yaiParam.valor = String(LASER_ACTION);
+	  paramsYai[3] = yaiParam;
+	  yaiParam.nombre = "SERVO_TYPE_SG90";
+	  yaiParam.valor = String(SERVO_TYPE_SG90);
+	  paramsYai[4] = yaiParam;
+	  yaiParam.nombre = "ROVER_BODY_MOVE_TYPE_LEFT";
+	  yaiParam.valor = String(ROVER_BODY_MOVE_TYPE_LEFT);
+	  paramsYai[5] = yaiParam;
+	  yaiParam.nombre = "ROVER_BODY_MOVE_TYPE_RIGHT";
+	  yaiParam.valor = String(ROVER_BODY_MOVE_TYPE_RIGHT);
+	  paramsYai[6] = yaiParam;
+	  yaiParam.nombre = "ROVER_BODY_MOVE_TYPE_BACK";
+	  yaiParam.valor = String(ROVER_BODY_MOVE_TYPE_BACK);
+	  paramsYai[7] = yaiParam;
+	  yaiParam.nombre = "ROVER_BODY_MOVE_TYPE_FORWARD";
+	  yaiParam.valor = String(ROVER_BODY_MOVE_TYPE_FORWARD);
+	  paramsYai[8] = yaiParam;
+    yaiParam.nombre = "ROVER_TYPE_2WD";
+    yaiParam.valor = String(ROVER_TYPE_2WD);
+    paramsYai[9] = yaiParam;
+
+	  String indexHtml = parseSDFile(fileName, paramsYai, totalParamsPass);
+	  return indexHtml;
 }

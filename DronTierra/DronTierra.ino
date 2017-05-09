@@ -35,7 +35,7 @@ void handleRoot() {
   server.send ( 200, "text/html", htmlSrc );
 }
 
-void handleJS() {
+void handleYoistickJS() {
   String htmlSrc;
   htmlSrc = yaiOS.getYoistickJS();
   server.send ( 200, "application/javascript", htmlSrc );
@@ -45,6 +45,12 @@ void handleAPI(){
 	  String htmlSrc;
 	  htmlSrc = yaiOS.getAPI();
 	  server.send ( 200, "text/html", htmlSrc );
+}
+
+void handleJquery(){
+    String htmlSrc;
+    htmlSrc = yaiOS.baseDocYai("js/jquery.js");
+    server.send ( 200, "text/html", htmlSrc );
 }
 
 void handleAPIServo(){
@@ -131,7 +137,9 @@ void setup(void){
 
   server.on("/apiServo", handleAPIServo);
 
-  server.on("/yai.js", handleJS);
+  server.on("/yoistick.js", handleYoistickJS);
+
+  server.on("/jquery.js", handleJquery);
 
   server.on("/roverJoystick", handleRoverJoystick);
 

@@ -13,10 +13,6 @@ static int PinSDCard = 4;
 class YaiParam{
 	public:
 		YaiParam(){};
-		void YaiParamInit(String _nombre, String _valor){
-			nombre = _nombre;
-			valor = _valor;
-		};
 		String nombre;
 		String valor;
 };

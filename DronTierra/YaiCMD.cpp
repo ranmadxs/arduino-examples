@@ -92,6 +92,7 @@ String YaiOS::executeCommand(String jsonCommand){
   if(propagate){
     Serial.println(csvCommand);
     logDebug("Propagando: " + csvCommand);
+    jsonResult = csvCommand;
   }else{
     Serial.println(jsonResult);
     logInfo(">> " + jsonResult);
