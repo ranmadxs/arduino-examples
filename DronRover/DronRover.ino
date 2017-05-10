@@ -88,6 +88,7 @@ void getElementRoot(String myString, String rootElement[]){
   char *str;  
   
   int i = 0;
+
   while ((str = strtok_r(p, ",", &p)) != NULL){
     rootElement[i] = str;
     i++;

@@ -9,15 +9,26 @@
 #include <SD.h>
 
 static int PinSDCard = 4;
-
 class YaiParam{
-	public:
-		YaiParam(){};
-		String nombre;
-		String valor;
+  public:
+    YaiParam(){};
+    String nombre;
+    String valor;
 };
 
+class YaiCmd{
+  public:
+    YaiCmd(){};
 
+    String command;
+    String p1;
+    String p2;
+    String p3;
+    String p4;
+    String p5;
+    String p6;
+    String p7;
+};
 class YaiOS {
   public:
    	YaiOS(){
