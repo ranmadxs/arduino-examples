@@ -14,7 +14,7 @@ String YaiOS::getAPIServo(){
 	return baseDocYai("html/servo.htm");
 }
 
-// https://www.w3schools.com/code/tryit.asp?filename=FFEXQDZ6ZVAN
+// https://www.w3schools.com/code/tryit.asp?filename=FFG2SFC8SXW0
 //https://codepen.io/sampeniak/pen/Imhpy
 //sed -e "s/$/\\\/g" roverDoc.htm > roverDocv2.htm
 // Reversa sed s'/.$//' roverDoc.htm > roverDocv2.htm

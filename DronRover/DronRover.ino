@@ -2,6 +2,7 @@
 #include <ArduinoJson.h>
 #include "RoverLink.h"
 #include "RoverConstants.h"
+#include <string.h>
 
 DynamicJsonBuffer dynJsonBuffer;
 RoverLink roverLn;
@@ -68,7 +69,6 @@ void serialController(){
       }else{
         resultStr = "NOK";        
       }
-        return resultStr;
     }
   }
 }
