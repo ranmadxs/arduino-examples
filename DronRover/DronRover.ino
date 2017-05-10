@@ -2,10 +2,12 @@
 #include <ArduinoJson.h>
 #include "RoverLink.h"
 #include "RoverConstants.h"
+#include "ObstacleLink.h"
 #include <string.h>
 
 DynamicJsonBuffer dynJsonBuffer;
 RoverLink roverLn;
+ObstacleLink obstacleLn;
 
 void setup() {
 	Serial.begin(9600);
@@ -22,8 +24,8 @@ void serialController(){
   if (Serial.available() >0) {
     serialIn = Serial.readStringUntil('\n');
     if (serialIn.length() >0){
-      String root[8];      
-      getElementRoot(serialIn, root); 
+        String root[8];
+        getElementRoot(serialIn, root);
     	String commandRoot = root[0];
     	String responseSvc = "";
     	boolean respCommand = false;
@@ -41,12 +43,12 @@ void serialController(){
     	    int tiempoStop = p2.toInt();
     	    delay(tiempoStop);
     	    roverLn.motorStop(p1.toInt());
-    	    content += "{\"time:\":" + p2 + ", \"rover\":\"STOP\"}";
+    	    content += "{\"TIME:\":" + p2 + ", \"ROVER\":\"STOP\"}";
     	}
     	if (commandRoot == LASER_ACTION){      
     	    respCommand = true;
     	    int tiempoStop = p2.toInt();
-    	    content += "{\"laserStatus\": "+p1+", \"time\": " + p2 + "}";
+    	    content += "{\"LASER_STATUS\": "+p1+", \"TIME\": " + p2 + "}";
     	    delay(tiempoStop);
     	    boolean activar = false;
     	    if(p1 == "true"){
@@ -59,8 +61,14 @@ void serialController(){
           int tiempoStop = p2.toInt();
           delay(tiempoStop);    
           responseSvc = roverLn.motorMove(p1, p4);
-          content += "{\"time:\":" + p2 + ", \"rover\":\""+responseSvc+"\"}";
+          content += "{\"TIME:\":" + p2 + ", \"ROVER\":\""+responseSvc+"\"}";
     	}
+    	if (commandRoot == OBSTACLE_READER){
+    	  respCommand = true;
+    	  responseSvc = obstacleLn.distancia(p1.toInt(), p2.toInt());
+    	  content += "{\"OBSTACLE_SENSOR\":"+responseSvc+"}";
+    	}
+
       if(respCommand){
         //String jsonResult = "{\"result\":\""+resultStr+"\", \"content\":"+content+"}";
         String jsonResult = "{\"RESULT\"";
