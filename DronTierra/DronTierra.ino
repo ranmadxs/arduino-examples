@@ -162,16 +162,17 @@ void setup(void){
   server.on("/pipelineCmd", []{
       String message = "{\"RESULT\"=\"OK\"";
       int totalCmds = 0;
+      String responseMsg = "\"EXECUTE\":0";
       if(server.args() > 0){
   		  String pipeline[server.args()];
   		  for (uint8_t i=0; i<server.args(); i++){
   			  pipeline[i] = server.arg(i);
-  			  Serial.println(pipeline[i]);
-          totalCmds++;
+  			  totalCmds++;
   		  }
+  		 responseMsg = yaiOS.executeCommand(pipeline, totalCmds);
       }
-      String content = "{\"TOTAL_CMDS\":"+String(totalCmds)+"}";
-      message += "\"CONTENT\":"+content+"}";
+      message += ", \"PIPELINE\":{\"TOTAL_IN\":"+String(totalCmds);
+      message += ", " + responseMsg + "}";
       server.send(200, "text/plain", message);
   });
 
@@ -198,3 +199,4 @@ void serialController(){
   }
   
 }
+

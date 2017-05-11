@@ -37,6 +37,8 @@ class YaiOS {
 
    	String baseDocYai(String fileName);
 
+   	String executeCommand(String pipelineCommand[], int totalCmds);
+
     void initSD(){
       if (!SD.begin(PinSDCard)) {
         logEnabled = false;
