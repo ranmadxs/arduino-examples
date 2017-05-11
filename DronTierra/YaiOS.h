@@ -43,7 +43,12 @@ class YaiOS {
         Serial.println("No se pudo inicializar SD Card");
       }else{
         logEnabled = true;
-        Serial.println("SD Card Inicializado!!!");        
+        Serial.println("SD Card Inicializado!!!");     
+        File folderRootLogs = SD.open("/logs");
+        int totalFiles = countFilesInDirectory(folderRootLogs);
+        totalFiles++;
+        logFileName = "/logs/"+getNewLogFileName(totalFiles, 8)+".LOG";
+        Serial.println("Log file " + logFileName);   
       }
 
     };
@@ -137,22 +142,52 @@ class YaiOS {
     }
     
   private:    
+    String logFileName;
     ServoLink servoLn;
     String clientIP;
     String macStr;
-    File logFile;
     boolean logEnabled;    
 
 	int paramsYai;
 
+  int countFilesInDirectory(File dir) {
+    int count = 0;
+    while (true) {
+
+      File entry =  dir.openNextFile();
+      if (! entry) {
+        // no more files
+        break;
+      }
+      if (!entry.isDirectory()) {
+        count++;
+      }
+      entry.close();
+    }
+    return count;
+  }
+  
+  String getNewLogFileName(int index, int ceros){
+    String res = String(index);
+    String strIndex = String (index);
+
+    int totalCeros = ceros - strIndex.length();
+    for (int j = 0; j < totalCeros; j++){
+      res =  "0" + res;
+    }
+    return res;
+  }
+  
     void logBase(String tipo, String msgLog){
        if(logEnabled){
-        logFile = SD.open("LOGS/logYAI.log", FILE_WRITE);
-        logFile.print("["+tipo+"] (");
-        logFile.print(String(millis()));
-        logFile.print(") ");
-        logFile.println(msgLog);
-        logFile.close();
+        File logFile = SD.open(logFileName, FILE_WRITE);
+        if (logFile) {
+          logFile.print("["+tipo+"] (");
+          logFile.print(String(millis()));
+          logFile.print(") ");
+          logFile.println(msgLog);
+          logFile.close();
+        }
       }      
     }
 };
