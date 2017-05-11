@@ -25,3 +25,4 @@
 #define SERVO_ACTION_CONTINUOUS	          		200001
 #define SERVO_ACTION_ANGLE	        	  		200002
 #define SERVO_STOP	  			      	  		200003
+#define OBSTACLE_READER                    		300001

@@ -159,6 +159,22 @@ void setup(void){
     server.send(200, "text/plain", message);
   });
 
+  server.on("/pipelineCmd", []{
+      String message = "{\"RESULT\"=\"OK\"";
+      int totalCmds = 0;
+      if(server.args() > 0){
+  		  String pipeline[server.args()];
+  		  for (uint8_t i=0; i<server.args(); i++){
+  			  pipeline[i] = server.arg(i);
+  			  Serial.println(pipeline[i]);
+          totalCmds++;
+  		  }
+      }
+      String content = "{\"TOTAL_CMDS\":"+String(totalCmds)+"}";
+      message += "\"CONTENT\":"+content+"}";
+      server.send(200, "text/plain", message);
+  });
+
   server.onNotFound(handleNotFound);
 
   server.begin();

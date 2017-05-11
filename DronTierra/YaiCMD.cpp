@@ -79,8 +79,8 @@ String YaiOS::executeCommand(String jsonCommand){
     jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
   }
   
-  if (command == ROVER_MOVE_MANUAL_BODY || command == ROVER_STOP || command == LASER_ACTION){
-	  respCommand = true;
+  if (command == ROVER_MOVE_MANUAL_BODY || command == ROVER_STOP || command == LASER_ACTION || command == OBSTACLE_READER){
+	respCommand = true;
     propagate = true;
   }
 
