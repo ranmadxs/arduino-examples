@@ -28,15 +28,15 @@ void setup() {
   int totalFiles = countFilesInDirectory(folderLogs);
   Serial.println("Total Files :: "+ String (totalFiles));
   totalFiles++;
-  String newFileName = "F"+getNewLogFileName(totalFiles, 7)+".LOG";
+  String newFileName = "/logs/F"+getNewLogFileName(totalFiles, 7)+".LOG";
   File myFile = SD.open(newFileName, FILE_WRITE);
   if (myFile) {
-	  Serial.println("Se ha creado el nuevo archivo " + myFile);
+	  Serial.println("Se ha creado el nuevo archivo " + newFileName);
 	  myFile.print("Tiempo(ms)=");
 	  myFile.println(String(millis()));
 	  myFile.close();
   }else{
-	  Serial.println("NO se ha creado el nuevo archivo " + myFile);
+	  Serial.println("NO se ha creado el nuevo archivo " + newFileName);
   }
 
   folderLogs.close();
@@ -53,7 +53,9 @@ void loop() {
 
 String getNewLogFileName(int index, int ceros){
 	String res = String(index);
-	int totalCeros = ceros - (index % 10);
+  String strIndex = String (index);
+  
+	int totalCeros = ceros - strIndex.length();
 	for (int j = 0; j < totalCeros; j++){
 		res =  "0" + res;
 	}
@@ -93,7 +95,6 @@ int countFilesInDirectory(File dir) {
       // no more files
       break;
     }
-    Serial.print(entry.name());
     if (!entry.isDirectory()) {
       count++;
     }
