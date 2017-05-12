@@ -3,22 +3,7 @@
 
 DynamicJsonBuffer dynJsonBuffer;
 
-/*
-void getElementRoot(String myString, String rootElement[]){
-  char copy[64];
-  myString.toCharArray(copy, 64);
-  char *p = copy;
-  char *str;
-
-  int i = 0;
-
-  while ((str = strtok_r(p, ",", &p)) != NULL){
-    rootElement[i] = str;
-    i++;
-  }
-}
-
-char *strtok_r(char *str, const char *delim, char **save){
+char *strSplit(char *str, const char *delim, char **save){
     char *res, *last;
 
     if( !save )
@@ -36,50 +21,61 @@ char *strtok_r(char *str, const char *delim, char **save){
     }
     return res;
 }
-*/
+
+
+void getElementRoot(String myString, String rootElement[]){
+  char copy[64];
+  myString.toCharArray(copy, 64);
+  char *p = copy;
+  char *str;
+
+  int i = 0;
+
+  while ((str = strSplit(p, ",", &p)) != NULL){
+    rootElement[i] = str;
+    i++;
+  }
+}
+
 //https://www.w3schools.com/code/tryit.asp?filename=FFHYS1V0HNCL
 String YaiOS::executeCommand(String pipelineCommand[], int totalCmds){
 	String jsonReturn = "";
-	Serial.println("YAI:executeCommand");
+	logInfo("YAI:executeCommand");
 	int totalExecuteds = 0;
 	for (int i = 0; i < totalCmds; i++){
-		Serial.println(pipelineCommand[i]);
+		logDebug(pipelineCommand[i]);
 		totalExecuteds++;
+		String root[8];
+		getElementRoot(pipelineCommand[i], root);
+		logDebug("CMD:" + root[0] + ", P1:" + root[1]);
+    executeCommand(pipelineCommand[i]);
 	}
 	jsonReturn = "\"TOTAL_EXE\":"+String(totalExecuteds);
 	return jsonReturn;
 }
 //TODO: Refactor del tiempo se debe factorizar
-String YaiOS::executeCommand(String jsonCommand){
+String YaiOS::executeCommand(String strCommand){
 
-  String jsonResult = jsonCommand;
-
-  JsonObject& root = dynJsonBuffer.parseObject(jsonCommand);
+  String jsonResult = strCommand;
   String inputCommand;
   boolean propagate = false;
-  root.printTo(inputCommand);
-  if(root.containsKey("COMMAND")){
-    propagate = true;
-    Serial.println("<< " + inputCommand);
-    logInfo("<< " + jsonCommand);
-  }
-  if(root.containsKey("RESULT")){
-    propagate = false;
+  logInfo("<< " + strCommand);
+  if(strCommand.indexOf("RESULT") > 0){
     jsonResult = inputCommand;
   }  
-  
-   
-  boolean printJson = true;
-  String commandRoot = root["COMMAND"];
+
+  String root[8];
+  getElementRoot(strCommand, root);
   String responseSvc = "";
   boolean respCommand = false;
-  String p1 = root["P1"];
-  String p2 = root["P2"];
-  String p3 = root["P3"];
-  String p4 = root["P4"];
-  String p5 = root["P5"];
-  String p6 = root["P6"];
-  String p7 = root["P7"];
+  String commandRoot = root[0];
+  String p1 = root[1];
+  String p2 = root[2];
+  String p3 = root[3];
+  String p4 = root[4];
+  String p5 = root[5];
+  String p6 = root[6];
+  String p7 = root[7];
   String content = "";
   String resultStr = "OK";
   //Serial.print(commandRoot);
@@ -101,7 +97,7 @@ String YaiOS::executeCommand(String jsonCommand){
 	  delay(tiempoStop);
 	  responseSvc = servoLn.servoMove(p1.toInt(), p3.toInt(), p4.toInt(), p5.toInt());
 	  content += "{\"time:\":" + p2 + ", \"servo\":"+responseSvc+"}";
-    jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
+	  jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
   }
 
   if(command == SERVO_STOP){
@@ -118,7 +114,7 @@ String YaiOS::executeCommand(String jsonCommand){
     propagate = false;
 	  respCommand = true;    
     content += "{\"IP\":\""+ YaiOS::getClientIP()+"\"";
-    if(root["P1"] == "true"){
+    if(p1 == "true"){
       content += ", \"MAC\":\""+ YaiOS::getMac()+"\"";
     }    
     content += "}";
@@ -134,11 +130,10 @@ String YaiOS::executeCommand(String jsonCommand){
     resultStr = "NOK";
     content = "\"Command not found\"";
   }
-  String csvCommand = commandRoot+","+p1+","+p2+","+p3+","+p4+","+p5+","+p6+","+p7;  
   if(propagate){
-    Serial.println(csvCommand);
-    logDebug("Propagando: " + csvCommand);
-    jsonResult = csvCommand;
+    Serial.println(strCommand);
+    logDebug("Propagando: " + strCommand);
+    jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":\"PROPAGATE\"}";
   }else{
     Serial.println(jsonResult);
     logInfo(">> " + jsonResult);
