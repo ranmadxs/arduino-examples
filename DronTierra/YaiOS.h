@@ -35,7 +35,7 @@ class YaiOS {
    		logEnabled = false;
    	};
 
-   	String baseDocYai(String fileName);
+   	String baseSDTemplate(String fileName);
 
    	String executeCommand(String pipelineCommand[], int totalCmds);
 

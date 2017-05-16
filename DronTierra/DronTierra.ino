@@ -49,7 +49,7 @@ void handleAPI(){
 
 void handleJquery(){
     String htmlSrc;
-    htmlSrc = yaiOS.baseDocYai("js/jquery.js");
+    htmlSrc = yaiOS.baseSDTemplate("js/jquery.js");
     server.send ( 200, "text/html", htmlSrc );
 }
 
@@ -142,6 +142,13 @@ void setup(void){
   server.on("/jquery.js", handleJquery);
 
   server.on("/roverJoystick", handleRoverJoystick);
+
+// https://unpkg.com/purecss@0.6.2/build/base-min.css
+// https://purecss.io/tables/
+  server.on("/css/base.css", [](){
+	  String message = yaiOS.baseSDTemplate("/css/base.css");
+	  server.send(200, "text/css", message);
+  });
 
   server.on("/cmd", [](){
     String message = "";

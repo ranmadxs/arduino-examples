@@ -8,14 +8,14 @@
 //https://saeedalipoor.github.io/icono/
 //sed -e "s/$/\\\/g" roverDoc.htm > roverDocv2.htm
 String YaiOS::getAPI(){
-	return baseDocYai("html/api.htm");
+	return baseSDTemplate("html/api.htm");
 }
 
 //https://www.w3schools.com/code/tryit.asp?filename=FFEO7P26WP4M
 //https://saeedalipoor.github.io/icono/
 //sed -e "s/$/\\\/g" roverDoc.htm > roverDocv2.htm
 String YaiOS::getAPIServo(){
-	return baseDocYai("html/servo.htm");
+	return baseSDTemplate("html/servo.htm");
 }
 
 // https://www.w3schools.com/code/tryit.asp?filename=FFG2SFC8SXW0
@@ -24,11 +24,11 @@ String YaiOS::getAPIServo(){
 // Reversa sed s'/.$//' roverDoc.htm > roverDocv2.htm
 
 String YaiOS::getRoverJoystick(){
-	return baseDocYai("html/yoistick.htm");
+	return baseSDTemplate("html/yoistick.htm");
 }
 
 String YaiOS::getYoistickJS(){
-	return baseDocYai("js/yoistick.js");
+	return baseSDTemplate("js/yoistick.js");
 }
 
 //https://www.w3schools.com/code/tryit.asp?filename=FFFGAIJLXX0Y
@@ -37,11 +37,11 @@ String YaiOS::getYoistickJS(){
 //Font Name: Slant Relif
 //Font Name: Small Slant
 String YaiOS::getIndex(){
-	return baseDocYai("html/index.htm");
+	return baseSDTemplate("html/index.htm");
 }
 
 
-String YaiOS::baseDocYai(String fileName){
+String YaiOS::baseSDTemplate(String fileName){
 	  int totalParamsPass = 17;
 	  YaiParam paramsYai[totalParamsPass];
 	  YaiParam yaiParam;
