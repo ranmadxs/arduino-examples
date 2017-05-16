@@ -1,5 +1,9 @@
 #include "YaiOS.h"
 
+//TODO: HTML PIPELINE ACA
+//https://www.w3schools.com/code/tryit.asp?filename=FFN34JDG39I0
+
+
 //https://www.w3schools.com/code/tryit.asp?filename=FFEFW96IDRHC
 //https://saeedalipoor.github.io/icono/
 //sed -e "s/$/\\\/g" roverDoc.htm > roverDocv2.htm
