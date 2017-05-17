@@ -1,0 +1,277 @@
+<html>
+<head>
+<script type='application/javascript' src='../js/yoistick.js'></script>
+<style type='text/css'>
+.cross {
+  background: #333;
+  height: 80px;
+  position: relative;
+  width: 10px;
+}
+.cross:after {
+  background: #333;
+  content: '';
+  height: 10px;
+  left: -35px;
+  position: absolute;
+  top: 35px;
+  width: 80px;  
+}
+.cross:hover{
+  background:#e74c3c;
+}
+.cross:hover:after {
+  background:#e74c3c;
+}
+
+.contenedorTableDiv {
+    top: 10%;
+    display: table;
+    border: 2px solid #000;
+    width: 333px;
+    text-align: center;
+    margin: 2px;
+  	float: left;
+}
+.contenidos {
+    display: table-row;
+}
+.columna {
+    display: table-cell;
+    border: 0px solid #000;
+    vertical-align: middle;
+    padding: 10px;
+}
+
+body {
+  text-align: center;
+  margin: 6em 0 0 0;
+  padding: 0;
+}
+
+div {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+a {
+  display: inline-block;
+  border-radius: 50%;
+}
+
+
+a:hover .center, a:hover .left, a:hover .top, a:hover .bottom, a:hover .right{
+  border: 0.5em solid #e74c3c;
+}
+
+a:hover .left:after, a:hover .top:after, a:hover .bottom:after, a:hover .right:after {
+  border-top: 0.5em solid #e74c3c;
+  border-right: 0.5em solid #e74c3c;
+}
+
+a:hover .center:after {
+  border-top: 0.5em solid #e74c3c;
+  border-right: 0.5em solid #e74c3c;
+  border-bottom: 0.5em solid #e74c3c;
+  border-left: 0.5em solid #e74c3c;  
+}
+
+.left {
+  display: inline-block;
+  //background-color: blue;
+  width: 4em;
+  height: 4em;
+  border: 0.5em solid #333;
+  border-radius: 50%;
+  margin-right: 1.5em;
+}
+
+.left:after {
+  content: '';
+	display: inline-block;
+  margin-top: 1.05em;
+  margin-left: 0.6em;
+  width: 1.4em;
+  height: 1.4em;
+  border-top: 0.5em solid #333;
+  border-right: 0.5em solid #333;
+  -moz-transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+  transform: rotate(-135deg);
+}
+
+.center {
+  display: inline-block;
+  width: 4em;
+  height: 4em;
+  border: 0.5em solid #333;
+  border-radius: 50%;
+}
+
+.center:after {
+  content: '';
+  display: inline-block;
+  margin-top: 0.7em;
+  width: 1.4em;
+  height: 1.4em;
+  border-top: 0.5em solid #333;
+  border-right: 0.5em solid #333;
+  border-bottom: 0.5em solid #333;
+  border-left: 0.5em solid #333;
+}
+
+.top {
+  display: inline-block;
+  width: 4em;
+  height: 4em;
+  border: 0.5em solid #333;
+  border-radius: 50%;
+  margin-right: 0.75em;
+}
+
+.top:after {
+  content: '';
+	display: inline-block;
+  margin-top: 1.4em;
+  width: 1.4em;
+  height: 1.4em;
+  border-top: 0.5em solid #333;
+  border-right: 0.5em solid #333;
+  -moz-transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+.bottom {
+  display: inline-block;
+  width: 4em;
+  height: 4em;
+  border: 0.5em solid #333;
+  border-radius: 50%;
+  margin-left: 0.75em;
+}
+
+.bottom:after {
+  content: '';
+	display: inline-block;
+  margin-top: 0.6em;
+  width: 1.4em;
+  height: 1.4em;
+  border-top: 0.5em solid #333;
+  border-right: 0.5em solid #333;
+  -moz-transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+  transform: rotate(135deg);
+}
+
+.right {
+  display: inline-block;
+  width: 4em;
+  height: 4em;
+  border: 0.5em solid #333;
+  border-radius: 50%;
+  margin-left: 1.5em;
+}
+
+.right:after {
+  content: '';
+  display: inline-block;
+  margin-top: 1.05em;
+  margin-left: -0.6em;
+  width: 1.4em;
+  height: 1.4em;
+  border-top: 0.5em solid #333;
+  border-right: 0.5em solid #333;
+  -moz-transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}		
+</style>
+</head>
+<body>
+<center>
+<div class='contenedorTableDiv'>Joystick 1
+    <div class='contenidos'>
+        <div class='columna'>
+        	<a href='javascript:void(0);'>
+        		<div class='cross' onclick="actionLaser()"></div>
+            </a>
+        </div>
+        <div class='columna'>
+          <a href='javascript:void(0);'>
+            <span class='top' onclick="actCmd('${SERVO_ACTION_CONTINUOUS}', '${SERVO_TYPE_SG90}', 0, '${SERVO_DIRECTION_VERTICAL}', '${SERVO_COUNTER_CLOCKWISE}', 5)"></span>
+          </a>        
+        </div>
+        <div class='columna'></div>
+    </div>
+    <div class='contenidos'>
+        <div class='columna'>
+          <a href='javascript:void(0);'>
+            <span class='left' onclick="actCmd('${SERVO_ACTION_CONTINUOUS}', '${SERVO_TYPE_SG90}', 0, '${SERVO_DIRECTION_HORIZONTAL}', '${SERVO_CLOCKWISE}', 5)"></span>
+          </a>        
+        </div>
+        <div class='columna'>
+          <a href='javascript:void(0);'>
+            <span class='center' onclick="actCmd('${SERVO_STOP}', '${SERVO_TYPE_SG90}', 0, '${SERVO_DIRECTION_ALL}')"></span>
+          </a>                
+        </div>
+        <div class='columna'>
+          <a href='javascript:void(0);'>
+            <span class='right' onclick="actCmd('${SERVO_ACTION_CONTINUOUS}', '${SERVO_TYPE_SG90}', 0, '${SERVO_DIRECTION_HORIZONTAL}', '${SERVO_COUNTER_CLOCKWISE}', 5)"></span>
+          </a>        
+        </div>
+    </div>
+    <div class='contenidos'>
+        <div class='columna'></div>
+        <div class='columna'>
+          <a href='javascript:void(0);'>
+            <span class='bottom' onclick="actCmd('${SERVO_ACTION_CONTINUOUS}', '${SERVO_TYPE_SG90}', 0, '${SERVO_DIRECTION_VERTICAL}', '${SERVO_CLOCKWISE}', 5)"></span>
+          </a>        
+        </div>
+        <div class='columna'></div>
+    </div>
+</div>
+<div class='contenedorTableDiv'>Joystick 2
+    <div class='contenidos'>
+        <div class='columna'>
+        	<a href='javascript:void(0);'>
+        		<div class='cross' onclick="actionLaser()"></div>
+            </a>
+        </div>
+        <div class='columna'>
+          <a href='javascript:void(0);'>
+            <span class='top' onclick="actionMove('${ROVER_BODY_MOVE_TYPE_FORWARD}', '${ROVER_TYPE_2WD}')"></span>
+          </a>        
+        </div>
+        <div class='columna'></div>
+    </div>
+    <div class='contenidos'>
+        <div class='columna'>
+          <a href='javascript:void(0);'>
+            <span class='left' onclick="actionMove('${ROVER_BODY_MOVE_TYPE_LEFT}', '${ROVER_TYPE_2WD}')"></span>
+          </a>        
+        </div>
+        <div class='columna'>
+          <a href='javascript:void(0);'>
+            <span class='center' onclick="actionStop('${ROVER_TYPE_2WD}')"></span>
+          </a>                
+        </div>
+        <div class='columna'>
+          <a href='javascript:void(0);'>
+            <span class='right' onclick="actionMove('${ROVER_BODY_MOVE_TYPE_RIGHT}', '${ROVER_TYPE_2WD}')"></span>
+          </a>        
+        </div>
+    </div>
+    <div class='contenidos'>
+        <div class='columna'></div>
+        <div class='columna'>
+          <a href='javascript:void(0);'>
+            <span class='bottom' onclick="actionMove('${ROVER_BODY_MOVE_TYPE_BACK}', '${ROVER_TYPE_2WD}')"></span>
+          </a>        
+        </div>
+        <div class='columna'></div>
+    </div>
+</div>
+</center>
+</body>
+</html>
