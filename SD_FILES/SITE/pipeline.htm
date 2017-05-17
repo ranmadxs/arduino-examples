@@ -1,19 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/base-min.css">
-	<style>
-		tr:nth-child(even) {
-    		background-color: #dddddd;
-		}
-	</style>
+	<link rel="stylesheet" href="../css/base.css">
 </head>
 <body>
 
 <h2>YaiOS Pipeline</h2>
 <hr/>
 <h3>Command Pipeline</h3>
-<table class="pure-table pure-table-horizontal">
+<div class="divForm">
+  <form name="formPipeline" id="idPipeline" action="#">
+    <label for="country">CMD</label>
+    <select class="select_small" id="country" name="country">
+      <option value="100001">ROVER_MOVE_MANUAL_BODY</option>
+      <option value="100002">ROVER_STOP</option>
+      <option value="100003">YAI_SERIAL_CMD_GET_IP</option>
+      <option value="100004">LASER_ACTION</option>
+      <option value="200001">SERVO_ACTION_CONTINUOUS</option>
+      <option value="200002">SERVO_ACTION_ANGLE</option>
+      <option value="200003">SERVO_STOP</option>
+      <option value="300001">OBSTACLE_READER</option>
+    </select>
+  
+    <label for="fname">P1</label>
+    <input class="input_text_small_2" type="text" id="p1" name="p1" placeholder="None">
+
+    <label for="lname">P2</label>
+    <input class="input_text_small_2" type="text" id="p2" name="p2" placeholder="None">
+  
+    <label for="lname">P3</label>
+    <input class="input_text_small_2" type="text" id="p3" name="p3" placeholder="None">
+    
+    <label for="lname">P4</label>
+    <input class="input_text_small_2" type="text" id="p4" name="p4" placeholder="None">    
+  
+      <label for="lname">P5</label>
+    <input class="input_text_small_2" type="text" id="p5" name="p5" placeholder="None">
+    
+    <label for="lname">P6</label>
+    <input class="input_text_small_2" type="text" id="p6" name="p6" placeholder="None">
+    
+    <label for="lname">P7</label>
+    <input class="input_text_small_2" type="text" id="p7" name="p7" placeholder="None">
+    
+    <input name="agregar" id="agregar" class="buttonType" type="button" value="Agregar">
+  </form>
+</div>
+<h3>Table Pipeline</h3>
+<div class="divTable">
+<table id="tablePipeline" class="pure-table pure-table-horizontal">
+<thead>
   <tr>
     <th>Id</th>
     <th>Command</th>
@@ -24,73 +60,15 @@
     <th>P5</th>
     <th>P6</th>
     <th>P7</th>
-  </tr>  
-  <tr>
-    <td>1</td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr> 
-  <tr>
-    <td>2</td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>   
-  <tr>
-    <td>3</td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>   
+  </tr>
+</thead>
+<tbody>   
+</tbody>  
 </table>
-<table class="pure-table pure-table-bordered">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Make</th>
-            <th>Model</th>
-            <th>Year</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        <tr>
-            <td>1</td>
-            <td>Honda</td>
-            <td>Accord</td>
-            <td>2009</td>
-        </tr>
-
-        <tr>
-            <td>2</td>
-            <td>Toyota</td>
-            <td>Camry</td>
-            <td>2012</td>
-        </tr>
-
-        <tr>
-            <td>3</td>
-            <td>Hyundai</td>
-            <td>Elantra</td>
-            <td>2010</td>
-        </tr>
-    </tbody>
-</table>
+</div>
+<br/>
+<div class="divForm">
+	<input name="ejecutar" id="ejecutar" class="buttonType" type="button" value="Ejecutar">
+</div>
 </body>
 </html>
