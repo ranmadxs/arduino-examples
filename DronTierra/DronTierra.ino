@@ -35,22 +35,10 @@ void handleRoot() {
   server.send ( 200, "text/html", htmlSrc );
 }
 
-void handleYoistickJS() {
-  String htmlSrc;
-  htmlSrc = yaiOS.getYoistickJS();
-  server.send ( 200, "application/javascript", htmlSrc );
-}
-
 void handleAPI(){
 	  String htmlSrc;
 	  htmlSrc = yaiOS.getAPI();
 	  server.send ( 200, "text/html", htmlSrc );
-}
-
-void handleJquery(){
-    String htmlSrc;
-    htmlSrc = yaiOS.baseSDTemplate("js/jquery.js");
-    server.send ( 200, "text/html", htmlSrc );
 }
 
 void handleAPIServo(){
@@ -66,7 +54,9 @@ void handleRoverJoystick(){
 }
 
 void handleNotFound(){
+  String content_type = "text/plain";
   String message = "File Not Found\n\n";
+  int codeStatus = 404;
   message += "URI: ";
   message += server.uri();
   message += "\nMethod: ";
@@ -77,7 +67,14 @@ void handleNotFound(){
   for (uint8_t i=0; i<server.args(); i++){
     message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
   }
-  server.send(404, "text/plain", message);
+
+  YaiParseFile yaiFile = yaiOS.baseSDTemplate(server.uri());
+  if(yaiFile.fileExist){
+	  message = yaiFile.content;
+	  content_type = yaiFile.contentType;
+	  codeStatus = yaiFile.codeStatus;
+  }
+  server.send(codeStatus, content_type, message);
 }
 
 //TODO: Los pin mode se deben hacer dentro del roverLink
@@ -137,29 +134,17 @@ void setup(void){
 
   server.on("/apiServo", handleAPIServo);
 
-  server.on("/yoistick.js", handleYoistickJS);
-
-  server.on("/jquery.js", handleJquery);
-
   server.on("/roverJoystick", handleRoverJoystick);
-
-// https://unpkg.com/purecss@0.6.2/build/base-min.css
-// https://purecss.io/tables/
-  server.on("/css/base.css", [](){
-	  String message = yaiOS.baseSDTemplate("/css/base.css");
-	  server.send(200, "text/css", message);
-  });
 
   server.on("/cmd", [](){
     String message = "";
-    String jsonCommand = "{";
+    String jsonCommand = "";
     for (uint8_t i=0; i<server.args(); i++){
-      jsonCommand += "\""+server.argName(i) + "\":\"" + server.arg(i)+"\"";
+      jsonCommand += server.arg(i);
       if(i + 1 < server.args()){
-        jsonCommand += ", ";
+        jsonCommand += ",";
       }
     }    
-    jsonCommand += "}";
     message += " << " + jsonCommand;
     String responseMsg = yaiOS.executeCommand(jsonCommand);        
     message += "\n \n >> " + responseMsg;
