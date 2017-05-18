@@ -13,7 +13,8 @@
 <div class="divForm">
   <form name="formPipeline" id="idPipeline" action="#">
     <label for="country">CMD</label>
-    <select class="select_small" id="command" name="command">
+    <select class="select_small_2" id="command" name="command">
+	  <option value="0">SELECCIONE...</option>
       <option value="100001">ROVER_MOVE_MANUAL_BODY</option>
       <option value="100002">ROVER_STOP</option>
       <option value="100003">YAI_SERIAL_CMD_GET_IP</option>
@@ -23,28 +24,28 @@
       <option value="200003">SERVO_STOP</option>
       <option value="300001">OBSTACLE_READER</option>
     </select>
-  
-    <label for="fname" id="label_p1">P1: </label>
-    <input class="input_text_small_2 params p1" type="text" id="p1" name="p1" placeholder="None" value="None">
+	<div id="div_cmds">
+		<label for="fname" id="label_p1">| P1: </label>
+		<input class="input_text_small_2 params p1" type="text" id="p1" name="p1" placeholder="None" value="None">
 
-    <label for="lname">| P2: </label>
-    <input class="input_text_small_2 params p2" type="text" id="p2" name="p2" placeholder="None" value="None">
-  
-    <label for="lname">| P3: </label>
-    <input class="input_text_small_2 params p3" type="text" id="p3" name="p3" placeholder="None" value="None">
-    
-    <label for="lname">| P4: </label>
-    <input class="input_text_small_2 params p4" type="text" id="p4" name="p4" placeholder="None" value="None">    
-  
-    <label for="lname">| P5: </label>
-    <input class="input_text_small_2 params p5" type="text" id="p5" name="p5" placeholder="None" value="None">
-    
-    <label for="lname">| P6: </label>
-    <input class="input_text_small_2 params p6" type="text" id="p6" name="p6" placeholder="None" value="None">
-    
-    <label for="lname">| P7: </label>
-    <input class="input_text_small_2 params p7" type="text" id="p7" name="p7" placeholder="None" value="None">
-    
+		<label for="lname" id="label_p2">| P2: </label>
+		<input class="input_text_small_2 params p2" type="text" id="p2" name="p2" placeholder="None" value="None">
+	  
+		<label for="lname" id="label_p3">| P3: </label>
+		<input class="input_text_small_2 params p3" type="text" id="p3" name="p3" placeholder="None" value="None">
+		
+		<label for="lname" id="label_p4">| P4: </label>
+		<input class="input_text_small_2 params p4" type="text" id="p4" name="p4" placeholder="None" value="None">    
+	  
+		<label for="lname" id="label_p5">| P5: </label>
+		<input class="input_text_small_2 params p5" type="text" id="p5" name="p5" placeholder="None" value="None">
+		
+		<label for="lname" id="label_p6">| P6: </label>
+		<input class="input_text_small_2 params p6" type="text" id="p6" name="p6" placeholder="None" value="None">
+		
+		<label for="lname" id="label_p7">| P7: </label>
+		<input class="input_text_small_2 params p7" type="text" id="p7" name="p7" placeholder="None" value="None">
+    </div>
     <input name="agregar" id="agregar" class="buttonType" type="button" value="Agregar" value="None">
   </form>
 </div>

@@ -1,1 +1,3 @@
 https://www.w3schools.com/css/css_form.asp
+
+>mklink /D "ard" "C:\trabajos\arduino-examples\SD_FILES"
