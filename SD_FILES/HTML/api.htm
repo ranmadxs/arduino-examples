@@ -71,6 +71,11 @@ th {
     <td>2001</td>
     <td>Tipo servo SG90, 130&deg;</td>
   </tr> 
+  <tr>
+    <td>OBSTACLE_HC_SR04</td>
+    <td>3001</td>
+    <td>Tipo servo SG90, 130&deg;</td>
+  </tr> 
 </table>
 <h3>Rover Move Enumeration</h3>
 <table>
@@ -100,6 +105,19 @@ th {
     <td>Mover Atr&aacute;s</td>
   </tr>   
 </table>
+<h3>Obstacle Direction Sensor Enumeration</h3>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Value</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>OBSTACLE_SENSOR_FRONT</td>
+    <td>30001</td>
+    <td>Sensor frontal</td>
+  </tr>
+</table>
 <hr/>
 <h3>ROVER_MOVE_MANUAL_BODY (ID: 100001)</h3> 
 <p id='rcorners'>GET / POST</p>
@@ -119,7 +137,7 @@ th {
   <tr>
     <td>P2</td>
     <td>int</td>
-    <td>Tiempo en que se detiene en milisegundos, 0 se detiene inmediato</td>
+    <td>Delay en milisegundos, 0 inicia de inmediato</td>
   </tr>  
   <tr>
     <td>P3</td>
@@ -208,6 +226,60 @@ curl -X GET --header "Accept: application/json;charset=UTF-8" "http://${clientIp
 <h4>Http Request</h4>
 <pre>
 http://${clientIp}/cmd?COMMAND=100002&P1=1001&P2=0&P3=None&P4=None&P5=None&P6=None&P7=None
+</pre>
+<h3>OBSTACLE_READER (ID: 300001)</h3>
+<p id='rcorners'>GET / POST</p>
+<p id='rcorners_serial'>SERIAL</p>
+<p>Lee el sensor de obst&aacute;culos</p>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Value</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>P1</td>
+    <td>Component Type Enumeration</td>
+    <td>Indica el tipo de Sensor de Obst&aacute;culos</td>
+  </tr>
+  <tr>
+    <td>P2</td>
+    <td>Obstacle Direction Sensor Enumeration</td>
+    <td>Indica la orientaci&oacute;n del sensor</td>
+  </tr>  
+  <tr>
+    <td>P3</td>
+    <td>None</td>
+    <td></td>
+  </tr>  
+  <tr>
+    <td>P4</td>
+    <td>None</td>
+    <td></td>
+  </tr>  
+  <tr>
+    <td>P5</td>
+    <td>None</td>
+    <td></td>
+  </tr>  
+  <tr>
+    <td>P6</td>
+    <td>None</td>
+    <td></td>
+  </tr> 
+  <tr>
+    <td>P7</td>
+    <td>None</td>
+    <td></td>
+  </tr>   
+</table>
+<h3>Try it out!</h3>
+<pre>
+curl -X GET --header "Accept: application/json;charset=UTF-8" "http://${clientIp}/cmd?COMMAND=300001&P1=3001&P2=30001&P3=None&P4=None&P5=None&P6=None&P7=None"
+</pre>
+<h4>Http Request</h4>
+<pre>
+http://${clientIp}/cmd?COMMAND=300001&P1=3001&P2=30001&P3=None&P4=None&P5=None&P6=None&P7=None
 </pre>
 <h3>ROVER_SERIAL_CMD_GET_IP (ID: 100003)</h3>
 <p id='rcorners'>GET / POST</p>

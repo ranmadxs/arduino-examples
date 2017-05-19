@@ -8,7 +8,7 @@
 #define ROVER_BODY_MOVE_TYPE_FORWARD      		"10003"
 #define ROVER_BODY_MOVE_TYPE_BACK         		"10004"
 
-//Obstacle Sensor Enum
+//Obstacle Direction Sensor Enum
 #define OBSTACLE_SENSOR_FRONT            		"30001"
 
 //Comands

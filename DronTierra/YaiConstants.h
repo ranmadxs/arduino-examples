@@ -1,6 +1,7 @@
 //Enum Type
 #define ROVER_TYPE_2WD                    		1001
 #define SERVO_TYPE_SG90               	  		2001
+#define OBSTACLE_HC_SR04                   		3001
 
 //Rover move enum
 #define ROVER_BODY_MOVE_TYPE_LEFT         		10001
@@ -12,6 +13,9 @@
 #define SERVO_DIRECTION_HORIZONTAL		  		20001
 #define SERVO_DIRECTION_VERTICAL		  		20002
 #define SERVO_DIRECTION_ALL				  		20003
+
+//Obstacle Direction Sensor Enum
+#define OBSTACLE_SENSOR_FRONT            		30001
 
 //Servo movement enum
 #define SERVO_CLOCKWISE					  		21001   //Horario
