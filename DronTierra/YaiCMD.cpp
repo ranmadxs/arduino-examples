@@ -88,6 +88,7 @@ String YaiOS::executeCommand(String strCommand){
 	  delay(tiempoStop);
 	  responseSvc = servoLn.servoAngle(p1.toInt(), p3.toInt(), p4.toInt());
 	  content += "{\"time:\":" + p2 + ", \"servo\":"+responseSvc+"}";
+	  jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
   }
   
   if(command == SERVO_ACTION_CONTINUOUS){

@@ -2,6 +2,9 @@ package net.ddns.clrobotic.androidrover;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.http.AndroidHttpClient;
+import android.net.http.HttpResponseCache;
+import android.os.StrictMode;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +14,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,6 +37,14 @@ public class MainActivity extends AppCompatActivity {
         isRecord = Boolean.TRUE;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8){
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            //your codes here
+
+        }
         btnForward = (Button)findViewById(R.id.btn_forward);
         grabar = (TextView) findViewById(R.id.textOutId);
         helloID = (TextView) findViewById(R.id.textHelloId);
@@ -35,7 +53,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.i("MainActivity", "isRecord::"+isRecord);
                 if(isRecord){
-                    onClickImgBtnHablar();
+                    YaiCmd cmd = new YaiCmd();
+                    sendCommand(cmd);
+                    //onClickImgBtnHablar();
                     grabar.setText("GRABANDO VOZ");
                     btnForward.setText("DETENER");
                     isRecord = Boolean.FALSE;
@@ -84,6 +104,25 @@ public class MainActivity extends AppCompatActivity {
                     "Tú dispositivo no soporta el reconocimiento por voz",
                     Toast.LENGTH_SHORT).show();
         }
+    }
 
+    public String sendCommand(YaiCmd cmd){
+        Log.i("sendCommand", "Http client send");
+        String responseStr = null;
+        HttpGet request = new HttpGet("http://192.168.100.104/cmd?COMMAND=100001&P1=1001&P2=0&P3=0&P4=10001&P5=None&P6=None&P7=None");
+        //AndroidHttpClient httpclient = AndroidHttpClient.newInstance("Android");
+        HttpClient httpclient = new DefaultHttpClient();
+        try {
+            HttpResponse httpResponse = httpclient.execute(request);
+            responseStr = httpResponse.getEntity().getContent().toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        //finally {
+        //    httpclient.close();
+        //}
+        Log.i("sendCommand", responseStr);
+        return responseStr;
     }
 }
