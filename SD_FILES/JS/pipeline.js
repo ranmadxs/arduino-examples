@@ -230,7 +230,8 @@ $( document ).ready(function() {
 		var xhr = new XMLHttpRequest();
 		xhr.open('POST', '../pipelineCmd', true);
 		xhr.onload = function () {
-			console.log(this.responseText);
+			//console.log(this.responseText);
+			alert(this.responseText);
 		};
 		xhr.send(data);		
 	});	
