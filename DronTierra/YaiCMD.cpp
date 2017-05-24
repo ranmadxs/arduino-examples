@@ -1,7 +1,4 @@
 #include "YaiOS.h"
-#include <ArduinoJson.h>
-
-DynamicJsonBuffer dynJsonBuffer;
 
 char *strSplit(char *str, const char *delim, char **save){
     char *res, *last;

@@ -2,10 +2,9 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
-#include <ArduinoJson.h>
-#include "YaiOS.h"
 #include <Thread.h>
 #include <ThreadController.h>
+#include "YaiOS.h"
 
 const int totalWifi = 3;
 const int retryWifi = 15;
@@ -77,7 +76,6 @@ void handleNotFound(){
   server.send(codeStatus, content_type, message);
 }
 
-//TODO: Los pin mode se deben hacer dentro del roverLink
 void setup(void){  
 
   //Serial.begin(115200);

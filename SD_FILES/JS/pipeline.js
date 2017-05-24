@@ -1,5 +1,4 @@
 var pipeline = [];
-var ipClient = "${clientIp}"; 
 
 function getInputP(varp){
 	var html = 	'<div class="tooltip" id="label_'+varp+'">| '+varp.toUpperCase()+': '+
@@ -229,7 +228,7 @@ $( document ).ready(function() {
 		}
 
 		var xhr = new XMLHttpRequest();
-		xhr.open('POST', 'http://192.168.100.104/pipelineCmd', true);
+		xhr.open('POST', '../pipelineCmd', true);
 		xhr.onload = function () {
 			console.log(this.responseText);
 		};
