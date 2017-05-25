@@ -6,7 +6,7 @@ void setup()
 {
   Serial.begin(9600);
   Serial.print("Iniciando SD ...");
-  if (!SD.begin(4)) {
+  if (!SD.begin(15)) {
     Serial.println("No se pudo inicializar");
     return;
   }
@@ -15,8 +15,8 @@ void setup()
 }
 
 void loop() {
-  myFile = SD.open("datalog.txt", FILE_WRITE);//abrimos  el archivo
-  i++;
+  //myFile = SD.open("datalog.txt", FILE_WRITE);//abrimos  el archivo
+  //i++;
   /*
   if (myFile) {
     Serial.println("Escribiendo SD: ");
@@ -29,5 +29,5 @@ void loop() {
     Serial.println("Error al abrir el archivo");
   }
   */
-  delay(100);
+  //delay(100);
 }

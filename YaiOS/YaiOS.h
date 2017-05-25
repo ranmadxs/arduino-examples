@@ -7,7 +7,7 @@
 #include "YaiConstants.h"
 #include <SD.h>
 
-static int PinSDCard = 4;
+static int PinSDCard = 15;
 class YaiParam{
   public:
     YaiParam(){};
