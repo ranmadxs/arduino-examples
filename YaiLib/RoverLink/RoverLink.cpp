@@ -1,4 +1,4 @@
-#include "RoverConstants.h"
+#include "YaiCommons.h"
 #include "RoverLink.h"
 #include <Arduino.h>
 
@@ -24,24 +24,24 @@ void RoverLink::motorStop(int roverType){
 String RoverLink::motorMove(String roverType, String moveType){
   String directionName = "None";
   RoverLink::motorHalt2WD();
-  if(moveType == ROVER_BODY_MOVE_TYPE_FORWARD){
+  if(moveType == String(ROVER_BODY_MOVE_TYPE_FORWARD)){
 	 directionName = "FORWARD";
 	 digitalWrite (PinOUTB, HIGH);
 	 digitalWrite (PinOUTD, HIGH);
    return "FORWARD";
   }
-  if(moveType == ROVER_BODY_MOVE_TYPE_BACK){
+  if(moveType == String(ROVER_BODY_MOVE_TYPE_BACK)){
 	 directionName = "BACK";
 	 digitalWrite (PinOUTA, HIGH);
 	 digitalWrite (PinOUTC, HIGH);
   }
 
-  if(moveType == ROVER_BODY_MOVE_TYPE_LEFT){
+  if(moveType == String(ROVER_BODY_MOVE_TYPE_LEFT)){
 	 directionName = "LEFT";
 	 digitalWrite (PinOUTB, HIGH);
   }
 
-  if(moveType == ROVER_BODY_MOVE_TYPE_RIGHT){
+  if(moveType == String(ROVER_BODY_MOVE_TYPE_RIGHT)){
 	 directionName = "RIGHT";
 	 digitalWrite (PinOUTD, HIGH);
   }

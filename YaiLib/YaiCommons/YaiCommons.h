@@ -1,3 +1,8 @@
+#ifndef YaiCommons_h
+#define YaiCommons_h
+
+#include <Arduino.h>
+
 //Enum Type
 #define ROVER_TYPE_2WD                    		1001
 #define SERVO_TYPE_SG90               	  		2001
@@ -30,3 +35,45 @@
 #define SERVO_ACTION_ANGLE	        	  		200002
 #define SERVO_STOP	  			      	  		200003
 #define OBSTACLE_READER                    		300001
+
+class YaiUtil{
+	public:
+		YaiUtil(){}
+
+		char *strSplit(char *str, const char *delim, char **save){
+		    char *res, *last;
+
+		    if( !save )
+		        return strtok(str, delim);
+		    if( !str && !(str = *save) )
+		        return NULL;
+		    last = str + strlen(str);
+		    if( (*save = res = strtok(str, delim)) )
+		    {
+		        *save += strlen(res);
+		        if( *save < last )
+		            (*save)++;
+		        else
+		            *save = NULL;
+		    }
+		    return res;
+		};
+
+		void getElementRoot(String myString, String rootElement[]){
+		  char copy[64];
+		  myString.toCharArray(copy, 64);
+		  char *p = copy;
+		  char *str;
+
+		  int i = 0;
+
+		  while ((str = strSplit(p, ",", &p)) != NULL){
+		    rootElement[i] = str;
+		    i++;
+		  }
+		};
+};
+
+#endif
+
+

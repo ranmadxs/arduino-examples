@@ -1,6 +1,6 @@
 #include <Arduino.h> 
 #include <Servo.h>
-#include "YaiConstants.h"
+#include "YaiCommons.h"
 
 //Servo pins
 static int PinServoH   = 5; // (D1)

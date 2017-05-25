@@ -1,10 +1,6 @@
 #include <Arduino.h>
-#include <ESP8266WiFi.h>
-#include <WiFiClient.h>
-#include <ESP8266WebServer.h>
-#include <ESP8266mDNS.h>
 #include "ServoLink.h"
-#include "YaiConstants.h"
+#include "YaiCommons.h"
 #include <SD.h>
 
 static int PinSDCard = 15;
@@ -175,7 +171,7 @@ class YaiOS {
     String clientIP;
     String macStr;
     boolean logEnabled;    
-
+	YaiUtil yaiUtil;
 	int paramsYai;
 
   int countFilesInDirectory(File dir) {

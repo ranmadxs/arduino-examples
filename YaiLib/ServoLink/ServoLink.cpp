@@ -1,6 +1,6 @@
 #include <Arduino.h> 
 #include "ServoLink.h"
-#include "YaiConstants.h"
+
 
 //default speed = 15
 // creo dos thread uno que haga move simepre que no este stop y el otro que haga el stop.

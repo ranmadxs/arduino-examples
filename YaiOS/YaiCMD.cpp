@@ -1,39 +1,5 @@
 #include "YaiOS.h"
 
-char *strSplit(char *str, const char *delim, char **save){
-    char *res, *last;
-
-    if( !save )
-        return strtok(str, delim);
-    if( !str && !(str = *save) )
-        return NULL;
-    last = str + strlen(str);
-    if( (*save = res = strtok(str, delim)) )
-    {
-        *save += strlen(res);
-        if( *save < last )
-            (*save)++;
-        else
-            *save = NULL;
-    }
-    return res;
-}
-
-
-void getElementRoot(String myString, String rootElement[]){
-  char copy[64];
-  myString.toCharArray(copy, 64);
-  char *p = copy;
-  char *str;
-
-  int i = 0;
-
-  while ((str = strSplit(p, ",", &p)) != NULL){
-    rootElement[i] = str;
-    i++;
-  }
-}
-
 //https://www.w3schools.com/code/tryit.asp?filename=FFHYS1V0HNCL
 String YaiOS::executeCommand(String pipelineCommand[], int totalCmds){
 	String jsonReturn = "";
@@ -43,7 +9,7 @@ String YaiOS::executeCommand(String pipelineCommand[], int totalCmds){
 		logDebug(pipelineCommand[i]);
 		totalExecuteds++;
 		String root[8];
-		getElementRoot(pipelineCommand[i], root);
+		yaiUtil.getElementRoot(pipelineCommand[i], root);
 		logDebug("CMD:" + root[0] + ", P1:" + root[1]);
     executeCommand(pipelineCommand[i]);
 	}
@@ -62,7 +28,7 @@ String YaiOS::executeCommand(String strCommand){
   }  
 
   String root[8];
-  getElementRoot(strCommand, root);
+  yaiUtil.getElementRoot(strCommand, root);
   String responseSvc = "";
   boolean respCommand = false;
   String commandRoot = root[0];

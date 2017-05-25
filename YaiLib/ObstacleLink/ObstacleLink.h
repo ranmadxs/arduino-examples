@@ -15,7 +15,7 @@ class ObstacleLink{
 
 		//Retorna distancia en cms
 		String distancia(int _tipo, int directionId){
-      long tiempo;
+			long tiempo;
 			tipo = _tipo;
 			float distancia;
 			digitalWrite(PinTriger,LOW);
