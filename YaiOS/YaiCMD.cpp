@@ -8,100 +8,84 @@ String YaiOS::executeCommand(String pipelineCommand[], int totalCmds){
 	for (int i = 0; i < totalCmds; i++){
 		logDebug(pipelineCommand[i]);
 		totalExecuteds++;
-		String root[8];
-		yaiUtil.getElementRoot(pipelineCommand[i], root);
-		logDebug("CMD:" + root[0] + ", P1:" + root[1]);
-    executeCommand(pipelineCommand[i]);
+		YaiCommand yaiCommand;
+		yaiCommand.type = String(YAI_COMMAND_TYPE_SERIAL);
+		yaiCommand.message = pipelineCommand[i];
+		yaiUtil.string2Serial(yaiCommand);
+		logDebug("CMD:" + yaiCommand.command + ", P1:" + yaiCommand.p1);
+		executeCommand(yaiCommand);
 	}
 	jsonReturn = "\"TOTAL_EXE\":"+String(totalExecuteds);
 	return jsonReturn;
 }
 //TODO: Refactor del tiempo se debe factorizar
-String YaiOS::executeCommand(String strCommand){
-  Serial.println("<< " + strCommand);
-  String jsonResult = strCommand;
-  String inputCommand;
-  boolean propagate = false;
-  logInfo("<< " + strCommand);
-  if(strCommand.indexOf("RESULT") > 0){
-    jsonResult = inputCommand;
-  }  
+String YaiOS::executeCommand(YaiCommand yaiCommand){
+	boolean propagate = false;
+	String content = "Command not found";
+	String resultStr = "NOK";
+	String responseSvc;
+	//Serial.println("<< " + yaiCommand.message);
+	String jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
+	if(yaiCommand.type == String(YAI_COMMAND_TYPE_RESULT)){
+		jsonResult = yaiCommand.message;
+	}
 
-  String root[8];
-  yaiUtil.getElementRoot(strCommand, root);
-  String responseSvc = "";
-  boolean respCommand = false;
-  String commandRoot = root[0];
-  String p1 = root[1];
-  String p2 = root[2];
-  String p3 = root[3];
-  String p4 = root[4];
-  String p5 = root[5];
-  String p6 = root[6];
-  String p7 = root[7];
-  String content = "";
-  String resultStr = "OK";
-  //Serial.print(commandRoot);
-  int command = commandRoot.toInt();
+	if(yaiCommand.command != ""){
+		int command = yaiCommand.command.toInt();
+
+		if(command == SERVO_ACTION_ANGLE){
+			propagate = false;
+			resultStr = "OK";
+			int tiempoStop = yaiCommand.p2.toInt();
+			delay(tiempoStop);
+			responseSvc = servoLn.servoAngle(yaiCommand.p1.toInt(), yaiCommand.p3.toInt(), yaiCommand.p4.toInt());
+			content = "{\"time:\":" + yaiCommand.p2 + ", \"servo\":"+responseSvc+"}";
+			jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
+		}
   
-  if(command == SERVO_ACTION_ANGLE){
-    propagate = false;
-	  respCommand = true;
-	  int tiempoStop = p2.toInt();
-	  delay(tiempoStop);
-	  responseSvc = servoLn.servoAngle(p1.toInt(), p3.toInt(), p4.toInt());
-	  content += "{\"time:\":" + p2 + ", \"servo\":"+responseSvc+"}";
-	  jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
-  }
+		if(command == SERVO_ACTION_CONTINUOUS){
+			propagate = false;
+			resultStr = "OK";
+			int tiempoStop = yaiCommand.p2.toInt();
+			delay(tiempoStop);
+			responseSvc = servoLn.servoMove(yaiCommand.p1.toInt(), yaiCommand.p3.toInt(), yaiCommand.p4.toInt(), yaiCommand.p5.toInt());
+			content = "{\"time:\":" + yaiCommand.p2 + ", \"servo\":"+responseSvc+"}";
+			jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
+		}
+
+		if(command == SERVO_STOP){
+			propagate = false;
+			resultStr = "OK";
+			int tiempoStop = yaiCommand.p2.toInt();
+			delay(tiempoStop);
+			responseSvc = servoLn.servoStop(yaiCommand.p1.toInt(), yaiCommand.p3.toInt());
+			content = "{\"time:\":" + yaiCommand.p2 + ", \"servo\":"+responseSvc+"}";
+			jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
+		}
+
+		if(command == YAI_SERIAL_CMD_GET_IP){
+			propagate = false;
+			resultStr = "OK";
+			content = "{\"IP\":\""+ YaiOS::getClientIP()+"\"";
+			if(yaiCommand.p1 == "true"){
+				content += ", \"MAC\":\""+ YaiOS::getMac()+"\"";
+			}
+			content += "}";
+			jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
+		}
   
-  if(command == SERVO_ACTION_CONTINUOUS){
-    propagate = false;
-	  respCommand = true;
-	  int tiempoStop = p2.toInt();
-	  delay(tiempoStop);
-	  responseSvc = servoLn.servoMove(p1.toInt(), p3.toInt(), p4.toInt(), p5.toInt());
-	  content += "{\"time:\":" + p2 + ", \"servo\":"+responseSvc+"}";
-	  jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
-  }
-
-  if(command == SERVO_STOP){
-    propagate = false;
-	  respCommand = true;
-	  int tiempoStop = p2.toInt();
-	  delay(tiempoStop);
-	  responseSvc = servoLn.servoStop(p1.toInt(), p3.toInt());
-	  content += "{\"time:\":" + p2 + ", \"servo\":"+responseSvc+"}";
-    jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
-  }
-
-  if(command == YAI_SERIAL_CMD_GET_IP){
-    propagate = false;
-	  respCommand = true;    
-    content += "{\"IP\":\""+ YaiOS::getClientIP()+"\"";
-    if(p1 == "true"){
-      content += ", \"MAC\":\""+ YaiOS::getMac()+"\"";
-    }    
-    content += "}";
-    jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
-  }
-  
-  if (command == ROVER_MOVE_MANUAL_BODY || command == ROVER_STOP || command == LASER_ACTION || command == OBSTACLE_READER){
-	respCommand = true;
-    propagate = true;
-  }
-
-  if(!respCommand){
-    resultStr = "NOK";
-    content = "\"Command not found\"";
-  }
-  if(propagate){
-    Serial.println(strCommand);
-    logDebug("Propagando: " + strCommand);
-    jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":\"PROPAGATE\"}";
-  }else{
-    Serial.println(jsonResult);
-    logInfo(">> " + jsonResult);
-  }
-  return jsonResult;
+		if (command == ROVER_MOVE_MANUAL_BODY || command == ROVER_STOP || command == LASER_ACTION || command == OBSTACLE_READER){
+			propagate = true;
+		}
+	}
+	if(propagate){
+		Serial.println(yaiCommand.message);
+		logDebug("Propagando: " + yaiCommand.message);
+		jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":\"PROPAGATE\"}";
+	}else{
+		Serial.println(jsonResult);
+		logInfo(">> " + jsonResult);
+	}
+	return jsonResult;
 }
 

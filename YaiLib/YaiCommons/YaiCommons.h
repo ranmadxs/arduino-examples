@@ -3,9 +3,13 @@
 
 #include <Arduino.h>
 
-//Enum Type
+//Enum Rover Type
 #define ROVER_TYPE_2WD                    		1001
+
+//Enum Servo Type
 #define SERVO_TYPE_SG90               	  		2001
+
+//Enum Obstacle Type
 #define OBSTACLE_HC_SR04                   		3001
 
 //Rover move enum
@@ -38,9 +42,64 @@
 
 #define YAI_LOG_FOLDER							"/logs"
 
+#define YAI_COMMAND_TYPE_SERIAL					"SERIAL"
+#define YAI_COMMAND_TYPE_SPI					"SPI"
+#define YAI_COMMAND_TYPE_RESULT					"RESULT"
+#define YAI_COMMAND_TYPE_NONE					"NONE"
+
+class YaiCommand{
+	public:
+		String message;
+		String type;
+		String command;
+		String p1;
+		String p2;
+		String p3;
+		String p4;
+		String p5;
+		String p6;
+		String p7;
+};
+
 class YaiUtil{
 	public:
 		YaiUtil(){}
+
+		YaiCommand commandSerialFilter(){
+			String serialIn;
+			YaiCommand yaiCommand;
+			yaiCommand.type = String(YAI_COMMAND_TYPE_NONE);
+			yaiCommand.message = "";
+			if (Serial.available() >0) {
+				serialIn = Serial.readStringUntil('\n');
+				if (serialIn.length() >0){
+					yaiCommand.message = serialIn;
+					yaiCommand.type=String(YAI_COMMAND_TYPE_SERIAL);
+					string2Serial(yaiCommand);
+				}
+			}
+			return yaiCommand;
+		}
+
+		void string2Serial(YaiCommand &yaiCommand){
+			if(yaiCommand.message != ""){
+				  String root[8];
+				  if(yaiCommand.message.indexOf("RESULT") > 0){
+					  yaiCommand.command = "";
+					  yaiCommand.type = String(YAI_COMMAND_TYPE_RESULT);
+				  }else{
+					  getElementRoot(yaiCommand.message, root);
+					  yaiCommand.command = root[0];
+					  yaiCommand.p1 = root[1];
+					  yaiCommand.p2 = root[2];
+					  yaiCommand.p3 = root[3];
+					  yaiCommand.p4 = root[4];
+					  yaiCommand.p5 = root[5];
+					  yaiCommand.p6 = root[6];
+					  yaiCommand.p7 = root[7];
+				  }
+			}
+		}
 
 		char *strSplit(char *str, const char *delim, char **save){
 		    char *res, *last;

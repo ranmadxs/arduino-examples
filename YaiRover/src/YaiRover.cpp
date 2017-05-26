@@ -25,20 +25,17 @@ char* arrayWifi[totalWifi][2] = {
 };
 
 YaiOS yaiOS;
-
+YaiUtil yaiUtil;
 //TODO: Llevarse los thread a yaoiOS
 int TIME_INTERVAL_SERVO = 15;
 Thread threadServoRun;
 ThreadController threadController;
 
 void serialController(){
-	String serialIn = "";
-	int command = 0;
-	if (Serial.available() >0) {
-		serialIn = Serial.readStringUntil('\n');
-		if (serialIn.length() >0){
-			yaiOS.executeCommand(serialIn);
-		}
+	YaiCommand yaiCommand;
+	yaiCommand = yaiUtil.commandSerialFilter();
+	if(yaiCommand.type != String(YAI_COMMAND_TYPE_NONE)){
+		yaiOS.executeCommand(yaiCommand);
 	}
 }
 
@@ -159,7 +156,11 @@ void setup(void){
 			}
 		}
 		message += " << " + jsonCommand;
-		String responseMsg = yaiOS.executeCommand(jsonCommand);
+		YaiCommand yaiCommand;
+		yaiCommand.type = String(YAI_COMMAND_TYPE_SERIAL);
+		yaiCommand.message = jsonCommand;
+		yaiUtil.string2Serial(yaiCommand);
+		String responseMsg = yaiOS.executeCommand(yaiCommand);
 		message += "\n \n >> " + responseMsg;
 		server.send(200, "text/plain", message);
 	});
