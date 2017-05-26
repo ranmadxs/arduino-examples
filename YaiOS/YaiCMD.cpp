@@ -26,9 +26,6 @@ String YaiOS::executeCommand(YaiCommand yaiCommand){
 	String responseSvc;
 	//Serial.println("<< " + yaiCommand.message);
 	String jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
-	if(yaiCommand.type == String(YAI_COMMAND_TYPE_RESULT)){
-		jsonResult = yaiCommand.message;
-	}
 
 	if(yaiCommand.command != ""){
 		int command = yaiCommand.command.toInt();

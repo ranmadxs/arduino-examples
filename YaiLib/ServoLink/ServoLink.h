@@ -37,18 +37,21 @@ class ServoLink{
       String movement = "None";
       int servoDirection = 0;
       int servoMovement = 0;
-      String result = "";
+      String content = "";
       int speed;
       int servoType = typeServo;
       int delta = 0;
+      String jsonResult;
+      String resultStr = "OK";
       if(directionFlagH){
         direction = "HORIZONTAL";
         speed = speedDelayServoH;
         servoDirection = SERVO_DIRECTION_HORIZONTAL;
         servoMovement = movementServoH;
         movement = moveContinuous(servoType, servoDirection, servoMovement, speed);
-        result = "{\"DIRECTION\":\""+direction+"\", \"SPEED\":"+String(speed)+", "+movement+"}";
-        Serial.println(result);
+        content = "{\"DIRECTION\":\""+direction+"\", \"SPEED\":"+String(speed)+", "+movement+"}";
+        jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
+        Serial.println(jsonResult);
 
       }
       if(directionFlagV){
@@ -57,8 +60,9 @@ class ServoLink{
     	  servoDirection = SERVO_DIRECTION_VERTICAL;
     	  servoMovement = movementServoV;
     	  movement = moveContinuous(servoType, servoDirection, servoMovement, speed);
-        result = "{\"DIRECTION\":\""+direction+"\", \"SPEED\":"+String(speed)+", "+movement+"}";
-        Serial.println(result);
+    	  content = "{\"DIRECTION\":\""+direction+"\", \"SPEED\":"+String(speed)+", "+movement+"}";
+    	  jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
+    	  Serial.println(jsonResult);
       }
     }
 

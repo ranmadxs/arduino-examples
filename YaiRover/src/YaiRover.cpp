@@ -34,7 +34,7 @@ ThreadController threadController;
 void serialController(){
 	YaiCommand yaiCommand;
 	yaiCommand = yaiUtil.commandSerialFilter();
-	if(yaiCommand.type != String(YAI_COMMAND_TYPE_NONE)){
+	if(yaiCommand.execute){
 		yaiOS.executeCommand(yaiCommand);
 	}
 }

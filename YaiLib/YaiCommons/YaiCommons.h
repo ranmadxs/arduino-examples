@@ -59,6 +59,7 @@ class YaiCommand{
 		String p5;
 		String p6;
 		String p7;
+		boolean execute;
 };
 
 class YaiUtil{
@@ -70,6 +71,7 @@ class YaiUtil{
 			YaiCommand yaiCommand;
 			yaiCommand.type = String(YAI_COMMAND_TYPE_NONE);
 			yaiCommand.message = "";
+			yaiCommand.execute = false;
 			if (Serial.available() >0) {
 				serialIn = Serial.readStringUntil('\n');
 				if (serialIn.length() >0){
@@ -87,7 +89,9 @@ class YaiUtil{
 				  if(yaiCommand.message.indexOf("RESULT") > 0){
 					  yaiCommand.command = "";
 					  yaiCommand.type = String(YAI_COMMAND_TYPE_RESULT);
+					  yaiCommand.execute = false;
 				  }else{
+					  yaiCommand.execute = true;
 					  getElementRoot(yaiCommand.message, root);
 					  yaiCommand.command = root[0];
 					  yaiCommand.p1 = root[1];
