@@ -1,3 +1,6 @@
+#ifndef ObstacleLink_h
+#define ObstacleLink_h
+
 #include <Arduino.h>
 
 //HC-SR04
@@ -31,3 +34,5 @@ class ObstacleLink{
 	private:
 		int tipo;
 };
+
+#endif

@@ -18,7 +18,7 @@ String YaiOS::executeCommand(String pipelineCommand[], int totalCmds){
 }
 //TODO: Refactor del tiempo se debe factorizar
 String YaiOS::executeCommand(String strCommand){
-
+  Serial.println("<< " + strCommand);
   String jsonResult = strCommand;
   String inputCommand;
   boolean propagate = false;

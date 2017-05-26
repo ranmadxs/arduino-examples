@@ -1,3 +1,6 @@
+#ifndef RoverLink_h
+#define RoverLink_h
+
 #include <Arduino.h> 
 
 //Derecha
@@ -34,3 +37,5 @@ class RoverLink {
 
     void motorHalt2WD();
 };
+
+#endif

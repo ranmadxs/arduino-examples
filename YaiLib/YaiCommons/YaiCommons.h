@@ -36,6 +36,8 @@
 #define SERVO_STOP	  			      	  		200003
 #define OBSTACLE_READER                    		300001
 
+#define YAI_LOG_FOLDER							"/logs"
+
 class YaiUtil{
 	public:
 		YaiUtil(){}

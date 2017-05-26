@@ -135,6 +135,7 @@ void setup(void){
 	Serial.println("");
 	Serial.print("Connected to: ");
 	Serial.println(ssid);
+	yaiOS.logInfo("Connected to: " + String(ssid));
 	Serial.print("IP address: ");
 	Serial.println(WiFi.localIP());
 	yaiOS.setClientIP(WiFi.localIP().toString());
@@ -142,7 +143,6 @@ void setup(void){
 	if (MDNS.begin("esp8266")) {
 		Serial.println("MDNS responder started");
 	}
-	yaiOS.logInfo("Servidor WEB inicializado");
 	yaiOS.logInfo("IP: " + yaiOS.getClientIP());
 
 	server.on("/", handleRoot);
@@ -185,6 +185,7 @@ void setup(void){
 
 	server.begin();
 	Serial.println("HTTP server started");
+	yaiOS.logInfo("HTTP server started");
 }
 
 void loop(void){

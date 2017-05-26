@@ -1,3 +1,6 @@
+#ifndef YaiOS_h
+#define YaiOS_h
+
 #include <Arduino.h>
 #include "ServoLink.h"
 #include "YaiCommons.h"
@@ -24,7 +27,19 @@ class YaiParseFile{
 		String contentType;
 		int codeStatus;
 };
-
+class YaiFile{
+	public:
+		YaiFile(){};
+		boolean exists(String fileName){
+			boolean existe = false;
+			File myFile = SD.open(fileName);
+			if(myFile){
+				existe = true;
+			}
+			myFile.close();
+			return existe;
+		};
+};
 class YaiCmd{
   public:
     YaiCmd(){};
@@ -49,17 +64,28 @@ class YaiOS {
    	String executeCommand(String pipelineCommand[], int totalCmds);
 
     void initSD(){
+      String logFolder = String(YAI_LOG_FOLDER);
       if (!SD.begin(PinSDCard)) {
         logEnabled = false;
         Serial.println("No se pudo inicializar SD Card");
       }else{
-        logEnabled = true;
-        Serial.println("SD Card Inicializado!!!");     
-        File folderRootLogs = SD.open("/logs");
-        int totalFiles = countFilesInDirectory(folderRootLogs);
-        totalFiles++;
-        logFileName = "/logs/"+getNewLogFileName(totalFiles, 8)+".LOG";
-        Serial.println("Log file " + logFileName);   
+        Serial.println("SD Card Inicializado!!!!");     
+        File folderRootLogs = SD.open(logFolder);
+        if(folderRootLogs){
+        	logEnabled = true;
+			int totalFiles = countFilesInDirectory(folderRootLogs);
+			totalFiles++;
+			logFileName = logFolder+"/"+getNewLogFileName(totalFiles, 8)+".LOG";
+			while(yaiFile.exists(logFileName)){
+				totalFiles++;
+				logFileName = logFolder+"/"+getNewLogFileName(totalFiles, 8)+".LOG";
+				Serial.println("[WARN] Archivo de log existe se incrementa : " + logFileName);
+			}
+			Serial.println("Log file " + logFileName);
+		}else{
+			logEnabled = false;
+			Serial.println("[ERROR] Folder "+logFolder+" do not exist");
+		}
       }
 
     };
@@ -172,6 +198,7 @@ class YaiOS {
     String macStr;
     boolean logEnabled;    
 	YaiUtil yaiUtil;
+	YaiFile yaiFile;
 	int paramsYai;
 
   int countFilesInDirectory(File dir) {
@@ -215,3 +242,5 @@ class YaiOS {
       }      
     }
 };
+
+#endif

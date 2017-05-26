@@ -1,3 +1,6 @@
+#ifndef ServoLink_h
+#define ServoLink_h
+
 #include <Arduino.h> 
 #include <Servo.h>
 #include "YaiCommons.h"
@@ -180,3 +183,5 @@ class ServoLink{
     };
 
 };
+
+#endif
