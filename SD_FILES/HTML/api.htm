@@ -54,7 +54,7 @@ th {
 
 <h2>YaiOS API</h2>
 <hr/>
-<h3>Component Type Enumeration</h3>
+<h3>Enum Rover Type</h3>
 <table>
   <tr>
     <th>Name</th>
@@ -66,11 +66,27 @@ th {
     <td>1001</td>
     <td>Tipo Rover con dos ruedas de tracci&oacute;n y una de gu&iacute;a sin tracci&oacute;n</td>
   </tr>   
+</table>
+<h3>Enum Servo Type</h3>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Value</th>
+    <th>Description</th>
+  </tr>
   <tr>
     <td>SERVO_TYPE_SG90</td>
     <td>2001</td>
     <td>Tipo servo SG90, 130&deg;</td>
   </tr> 
+</table>
+<h3>Enum Obstacle Type</h3>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Value</th>
+    <th>Description</th>
+  </tr>
   <tr>
     <td>OBSTACLE_HC_SR04</td>
     <td>3001</td>
@@ -131,7 +147,7 @@ th {
   </tr>
   <tr>
     <td>P1</td>
-    <td>Component Type Enumeration</td>
+    <td>Enum Rover Type</td>
     <td>Indica el tipo de Rover</td>
   </tr>
   <tr>
@@ -185,7 +201,7 @@ http://${clientIp}/cmd?COMMAND=100001&P1=1001&P2=0&P3=0&P4=10003&P5=None&P6=None
   </tr>
   <tr>
     <td>P1</td>
-    <td>Component Type Enumeration</td>
+    <td>Enum Rover Type</td>
     <td>Indica el tipo de Rover</td>
   </tr>
   <tr>
@@ -239,7 +255,7 @@ http://${clientIp}/cmd?COMMAND=100002&P1=1001&P2=0&P3=None&P4=None&P5=None&P6=No
   </tr>
   <tr>
     <td>P1</td>
-    <td>Component Type Enumeration</td>
+    <td>Enum Obstacle Type</td>
     <td>Indica el tipo de Sensor de Obst&aacute;culos</td>
   </tr>
   <tr>
