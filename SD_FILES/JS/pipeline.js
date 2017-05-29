@@ -1,5 +1,5 @@
 var pipeline = [];
-
+var TIPO_CALL = "SERIAL";
 function getInputP(varp){
 	var html = 	'<div class="tooltip" id="label_'+varp+'">| '+varp.toUpperCase()+': '+
 				'<span class="tooltiptext" id="tooltiptext_'+varp+'">None</span></div>'+
@@ -218,7 +218,7 @@ $( document ).ready(function() {
 			var htmlTr = "<tr><td>"+id+"</td><td>"+cmdTxt+"</td><td>"+p1+"</td><td>"+p2+"</td><td>"+p3+"</td><td>"
 						+p4+"</td><td>"+p5+"</td><td>"+p6+"</td><td>"+p7+"</td></tr>";
 			$('#tablePipeline tr:last').after(htmlTr);
-			pipeline.push($("#command option:selected").val()+","+p1+","+p2+","+p3+","+p4+","+p5+","+p6+","+p7);
+			pipeline.push(TIPO_CALL+","+$("#command option:selected").val()+","+p1+","+p2+","+p3+","+p4+","+p5+","+p6+","+p7);
 		}
 	});
 	$("#ejecutar").click(function(){
