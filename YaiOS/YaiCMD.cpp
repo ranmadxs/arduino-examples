@@ -72,13 +72,14 @@ String YaiOS::executeCommand(YaiCommand yaiCommand){
 		}
   
 		if (command == ROVER_MOVE_MANUAL_BODY || command == ROVER_STOP || command == LASER_ACTION || command == OBSTACLE_READER){
+			resultStr = "OK";
 			propagate = true;
 		}
 	}
 	if(propagate){
 		Serial.println(yaiCommand.message);
 		logDebug("Propagando: " + yaiCommand.message);
-		jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":\"PROPAGATE\"}";
+		jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":\"PROPAGATE\", \"TYPE\":"+yaiCommand.type+"}";
 	}else{
 		Serial.println(jsonResult);
 		logInfo(">> " + jsonResult);
