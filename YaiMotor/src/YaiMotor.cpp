@@ -72,6 +72,8 @@ void serialController(){
 
 void setup() {
 	Serial.begin(9600);
+	Serial.println("Yai motor inicializado");
+	Serial.println("Serial port ready");
 }
 
 void loop() {

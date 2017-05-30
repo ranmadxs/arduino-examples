@@ -85,16 +85,20 @@ class YaiUtil{
 		}
 
 		void string2Serial(YaiCommand &yaiCommand){
+			yaiCommand.command = "";
+			yaiCommand.execute = false;
+			yaiCommand.type = String(YAI_COMMAND_TYPE_NONE);
 			if(yaiCommand.message != ""){
 				  String root[9];
 				  if(yaiCommand.message.indexOf("RESULT") > 0){
-					  yaiCommand.command = "";
 					  yaiCommand.type = String(YAI_COMMAND_TYPE_RESULT);
-					  yaiCommand.execute = false;
 				  }else{
-					  yaiCommand.execute = true;
 					  getElementRoot(yaiCommand.message, root);
 					  yaiCommand.type = root[0];
+					  if(yaiCommand.type == String(YAI_COMMAND_TYPE_SERIAL) ||
+							  yaiCommand.type == String(YAI_COMMAND_TYPE_SPI) ||
+							  yaiCommand.type == String(YAI_COMMAND_TYPE_WIFI))
+					  yaiCommand.execute = true;
 					  yaiCommand.command = root[1];
 					  yaiCommand.p1 = root[2];
 					  yaiCommand.p2 = root[3];
