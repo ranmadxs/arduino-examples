@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import net.ddns.clrobotic.androidrover.enums.CommandEnum;
 import net.ddns.clrobotic.androidrover.enums.RoverMoveEnum;
 import net.ddns.clrobotic.androidrover.enums.VoiceCmdEnum;
+import net.ddns.clrobotic.androidrover.utils.YaiCommandUtil;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -35,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView helloID;
     protected Boolean isRecord;
     protected Boolean laserStatus = Boolean.FALSE;
-    private static final Boolean ENABLE_SEND_CMD = Boolean.FALSE;
-    private static final String IP_YAI_ROVER = "192.168.100.104";
+    private static final Boolean ENABLE_SEND_CMD = Boolean.TRUE;
+    private static final String IP_YAI_ROVER = "192.168.0.22";
     private static final String ROVER_TYPE_2WD = "1001";
 
 
@@ -51,8 +52,6 @@ public class MainActivity extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                     .permitAll().build();
             StrictMode.setThreadPolicy(policy);
-            //your codes here
-
         }
         btnForward = (Button)findViewById(R.id.btn_forward);
         grabar = (TextView) findViewById(R.id.textOutId);
@@ -61,21 +60,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.i("MainActivity", "isRecord::"+isRecord);
-                //if(isRecord){
-                //    YaiCmd cmd = new YaiCmd();
-                    //sendCommand(cmd);
-                    onClickImgBtnHablar();
-                //    grabar.setText("GRABANDO VOZ");
-                //    btnForward.setText("DETENER");
-                //    isRecord = Boolean.FALSE;
-                //}else{
-                //    btnForward.setText("GRABAR");
-                //    grabar.setText("OUT");
+                onClickImgBtnHablar();
                 isRecord = Boolean.TRUE;
-               // }
             }
         });
-
     }
 
     @Override
@@ -157,9 +145,9 @@ public class MainActivity extends AppCompatActivity {
         Log.i("sendCommand", cmd.toString());
         String responseStr = null;
         if(ENABLE_SEND_CMD) {
-            Log.i("sendCommand", "Http client send");
-
-            HttpGet request = new HttpGet("http://"+IP_YAI_ROVER+"/cmd?COMMAND=100001&P1=1001&P2=0&P3=0&P4=10001&P5=None&P6=None&P7=None");
+            String url = YaiCommandUtil.getUri(cmd);
+            Log.i("sendCommand", "Http client send: "+url);
+            HttpGet request = new HttpGet(url);
             //AndroidHttpClient httpclient = AndroidHttpClient.newInstance("Android");
             HttpClient httpclient = new DefaultHttpClient();
             try {
@@ -169,9 +157,6 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
                 return null;
             }
-            //finally {
-            //    httpclient.close();
-            //}
             Log.i("sendCommand", responseStr);
         }
         return responseStr;
