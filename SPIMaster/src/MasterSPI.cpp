@@ -20,6 +20,7 @@ void setup(){
 }
 
 void loop(){
+	char buf [20];
 	byte spi_dat;
 	char c;
 	digitalWrite(CS,LOW);           //Pull CS Line Low
@@ -34,9 +35,21 @@ void loop(){
 
 	digitalWrite(CS,LOW);           //Pull CS Line Low
 	spi_dat = SPI.transfer(0x00);   //Received the processed data byte from the slave
+
+	for (int pos = 0; pos < sizeof (buf) - 1; pos++){
+		delayMicroseconds (15);
+		buf [pos] = SPI.transfer (0);
+		if (buf [pos] == 0)      {
+		      break;
+		}
+
+	}
+
 	digitalWrite(CS,HIGH);          //Pull CS Line High
 	Serial.println("Processed Data Recieved from Slave is: ");
-	Serial.print(spi_dat);          //UART - Print the data received from the slave
+	Serial.println(spi_dat);          //UART - Print the data received from the slave
+	Serial.println("A ver si el buff toma algo: ");
+    Serial.println (buf);
 	Serial.println("\r\n");
 	delay(1000);                    //Delay of 1s
 }

@@ -4,8 +4,12 @@ volatile boolean process_it;                    //Flag for checking if the data 
 byte a;                                         //Byte to store the processed data
 char buf [100];
 volatile byte pos;
+volatile char bufRet [20] = "Bye, world!";
+volatile byte posRet;
+int flag;
 
 void setup (void) {
+  flag = 0;
   Serial.begin (9600);                        	//Set UART baug rate to 115200
   SPCR |= bit (SPE);                            //Configure ATMEGA328P/Arduino in slave mode
   pinMode(MISO, OUTPUT);                        //Configure MISO as output, SlaveOut
@@ -26,15 +30,27 @@ ISR (SPI_STC_vect)
       if (c == '\n')
       process_it = true;
   }
-  SPDR = 0x07;
+
+  if(flag == 0){
+	  SPDR = 0x03;
+  }
+  if(flag == 1){
+	  SPDR = 0x04;
+  }
 }
 
 void loop (void) {
-  if (process_it)                               //Check if the data has been processed
+  if (process_it && digitalRead(SS) == HIGH)    //Check if the data has been processed y el paquete es para este micro
     {
 	    buf [pos] = 0;
 	    Serial.println (buf);
 	    pos = 0;
 	    process_it = false;
+    }else{
+    	if (flag == 0){
+    		flag = 1;
+    	}else{
+    		flag = 0;
+    	}
     }
 }
