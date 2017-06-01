@@ -16,7 +16,7 @@
  */
 
 const int totalWifi = 3;
-const int retryWifi = 15;
+const int retryWifi = 17;
 
 char* arrayWifi[totalWifi][2] = {
   {"VTR-YAI-5Ghz", "Pana8bc1108"},
@@ -125,9 +125,6 @@ void setup(void){
 	    	}
 	    }
 	    Serial.println("");
-	}
-	while (WiFi.status() != WL_CONNECTED) {
-		Serial.print(".");
 	}
 	Serial.println("");
 	Serial.print("Connected to: ");
