@@ -29,15 +29,16 @@ void loop (void)
 	digitalWrite(CS,LOW); 	
 	spi_dat1 = SPI.transfer(2);	
 	digitalWrite(CS,HIGH);
-	delay(1000);
+	delay(10);
 	digitalWrite(CS,LOW); 	
 	spi_dat2 = SPI.transfer(3);	
 	digitalWrite(CS,HIGH);
-	delay(1000);
+	delay(10);
 	digitalWrite(CS,LOW); 	
 	spi_dat3 = SPI.transfer(4);	
 	digitalWrite(CS,HIGH);
 	
+	Serial.print("==================");
     Serial.print("RESP dat1:");
 	Serial.println(spi_dat1);
 	Serial.print("RESP dat2:");
