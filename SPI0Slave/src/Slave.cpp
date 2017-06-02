@@ -29,6 +29,8 @@ ISR (SPI_STC_vect)
       buf [pos++] = c;
       if (c == '\n')
       process_it = true;
+	  SPDR = 0x05;
+	  return;
   }
 
   if(flag == 0){
