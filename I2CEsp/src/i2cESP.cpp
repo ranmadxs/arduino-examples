@@ -23,12 +23,12 @@ void loop()
   Wire.endTransmission();   
   delay(500);
   Serial.println("Requesting Data"); 
-  Wire.requestFrom(SLAVE_ADDRESS, 2);
+  Wire.requestFrom(SLAVE_ADDRESS, 10);
 
   int bytes = Wire.available();
   Serial.print("Slave sent ");
   Serial.print(bytes);
-  Serial.print(" of information\n");
+  Serial.println(" of information");
   for(int i = 0; i< bytes; i++)
   {
     x = Wire.read();

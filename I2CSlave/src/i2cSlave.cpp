@@ -3,15 +3,13 @@
 
 #define SLAVE_ADDRESS 0x60
 byte x = 0x00;
-byte y = 0x01;
 
 void requestEvent() 
 {
   Serial.print("Request from Master. Sending: ");
-  Serial.println(x, HEX);
+  Serial.println("h2");
  
-  Wire.write(x);
-  Wire.write(y);
+  Wire.write("h2");
 }
 
 void receiveEvent(int bytes)
