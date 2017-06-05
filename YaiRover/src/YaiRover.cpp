@@ -3,8 +3,6 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
-#include <Thread.h>
-#include <ThreadController.h>
 #include "YaiOS.h"
 
 /*
@@ -26,10 +24,7 @@ char* arrayWifi[totalWifi][2] = {
 
 YaiOS yaiOS;
 YaiUtil yaiUtil;
-//TODO: Llevarse los thread a yaoiOS
-int TIME_INTERVAL_SERVO = 15;
-Thread threadServoRun;
-ThreadController threadController;
+
 
 void serialController(){
 	YaiCommand yaiCommand;
@@ -37,10 +32,6 @@ void serialController(){
 	if(yaiCommand.execute){
 		yaiOS.executeCommand(yaiCommand);
 	}
-}
-
-void callBackServoThread(){
-  yaiOS.callBackServoMovement();
 }
 
 ESP8266WebServer server(80);
@@ -100,11 +91,6 @@ void setup(void){
 	Serial.println("");
 	yaiOS.initSD();
 	yaiOS.logInfo("SD card inicializada");
-
-	threadServoRun.onRun(callBackServoThread);
-	threadServoRun.setInterval(TIME_INTERVAL_SERVO);
-	threadController.add(&threadServoRun);
-	yaiOS.logInfo("Thread servo inicializado");
 
 	char* ssid;
 	char* password;
@@ -189,5 +175,4 @@ void setup(void){
 void loop(void){
 	server.handleClient();
 	serialController();
-	threadController.run();
 }

@@ -30,36 +30,6 @@ String YaiOS::executeCommand(YaiCommand yaiCommand){
 	if(yaiCommand.command != ""){
 		int command = yaiCommand.command.toInt();
 
-		if(command == SERVO_ACTION_ANGLE){
-			propagate = false;
-			resultStr = "OK";
-			int tiempoStop = yaiCommand.p2.toInt();
-			delay(tiempoStop);
-			responseSvc = servoLn.servoAngle(yaiCommand.p1.toInt(), yaiCommand.p3.toInt(), yaiCommand.p4.toInt());
-			content = "{\"time:\":" + yaiCommand.p2 + ", \"servo\":"+responseSvc+"}";
-			jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
-		}
-  
-		if(command == SERVO_ACTION_CONTINUOUS){
-			propagate = false;
-			resultStr = "OK";
-			int tiempoStop = yaiCommand.p2.toInt();
-			delay(tiempoStop);
-			responseSvc = servoLn.servoMove(yaiCommand.p1.toInt(), yaiCommand.p3.toInt(), yaiCommand.p4.toInt(), yaiCommand.p5.toInt());
-			content = "{\"time:\":" + yaiCommand.p2 + ", \"servo\":"+responseSvc+"}";
-			jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
-		}
-
-		if(command == SERVO_STOP){
-			propagate = false;
-			resultStr = "OK";
-			int tiempoStop = yaiCommand.p2.toInt();
-			delay(tiempoStop);
-			responseSvc = servoLn.servoStop(yaiCommand.p1.toInt(), yaiCommand.p3.toInt());
-			content = "{\"time:\":" + yaiCommand.p2 + ", \"servo\":"+responseSvc+"}";
-			jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
-		}
-
 		if(command == YAI_SERIAL_CMD_GET_IP){
 			propagate = false;
 			resultStr = "OK";
@@ -71,7 +41,9 @@ String YaiOS::executeCommand(YaiCommand yaiCommand){
 			jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
 		}
   
-		if (command == ROVER_MOVE_MANUAL_BODY || command == ROVER_STOP || command == LASER_ACTION || command == OBSTACLE_READER){
+		if (command == ROVER_MOVE_MANUAL_BODY || command == ROVER_STOP ||
+				command == LASER_ACTION || command == OBSTACLE_READER ||
+				command == SERVO_STOP || command == SERVO_ACTION_CONTINUOUS || command == SERVO_ACTION_ANGLE){
 			resultStr = "OK";
 			propagate = true;
 		}
