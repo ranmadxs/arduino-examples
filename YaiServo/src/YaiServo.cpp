@@ -28,26 +28,20 @@ String executeCommand(YaiCommand yaiCommand){
 	if (commandRoot == String(SERVO_ACTION_ANGLE)){
 		resultStr = "OK";
 		respCommand = true;
-		int tiempoStop = yaiCommand.p2.toInt();
-		delay(tiempoStop);
 		responseSvc = servoLink.servoAngle(yaiCommand.p1.toInt(), yaiCommand.p3.toInt(), yaiCommand.p4.toInt());
-		content = "{\"time:\":" + yaiCommand.p2 + ", \"servo\":"+responseSvc+"}";
+		content = "{\"TIME:\":" + yaiCommand.p2 + ", \"SERVO\":"+responseSvc+"}";
 	}
 	if (commandRoot == String(SERVO_ACTION_CONTINUOUS)){
 		resultStr = "OK";
 		respCommand = true;
-		int tiempoStop = yaiCommand.p2.toInt();
-		delay(tiempoStop);
 		responseSvc = servoLink.servoMove(yaiCommand.p1.toInt(), yaiCommand.p3.toInt(), yaiCommand.p4.toInt(), yaiCommand.p5.toInt());
-		content = "{\"time:\":" + yaiCommand.p2 + ", \"servo\":"+responseSvc+"}";
+		content = "{\"TIME:\":" + yaiCommand.p2 + ", \"SERVO\":"+responseSvc+"}";
 	}
 	if(commandRoot == String(SERVO_STOP)){
 		resultStr = "OK";
 		respCommand = true;
-		int tiempoStop = yaiCommand.p2.toInt();
-		delay(tiempoStop);
 		responseSvc = servoLink.servoStop(yaiCommand.p1.toInt(), yaiCommand.p3.toInt());
-		content = "{\"time:\":" + yaiCommand.p2 + ", \"servo\":"+responseSvc+"}";
+		content = "{\"TIME:\":" + yaiCommand.p2 + ", \"SERVO\":"+responseSvc+"}";
 	}
 	if(respCommand){
 		jsonResult = "{\"RESULT\"";
@@ -63,7 +57,6 @@ String executeCommand(YaiCommand yaiCommand){
 void serialController(){
 	YaiCommand yaiCommand;
 	yaiCommand = yaiUtil.commandSerialFilter();
-	//TODO: no propaga asi que solo ejecuta los CMD
 	if(yaiCommand.execute){
 		executeCommand(yaiCommand);
 	}

@@ -18,13 +18,12 @@ String YaiOS::executeCommand(String pipelineCommand[], int totalCmds){
 	jsonReturn = "\"TOTAL_EXE\":"+String(totalExecuteds);
 	return jsonReturn;
 }
-//TODO: Refactor del tiempo se debe factorizar
+
 String YaiOS::executeCommand(YaiCommand yaiCommand){
 	boolean propagate = false;
 	String content = "Command not found";
 	String resultStr = "NOK";
 	String responseSvc;
-	//Serial.println("<< " + yaiCommand.message);
 	String jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
 
 	if(yaiCommand.command != ""){
@@ -41,11 +40,20 @@ String YaiOS::executeCommand(YaiCommand yaiCommand){
 			jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
 		}
   
+		//Comandos que se propagan sin delay
+		if(command == OBSTACLE_READER){
+			resultStr = "OK";
+			propagate = true;
+		}
+
+		//Comandos que se propagan con delay
 		if (command == ROVER_MOVE_MANUAL_BODY || command == ROVER_STOP ||
-				command == LASER_ACTION || command == OBSTACLE_READER ||
+				command == LASER_ACTION ||
 				command == SERVO_STOP || command == SERVO_ACTION_CONTINUOUS || command == SERVO_ACTION_ANGLE){
 			resultStr = "OK";
 			propagate = true;
+			int tiempoStop = yaiCommand.p2.toInt();
+			delay(tiempoStop);
 		}
 	}
 	if(propagate){

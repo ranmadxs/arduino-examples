@@ -19,17 +19,13 @@ String executeCommand(YaiCommand yaiCommand){
 	if (commandRoot == String(ROVER_STOP)){
 		resultStr = "OK";
 		respCommand = true;
-		int tiempoStop = yaiCommand.p2.toInt();
-		delay(tiempoStop);
 	    roverLn.motorStop(yaiCommand.p1.toInt());
 	    content = "{\"TIME:\":" + yaiCommand.p2 + ", \"ROVER\":\"STOP\"}";
 	}
 	if (commandRoot == String(LASER_ACTION)){
 		resultStr = "OK";
 		respCommand = true;
-	    int tiempoStop = yaiCommand.p2.toInt();
 	    content = "{\"LASER_STATUS\": "+yaiCommand.p1+", \"TIME\": " + yaiCommand.p2 + "}";
-	    delay(tiempoStop);
 	    boolean activar = false;
 	    if(yaiCommand.p1 == "true"){
 	    	activar = true;
@@ -39,8 +35,6 @@ String executeCommand(YaiCommand yaiCommand){
 	if(commandRoot == String(ROVER_MOVE_MANUAL_BODY)){
 		resultStr = "OK";
 		respCommand = true;
-	    int tiempoStop = yaiCommand.p2.toInt();
-	    delay(tiempoStop);
 	    responseSvc = roverLn.motorMove(yaiCommand.p1, yaiCommand.p4);
 	    content = "{\"TIME:\":" + yaiCommand.p2 + ", \"ROVER\":\""+responseSvc+"\"}";
 	}
@@ -78,6 +72,6 @@ void setup() {
 
 void loop() {
  serialController();
- delay(50);
+ //delay(50);
 }
 
