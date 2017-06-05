@@ -20,12 +20,14 @@ class YaiParseFile{
 			fileExist = false;
 			contentType = "text/plain";
 			codeStatus = 404;
+			totalLines = 0;
 		};
 		String fileName;
 		boolean fileExist;
 		String content;
 		String contentType;
 		int codeStatus;
+		int totalLines;
 };
 class YaiFile{
 	public:
@@ -90,48 +92,9 @@ class YaiOS {
 
     };
 
-    YaiParseFile parseSDFile(String fileName, YaiParam params[], int totalParams){
-    	YaiParseFile yaiFile;
-    	String strReturn = "File not found in SD ("+ fileName + ")";
-    	yaiFile.fileName = fileName;
-    	yaiFile.codeStatus = 404;
-    	yaiFile.fileExist = false;
-    	String varName;
-    	char ltr;
-    	if (logEnabled){
-			String SD_Read = "";
-			File myFile;
-			logDebug("Abriendo archivo :: " + fileName);
-			myFile = SD.open(fileName);
-			if (myFile) {
-				while (myFile.available()) {
-					ltr = myFile.read();
-			    	SD_Read += ltr;
-				}
-				if (totalParams > 0){
-					for (int i = 0; i < totalParams; i++) {
-						varName = "${" +params[i].nombre+ "}";
-						SD_Read.replace(varName, params[i].valor);
-					}
-				}
-				strReturn = SD_Read;
-				yaiFile.fileExist = true;
-				yaiFile.codeStatus = 200;
-				yaiFile.contentType = "text/html";
-				if(fileName.indexOf(".css") > 0){
-					yaiFile.contentType = "text/css";
-				}
-				if(fileName.indexOf(".js") > 0){
-					yaiFile.contentType = "application/javascript";
-				}
-			}else {
-				logError("Error al abrir el archivo handleRoot");
-			}
-			myFile.close();
-    	}
-    	yaiFile.content = strReturn;
-    	return yaiFile;
-    };
+    YaiParseFile parseSDFile(String fileName, YaiParam params[], int totalParams);
+
+    YaiParseFile getFileLogLines(int lineInit, int lineEnd, boolean printSerial);
 
    	void logInfo(String msgLog){
       logBase("INFO", msgLog);
