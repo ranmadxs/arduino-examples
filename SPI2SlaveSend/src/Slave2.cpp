@@ -28,7 +28,8 @@ ISR (SPI_STC_vect)
     {
     active = true;
     pos = 0;
-    SPDR = buf [pos++];   // send first byte
+	SPDR = (byte) buf [pos++];   // send first byte <- con esto se debe arreglar
+    //SPDR = buf [pos++];   // send first byte
     return;
     }
 
