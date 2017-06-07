@@ -3,56 +3,28 @@
 #include "YaiCommunicator.h"
 
 #define ANSWERSIZE 32
-
+int I2C_CLIENT = 9;
 String answer = "{\"DISTANCE\":0.00}";
 
+YaiCommunicator yaiCommunicator;
+
 void receiveEvent(int countToRead) {
-	Serial.print(">> Receive event from master: ");
-	  while (0 < Wire.available()) {
-	    char c = Wire.read();
-	    Serial.print(c);
-	  }
-	  Serial.println("");
+	String requestFromMaster = yaiCommunicator.receiveI2CFromMaster();
+	Serial.println(" >> " + requestFromMaster);
 }
 
 void requestEvent() {
-  int lenAnsw = answer.length();
-  int difLen = 0;
-  
-  if(lenAnsw >= ANSWERSIZE){
-	lenAnsw = ANSWERSIZE;
-  }else{
-	  difLen = ANSWERSIZE - lenAnsw;
-  }
-
-  
-  byte response[ANSWERSIZE];
-  for (byte i=0;i<lenAnsw;i++) {
-    response[i] = (byte)answer.charAt(i);
-  }
-  if(difLen > 0){
-	  for (byte i=lenAnsw;i<ANSWERSIZE;i++) {
-		response[i] = 0x23;
-	  }
-  }
-  
-  //Wire.write(response,sizeof(response));
-  String respOk = "Ok";
-  char copyStr[ANSWERSIZE];
-  respOk.toCharArray(copyStr, ANSWERSIZE);
-  Wire.write(copyStr);
-  Serial.print("<< Request event to master: ");
-  Serial.println(respOk);
+	yaiCommunicator.sendI2CToMaster(answer);
+	Serial.println("<< " + answer);
 }
 
 void setup() {
-  Wire.begin(9);
-  Wire.onRequest(requestEvent); // data request to slave
-  Wire.onReceive(receiveEvent); // data slave received
-  Serial.begin(9600);
-  Serial.println("I2CPack Slave ready! "+String(ANSWERSIZE) + " Bytes");
+	Wire.begin(I2C_CLIENT);
+	Wire.onRequest(requestEvent); // data request to slave
+	Wire.onReceive(receiveEvent); // data slave received
+	Serial.begin(9600);
+	Serial.println("I2CPack Slave ready! " + String(ANSWERSIZE) + " Bytes");
 }
-
 
 void loop() {
 	delay(500);

@@ -19,7 +19,7 @@ void loop() {
   Serial.println(x);
   Wire.beginTransmission(9);
   char xd = x;
-  String cmdEnv = "SERIAL,100001,1001,0,0,10003,None,None,None:";
+  String cmdEnv = "SERIAL,100001,1001,0,0,10003,None,None,None";
   char copyStr[64];
   cmdEnv.toCharArray(copyStr, 64);
   Wire.write(copyStr);

@@ -7,6 +7,9 @@
 #define MAX_I2C_COMAND 32
 #define MAX_I2C_CONTENT 26
 
+int I2C_MASTER_SDA_PIN = 4;
+int I2C_MASTER_SCL_PIN = 5;
+
 class YaiI2CCommand {
 public:
 	String type; //3Bytes
@@ -17,69 +20,94 @@ public:
 
 class YaiCommunicator {
 public:
-	YaiCommunicator(){};
+	YaiCommunicator() {
+	}
 
-	String sendI2CCommand(String command){
-		int lenCmd = command.length();
-		int totalParts = 1;
-		if(lenCmd >MAX_I2C_CONTENT){
-			totalParts = 2;
-		}
-		Serial.println("==============================");
-		String cmd1 = command.substring(0, MAX_I2C_CONTENT);
-		Serial.println(cmd1);
-		String response1 = buildI2Cpackage(cmd1, totalParts, 1);
-		Serial.println(response1);
-		sendI2Cpackage(response1);
-		if(totalParts > 1){
-			String cmd2 = command.substring(MAX_I2C_CONTENT);
-			Serial.println(cmd2);
-			String response2 = buildI2Cpackage(cmd2, totalParts, 2);
-			Serial.println(response2);
-			sendI2Cpackage(response2);
-		}
-		Serial.println("==============================");
-		String resp = "RET";
+	String receiveI2CFromMaster(){
+		String resp = "";
+		  while (0 < Wire.available()) {
+		    char c = Wire.read();
+		    resp += c;
+		  }
 		return resp;
 	}
 
-	YaiI2CCommand buildI2CCommand(String command){
+	String receiveCommand(int clientAddress) {
+		String resp = "";
+		Wire.requestFrom(clientAddress, MAX_I2C_COMAND);
+		String response = "";
+		int countChars = 0;
+		while (0 < Wire.available()) {
+			char b = Wire.read();
+			resp += b;
+			countChars++;
+		}
+
+		return resp;
+	}
+
+	void sendI2CToMaster(String command){
+		String commandPkg =  buildI2Cpackage(command, 1, 1);
+		char copyStr[MAX_I2C_COMAND];
+		commandPkg.toCharArray(copyStr, MAX_I2C_COMAND);
+		Wire.write(copyStr,sizeof(copyStr));
+	}
+
+	void sendI2CCommand(String command, int clientAddress) {
+		int lenCmd = command.length();
+		int totalParts = 1;
+		if (lenCmd > MAX_I2C_CONTENT) {
+			totalParts = 2;
+		}
+		String cmd1 = command.substring(0, MAX_I2C_CONTENT);
+		String request1 = buildI2Cpackage(cmd1, totalParts, 1);
+		Serial.println("<< " + request1);
+		sendI2Cpackage(request1, clientAddress);
+		if (totalParts > 1) {
+			String cmd2 = command.substring(MAX_I2C_CONTENT);
+			String request2 = buildI2Cpackage(cmd2, totalParts, 2);
+			Serial.println("<< " + request2);
+			sendI2Cpackage(request2, clientAddress);
+		}
+	}
+
+	YaiI2CCommand buildI2CCommand(String command) {
 		YaiI2CCommand cmd1;
 		cmd1.type = String(YAI_COMMAND_TYPE_I2C);
 		cmd1.part = 1;
 		cmd1.content = "1234567890123456789012345678";
 		return cmd1;
-	};
+	}
+
 private:
 
-	String sendI2Cpackage(String pkg){
-		Wire.beginTransmission(9);
+	void sendI2Cpackage(String pkg, int clientAddress) {
+		Wire.beginTransmission(clientAddress);
 		char copyStr[MAX_I2C_COMAND];
 		pkg.toCharArray(copyStr, MAX_I2C_COMAND);
 		Wire.write(copyStr);
 		Wire.endTransmission();
-		String ret = "XD";
-		return ret;
 	}
 
-	String buildI2Cpackage(String command, int total, int part){
-		String respCommand = String(YAI_COMMAND_TYPE_I2C) + String(part) + String(total) +command;
+	String buildI2Cpackage(String command, int total, int part) {
+		String respCommand = String(YAI_COMMAND_TYPE_I2C) + String(part)
+				+ String(total) + command;
 		int difLen = 0;
-		  int lenCommand = command.length();
-		  int headerLen = MAX_I2C_COMAND - MAX_I2C_CONTENT;
-		  if(lenCommand >= MAX_I2C_CONTENT){
-			  lenCommand = MAX_I2C_CONTENT;
-		  }else{
-			  difLen = MAX_I2C_COMAND - lenCommand;
-		  }
+		int lenCommand = command.length();
+		int headerLen = MAX_I2C_COMAND - MAX_I2C_CONTENT;
+		if (lenCommand >= MAX_I2C_CONTENT) {
+			lenCommand = MAX_I2C_CONTENT;
+		} else {
+			difLen = MAX_I2C_COMAND - lenCommand;
+		}
 
-		 // if(difLen > 0){
-		//	  for (int i=lenCommand;i<MAX_I2C_CONTENT;i++) {
-		//		  respCommand += '#';
-		//	  }
-		//  }
+		if (difLen > 0) {
+			for (int i = lenCommand; i < MAX_I2C_CONTENT; i++) {
+				respCommand += '#';
+			}
+		}
 
-		  return respCommand;
+		return respCommand;
 	}
 
 protected:
