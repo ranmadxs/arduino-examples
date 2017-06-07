@@ -2,7 +2,6 @@
 #include <Wire.h>
 #include "YaiCommunicator.h"
 
-#define ANSWERSIZE 32
 int I2C_CLIENT = 9;
 String answer = "{\"DISTANCE\":0.00}";
 
@@ -23,7 +22,7 @@ void setup() {
 	Wire.onRequest(requestEvent); // data request to slave
 	Wire.onReceive(receiveEvent); // data slave received
 	Serial.begin(9600);
-	Serial.println("I2CPack Slave ready! " + String(ANSWERSIZE) + " Bytes");
+	Serial.println("I2CPack Slave ready! " + String(MAX_I2C_COMAND) + " Bytes");
 }
 
 void loop() {

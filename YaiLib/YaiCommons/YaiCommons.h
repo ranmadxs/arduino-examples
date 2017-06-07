@@ -49,6 +49,9 @@
 #define YAI_COMMAND_TYPE_NONE					"NONE"
 #define YAI_COMMAND_TYPE_I2C					"I2C"
 
+#define STATUS_OK								"OK"
+#define STATUS_NOK								"NOK"
+
 class YaiCommand{
 	public:
 		String message;

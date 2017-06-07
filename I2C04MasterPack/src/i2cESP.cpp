@@ -3,7 +3,6 @@
 #include "YaiCommunicator.h"
 
 byte x = 0;
-#define ANSWERSIZE 32
 int I2C_CLIENT = 9;
 String exampleCommand = "SERIAL,100003,true,None,None,None,None,None,None";
 String response;
@@ -14,7 +13,7 @@ void setup() {
 	Wire.setClockStretchLimit(15000);
 	Serial.begin(9600);
 	Serial.println(
-			"I2C MasterPack on NodeMCU ready! " + String(ANSWERSIZE)
+			"I2C MasterPack on NodeMCU ready! " + String(MAX_I2C_COMAND)
 					+ " Bytes");
 	delay(2000);
 }
