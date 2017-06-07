@@ -47,6 +47,7 @@
 #define YAI_COMMAND_TYPE_WIFI					"WIFI"
 #define YAI_COMMAND_TYPE_RESULT					"RESULT"
 #define YAI_COMMAND_TYPE_NONE					"NONE"
+#define YAI_COMMAND_TYPE_I2C					"I2C"
 
 class YaiCommand{
 	public:

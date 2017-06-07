@@ -14,7 +14,7 @@ String executeCommand(YaiCommand yaiCommand){
 	String resultStr = "NOK";
 	String responseSvc;
 	String commandRoot = yaiCommand.command;
-	String jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
+	String jsonResult = "{\""+String(YAI_COMMAND_TYPE_RESULT)+"\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
 	boolean respCommand = false;
 	if (commandRoot == String(ROVER_STOP)){
 		resultStr = "OK";
@@ -45,7 +45,7 @@ String executeCommand(YaiCommand yaiCommand){
 	    content = "{\"OBSTACLE_SENSOR\":"+responseSvc+"}";
 	}
 	if(respCommand){
-		jsonResult = "{\"RESULT\"";
+		jsonResult = "{\""+String(YAI_COMMAND_TYPE_RESULT)+"\"";
 		Serial.print(jsonResult);
 		jsonResult += ":\""+resultStr+"\", \"CONTENT\":";
 	    Serial.print(":\""+resultStr+"\", \"CONTENT\":");

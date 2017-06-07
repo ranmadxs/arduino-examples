@@ -18,8 +18,11 @@ void loop() {
   Serial.print("<< Write data to slave: ");
   Serial.println(x);
   Wire.beginTransmission(9);
-  Wire.write("x es : ");
-  Wire.write(x);
+  char xd = x;
+  String cmdEnv = "SERIAL,100001,1001,0,0,10003,None,None,None:";
+  char copyStr[64];
+  cmdEnv.toCharArray(copyStr, 64);
+  Wire.write(copyStr);
   Wire.endTransmission();
   delay(100);
   Serial.print(">> Receive data from slave: ");
