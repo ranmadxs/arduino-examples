@@ -10,32 +10,48 @@
 int I2C_MASTER_SDA_PIN = 4;
 int I2C_MASTER_SCL_PIN = 5;
 
-class YaiI2CCommand {
+class YaiBufferCommand {
 public:
 	String type; //3Bytes
 	int part;  //1Byte
 	int total; //1Byte
 	String content; //26Byte
 	String status;
+
+	void print(){
+		Serial.print("{\"type\":\"");
+		Serial.print(type);
+		Serial.print("\", \"part\":");
+		Serial.print(part);
+		Serial.print(", \"total\":");
+		Serial.print(total);
+		Serial.print(", \"content\":\"");
+		Serial.print(content+"\"");
+		Serial.println("}");
+	}
 };
 
 class YaiCommunicator {
 public:
 	YaiCommunicator() {
+		bufferI2CInit();
 	}
 
-	String receiveI2CFromMaster() {
+	YaiBufferCommand receiveI2CFromMaster() {
 		String resp = "";
-		YaiI2CCommand yaiI2CCmd;
+		YaiBufferCommand yaiI2CCmd;
 		while (0 < Wire.available()) {
 			char c = Wire.read();
 			resp += c;
 		}
 		if(resp.length() == MAX_I2C_COMAND - 1){
-			yaiI2CCmd = buildI2CCommand(resp);
-			Serial.println(yaiI2CCmd.content);
+			Serial.println("=========>> " + resp);
+			//yaiI2CCmd = buildI2CCommand(resp);
+			//Serial.println(yaiI2CCmd.content);
+			//bufferingI2C(yaiI2CCmd);
+
 		}
-		return resp;
+		return yaiI2CBuffer;
 	}
 
 	String receiveCommand(int clientAddress) {
@@ -68,6 +84,7 @@ public:
 		String cmd1 = command.substring(0, MAX_I2C_CONTENT);
 		String request1 = buildI2Cpackage(cmd1, totalParts, 1);
 		Serial.println("<< " + request1);
+		delay(200);
 		sendI2Cpackage(request1, clientAddress);
 		if (totalParts > 1) {
 			String cmd2 = command.substring(MAX_I2C_CONTENT);
@@ -77,16 +94,38 @@ public:
 		}
 	}
 
-	YaiI2CCommand buildI2CCommand(String command) {
-		YaiI2CCommand cmd1;
+	YaiBufferCommand buildI2CCommand(String command) {
+		YaiBufferCommand cmd1;
 		cmd1.type = String(YAI_COMMAND_TYPE_I2C);
 		cmd1.part =  command.substring(3, 4).toInt();
 		cmd1.total = command.substring(4, 5).toInt();
-		cmd1.content = command.substring(5);
+		String contenido = command.substring(5);
+		contenido.replace("#", "");
+		cmd1.content = contenido;
 		return cmd1;
 	}
 
 private:
+
+	void bufferingI2C(YaiBufferCommand yaiI2CCommand){
+		bufferI2CInit();
+		//Serial.println("===============");
+		yaiI2CCommand.print();
+		//Serial.println("===============");
+		if(yaiI2CBuffer.part < yaiI2CCommand.part){
+			Serial.print("PART BUFFER: ");
+			yaiI2CBuffer.part = yaiI2CCommand.part;
+			yaiI2CBuffer.content += yaiI2CCommand.content;
+			yaiI2CBuffer.total = yaiI2CCommand.total;
+			Serial.println(String(yaiI2CBuffer.part));
+			Serial.print("Total: ");
+			Serial.println(String(yaiI2CBuffer.total));
+		}
+		if(yaiI2CBuffer.part == yaiI2CBuffer.total){
+			Serial.println("TOTAL BUFFER ");
+			yaiI2CBuffer.status = String(STATUS_OK);
+		}
+	}
 
 	void sendI2Cpackage(String pkg, int clientAddress) {
 		Wire.beginTransmission(clientAddress);
@@ -118,7 +157,19 @@ private:
 	}
 
 protected:
+	YaiBufferCommand yaiI2CBuffer;
 
+	void bufferI2CInit(){
+		// Si esta full el buffer se limpia
+		if(yaiI2CBuffer.part == yaiI2CBuffer.total){
+			Serial.println("INIT BUFFER ====");
+			yaiI2CBuffer.part = 0;
+			yaiI2CBuffer.total = 0;
+			yaiI2CBuffer.content = "";
+			yaiI2CBuffer.status = STATUS_NOK;
+			yaiI2CBuffer.type = String(YAI_COMMAND_TYPE_I2C);
+		}
+	}
 };
 
 #endif

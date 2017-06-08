@@ -8,8 +8,13 @@ String answer = "{\"DISTANCE\":0.00}";
 YaiCommunicator yaiCommunicator;
 
 void receiveEvent(int countToRead) {
-	String requestFromMaster = yaiCommunicator.receiveI2CFromMaster();
-	Serial.println(" >> " + requestFromMaster);
+	YaiBufferCommand requestFromMaster = yaiCommunicator.receiveI2CFromMaster();
+	//if(requestFromMaster.status == String(STATUS_OK)){
+		//Serial.print(" >> ");
+		//requestFromMaster.print();
+	//}else{
+	//	Serial.println(" >> Y_Y   " + requestFromMaster.content);
+	//}
 }
 
 void requestEvent() {
