@@ -18,16 +18,12 @@ public:
 	String content; //26Byte
 	String status;
 
-	void print(){
-		Serial.print("{\"type\":\"");
-		Serial.print(type);
-		Serial.print("\", \"part\":");
-		Serial.print(part);
-		Serial.print(", \"total\":");
-		Serial.print(total);
-		Serial.print(", \"content\":\"");
-		Serial.print(content+"\"");
-		Serial.println("}");
+
+	String toString(){
+		String res = "{\"type\":\"" + String(type) + "\", \"part\":" + String(part)
+				+ ", \"total\":" + String(total) + ", \"content\":\"" + String(content)
+				+ "\"}";
+		return res;
 	}
 };
 
@@ -45,12 +41,12 @@ public:
 			resp += c;
 		}
 		if(resp.length() == MAX_I2C_COMAND - 1){
-			Serial.println("=========>> " + resp);
-			//yaiI2CCmd = buildI2CCommand(resp);
+			yaiI2CCmd = buildI2CCommand(resp);
 			//Serial.println(yaiI2CCmd.content);
-			//bufferingI2C(yaiI2CCmd);
+			bufferingI2C(yaiI2CCmd);
 
 		}
+		//Serial.println("=========>> " + resp);
 		return yaiI2CBuffer;
 	}
 
@@ -84,7 +80,7 @@ public:
 		String cmd1 = command.substring(0, MAX_I2C_CONTENT);
 		String request1 = buildI2Cpackage(cmd1, totalParts, 1);
 		Serial.println("<< " + request1);
-		delay(200);
+		//delay(800);
 		sendI2Cpackage(request1, clientAddress);
 		if (totalParts > 1) {
 			String cmd2 = command.substring(MAX_I2C_CONTENT);
@@ -110,19 +106,19 @@ private:
 	void bufferingI2C(YaiBufferCommand yaiI2CCommand){
 		bufferI2CInit();
 		//Serial.println("===============");
-		yaiI2CCommand.print();
+		//yaiI2CCommand.print();
 		//Serial.println("===============");
 		if(yaiI2CBuffer.part < yaiI2CCommand.part){
-			Serial.print("PART BUFFER: ");
+			//Serial.print("PART BUFFER: ");
 			yaiI2CBuffer.part = yaiI2CCommand.part;
 			yaiI2CBuffer.content += yaiI2CCommand.content;
 			yaiI2CBuffer.total = yaiI2CCommand.total;
-			Serial.println(String(yaiI2CBuffer.part));
-			Serial.print("Total: ");
-			Serial.println(String(yaiI2CBuffer.total));
+			//Serial.println(String(yaiI2CBuffer.part));
+			//Serial.print("Total: ");
+			//Serial.println(String(yaiI2CBuffer.total));
 		}
 		if(yaiI2CBuffer.part == yaiI2CBuffer.total){
-			Serial.println("TOTAL BUFFER ");
+			//Serial.println("TOTAL BUFFER ");
 			yaiI2CBuffer.status = String(STATUS_OK);
 		}
 	}
@@ -162,7 +158,7 @@ protected:
 	void bufferI2CInit(){
 		// Si esta full el buffer se limpia
 		if(yaiI2CBuffer.part == yaiI2CBuffer.total){
-			Serial.println("INIT BUFFER ====");
+			//Serial.println("INIT BUFFER ====");
 			yaiI2CBuffer.part = 0;
 			yaiI2CBuffer.total = 0;
 			yaiI2CBuffer.content = "";

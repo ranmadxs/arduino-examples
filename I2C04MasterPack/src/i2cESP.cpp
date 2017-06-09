@@ -4,7 +4,7 @@
 
 byte x = 0;
 int I2C_CLIENT = 9;
-String exampleCommand = "SERIAL,100003,true,None,None,None,None,None,None";
+String exampleCommand = "I2C,100003,true,None,None,None,None,None,None";
 String response;
 YaiCommunicator yaiCommunicator;
 

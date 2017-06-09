@@ -2,6 +2,7 @@
 #define ObstacleLink_h
 
 #include <Arduino.h>
+#include "YaiCommons.h"
 
 //HC-SR04
 int PinTriger = 9;   // triger
@@ -14,13 +15,26 @@ public:
 		pinMode(PinTriger, OUTPUT);
 		pinMode(PinEcho, INPUT);
 		tipo = 0;
+		directionFlagF = false;
 	}
-	;
+
+	void callbackObstacleRead(){
+		if(directionFlagF){
+			int dirID = OBSTACLE_SENSOR_FRONT;
+			distanceRead = getDistanceObstacle(dirID);
+		}
+	}
 
 	//Retorna distancia en cms
 	String distancia(int _tipo, int directionId) {
-		long tiempo;
 		tipo = _tipo;
+		float distancia = getDistanceObstacle(directionId);
+		String resp = "{\"DISTANCE\":" + String(distancia) + "}";
+		return resp;
+	}
+
+	float getDistanceObstacle(int directionId){
+		long tiempo;
 		float distancia;
 		digitalWrite(PinTriger, LOW);
 		delayMicroseconds(5);
@@ -28,13 +42,13 @@ public:
 		delayMicroseconds(10);
 		tiempo = pulseIn(PinEcho, HIGH);
 		distancia = int(0.017 * tiempo);
-		String resp = "{\"DISTANCE\":" + String(distancia) + "}";
-		return resp;
+		return distancia;
 	}
-	;
 
 private:
 	int tipo;
+	boolean directionFlagF;
+	float distanceRead;
 };
 
 #endif

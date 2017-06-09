@@ -101,7 +101,8 @@ class YaiUtil{
 					  yaiCommand.type = root[0];
 					  if(yaiCommand.type == String(YAI_COMMAND_TYPE_SERIAL) ||
 							  yaiCommand.type == String(YAI_COMMAND_TYPE_SPI) ||
-							  yaiCommand.type == String(YAI_COMMAND_TYPE_WIFI))
+							  yaiCommand.type == String(YAI_COMMAND_TYPE_WIFI) ||
+							  yaiCommand.type == String(YAI_COMMAND_TYPE_I2C))
 					  yaiCommand.execute = true;
 					  yaiCommand.command = root[1];
 					  yaiCommand.p1 = root[2];

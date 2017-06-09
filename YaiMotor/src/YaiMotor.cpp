@@ -3,11 +3,21 @@
 #include "YaiCommons.h"
 #include "ObstacleLink.h"
 #include <string.h>
+#include <Thread.h>
+#include <ThreadController.h>
 
 RoverLink roverLn;
 ObstacleLink obstacleLn;
 
 YaiUtil yaiUtil;
+
+int TIME_INTERVAL_SERVO = 15;
+Thread threadObstacleRun;
+ThreadController threadController;
+
+void callbackObstacleRead(){
+	obstacleLn.callbackObstacleRead();
+}
 
 String executeCommand(YaiCommand yaiCommand){
 	String content = "Command not found";
@@ -68,10 +78,14 @@ void setup() {
 	Serial.begin(9600);
 	Serial.println("Yai motor inicializado");
 	Serial.println("Serial port ready");
+	threadObstacleRun.onRun(callbackObstacleRead);
+	threadObstacleRun.setInterval(TIME_INTERVAL_SERVO);
+	threadController.add(&threadObstacleRun);
+	Serial.println("Thread Obstacle inicializado");
 }
 
 void loop() {
  serialController();
- //delay(50);
+ threadController.run();
 }
 

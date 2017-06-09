@@ -6,15 +6,15 @@ int I2C_CLIENT = 9;
 String answer = "{\"DISTANCE\":0.00}";
 
 YaiCommunicator yaiCommunicator;
+boolean receive = false;
+String commandI2C = "";
 
 void receiveEvent(int countToRead) {
 	YaiBufferCommand requestFromMaster = yaiCommunicator.receiveI2CFromMaster();
-	//if(requestFromMaster.status == String(STATUS_OK)){
-		//Serial.print(" >> ");
-		//requestFromMaster.print();
-	//}else{
-	//	Serial.println(" >> Y_Y   " + requestFromMaster.content);
-	//}
+	if(requestFromMaster.status == String(STATUS_OK)){
+		receive = true;
+		commandI2C = requestFromMaster.content;
+	}
 }
 
 void requestEvent() {
@@ -31,5 +31,9 @@ void setup() {
 }
 
 void loop() {
-	delay(500);
+	if(receive){
+		Serial.print(" >> ");
+		Serial.println(commandI2C);
+		receive = false;
+	}
 }
