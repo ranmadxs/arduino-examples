@@ -35,6 +35,7 @@
 #define ROVER_STOP                        		100002
 #define YAI_SERIAL_CMD_GET_IP             		100003
 #define LASER_ACTION                      		100004
+#define YAI_GET_CURRENT_LOG             		100005
 #define SERVO_ACTION_CONTINUOUS	          		200001
 #define SERVO_ACTION_ANGLE	        	  		200002
 #define SERVO_STOP	  			      	  		200003

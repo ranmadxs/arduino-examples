@@ -29,19 +29,6 @@ class YaiParseFile{
 		int codeStatus;
 		int totalLines;
 };
-class YaiFile{
-	public:
-		YaiFile(){};
-		boolean exists(String fileName){
-			boolean existe = false;
-			File myFile = SD.open(fileName);
-			if(myFile){
-				existe = true;
-			}
-			myFile.close();
-			return existe;
-		};
-};
 class YaiCmd{
   public:
     YaiCmd(){};
@@ -63,6 +50,8 @@ class YaiOS {
 
    	YaiParseFile baseSDTemplate(String fileName);
 
+   	boolean existsFile(String fileName);
+
    	String executeCommand(String pipelineCommand[], int totalCmds);
 
     void initSD(){
@@ -78,7 +67,7 @@ class YaiOS {
 			int totalFiles = countFilesInDirectory(folderRootLogs);
 			totalFiles++;
 			logFileName = logFolder+"/"+getNewLogFileName(totalFiles, 8)+".LOG";
-			while(yaiFile.exists(logFileName)){
+			while(existsFile(logFileName)){
 				totalFiles++;
 				logFileName = logFolder+"/"+getNewLogFileName(totalFiles, 8)+".LOG";
 				Serial.println("[WARN] Archivo de log existe se incrementa : " + logFileName);
@@ -161,7 +150,7 @@ class YaiOS {
     String macStr;
     boolean logEnabled;    
 	YaiUtil yaiUtil;
-	YaiFile yaiFile;
+	//YaiFile yaiFile;
 	int paramsYai;
 
   int countFilesInDirectory(File dir) {

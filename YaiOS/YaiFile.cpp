@@ -8,6 +8,7 @@ YaiParseFile YaiOS::getFileLogLines(int lineInit, int lineEnd, boolean printSeri
 	yaiFile.codeStatus = 404;
 	yaiFile.fileExist = false;
 	char ltr;
+	String lineStr = "";
     if(logEnabled){
     	File logFile = SD.open(logFileName);
     	if (logFile) {
@@ -17,13 +18,14 @@ YaiParseFile YaiOS::getFileLogLines(int lineInit, int lineEnd, boolean printSeri
 			while (logFile.available()) {
 				countLine++;
 				if(countLine >= lineInit && countLine <= lineEnd){
-					ltr = logFile.read();
-					contentLogFile += ltr;
+					//ltr = logFile.read();
+					lineStr = logFile.readStringUntil('\n');
+					contentLogFile = contentLogFile + lineStr;
+					if(printSerial){
+						Serial.println(lineStr);
+					}
+					//contentLogFile = contentLogFile.concat('\n');
 				}
-				if(printSerial){
-					Serial.println(ltr);
-				}
-
 				if( countLine > lineEnd){
 					break;
 				}
@@ -35,6 +37,16 @@ YaiParseFile YaiOS::getFileLogLines(int lineInit, int lineEnd, boolean printSeri
     yaiFile.content = contentLogFile;
 	return yaiFile;
 }
+
+boolean YaiOS::existsFile(String fileName){
+	boolean existe = false;
+	File myFile = SD.open(fileName);
+	if(myFile){
+		existe = true;
+	}
+	myFile.close();
+	return existe;
+};
 
 YaiParseFile YaiOS::parseSDFile(String fileName, YaiParam params[], int totalParams) {
 	YaiParseFile yaiFile;

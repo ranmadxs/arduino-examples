@@ -25,9 +25,25 @@ String YaiOS::executeCommand(YaiCommand yaiCommand){
 	String resultStr = "NOK";
 	String responseSvc;
 	String jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
+	boolean getLogs = false;
+
 
 	if(yaiCommand.command != ""){
 		int command = yaiCommand.command.toInt();
+
+		if(command == YAI_GET_CURRENT_LOG){
+			propagate = false;
+			getLogs = true;
+			boolean printSerial = false;
+			if(yaiCommand.p3 == "true"){
+				printSerial = true;
+			}
+			int lineInit = yaiCommand.p1.toInt();
+			int lineEnd = yaiCommand.p2.toInt();
+			YaiParseFile yaiParseFile;
+			yaiParseFile = YaiOS::getFileLogLines(lineInit, lineEnd, printSerial);
+			jsonResult = yaiParseFile.content;
+		}
 
 		if(command == YAI_SERIAL_CMD_GET_IP){
 			propagate = false;
@@ -61,8 +77,10 @@ String YaiOS::executeCommand(YaiCommand yaiCommand){
 		logDebug("Propagando: " + yaiCommand.message);
 		jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":\"PROPAGATE\", \"TYPE\":"+yaiCommand.type+"}";
 	}else{
-		Serial.println(jsonResult);
-		logInfo(">> " + jsonResult);
+		if(!getLogs){
+			Serial.println(jsonResult);
+			logInfo(">> " + jsonResult);
+		}
 	}
 	return jsonResult;
 }
