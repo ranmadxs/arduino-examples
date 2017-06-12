@@ -10,6 +10,12 @@
 int I2C_MASTER_SDA_PIN = 4;
 int I2C_MASTER_SCL_PIN = 5;
 
+int I2C_CLIENT_YAI_SERVO = 8;
+int I2C_CLIENT_YAI_MOTOR = 9;
+
+//#ifndef YaiBufferCommand_h
+//#define YaiBufferCommand_h
+
 class YaiBufferCommand {
 public:
 	String type; //3Bytes
@@ -26,11 +32,35 @@ public:
 		return res;
 	}
 };
+//#endif
 
 class YaiCommunicator {
 public:
 	YaiCommunicator() {
 		bufferI2CInit();
+		yaiMotorReady = false;
+		yaiServoReady = false;
+	}
+
+	boolean scannI2CClient(int clientAddress){
+		boolean res = false;
+		Wire.beginTransmission(clientAddress);
+		byte error = Wire.endTransmission();
+		if (error == 0) {
+			if(clientAddress == I2C_CLIENT_YAI_MOTOR){
+				yaiMotorReady = true;
+				Serial.println("Yai Motor on address 0x0" + String(clientAddress) + " connected");
+			}
+			if(clientAddress == I2C_CLIENT_YAI_SERVO){
+				yaiServoReady = true;
+				Serial.println("Yai Servo on address 0x0" + String(clientAddress) + " connected");
+			}
+			res = true;
+		}else{
+			Serial.println("No client found on address 0x0" + String(clientAddress));
+			res = false;
+		}
+		return res;
 	}
 
 	YaiBufferCommand receiveI2CFromMaster() {
@@ -154,6 +184,9 @@ private:
 
 protected:
 	YaiBufferCommand yaiI2CBuffer;
+	boolean yaiMotorReady;
+	boolean yaiServoReady;
+
 
 	void bufferI2CInit(){
 		// Si esta full el buffer se limpia

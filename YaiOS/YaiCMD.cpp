@@ -1,4 +1,7 @@
 #include "YaiOS.h"
+#include <Wire.h>
+//#include "YaiCommunicator.h"
+
 
 //https://www.w3schools.com/code/tryit.asp?filename=FFHYS1V0HNCL
 String YaiOS::executeCommand(String pipelineCommand[], int totalCmds){
@@ -28,7 +31,7 @@ String YaiOS::executeCommand(YaiCommand yaiCommand){
 	boolean getLogs = false;
 
 
-	if(yaiCommand.command != ""){
+	if(yaiCommand.command != "" && yaiCommand.type != ""){
 		int command = yaiCommand.command.toInt();
 
 		if(command == YAI_GET_CURRENT_LOG){
@@ -60,6 +63,11 @@ String YaiOS::executeCommand(YaiCommand yaiCommand){
 		if(command == OBSTACLE_READER){
 			resultStr = "OK";
 			propagate = true;
+
+			//if(yaiCommand.type == String("YAI_COMMAND_TYPE_I2C")){
+			//	propagate = false;
+			//	yaiCommunicator.sendI2CCommand(yaiCommand.message, I2C_CLIENT_YAI_MOTOR);
+			//}
 		}
 
 		//Comandos que se propagan con delay
