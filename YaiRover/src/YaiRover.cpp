@@ -3,7 +3,9 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
+#include <Wire.h>
 #include "YaiOS.h"
+#include "YaiCommunicator.h"
 
 /*
  * Main.cpp
@@ -24,7 +26,7 @@ char* arrayWifi[totalWifi][2] = {
 
 YaiOS yaiOS;
 YaiUtil yaiUtil;
-
+YaiCommunicator yaiCommunicator;
 
 void serialController(){
 	YaiCommand yaiCommand;
@@ -92,6 +94,24 @@ void setup(void){
 	yaiOS.initSD();
 	yaiOS.logInfo("SD card inicializada");
 
+	Wire.begin(I2C_MASTER_SDA_PIN, I2C_MASTER_SCL_PIN);
+	Wire.setClockStretchLimit(15000);
+	String masterWireLog = "I2C MasterBus " + String(MAX_I2C_COMAND) + " Bytes ready!";
+	Serial.println(masterWireLog);
+	yaiOS.logInfo(masterWireLog);
+	boolean resWire = yaiCommunicator.scannI2CClient(I2C_CLIENT_YAI_MOTOR);
+	if(resWire){
+		yaiOS.logDebug("I2C [OK] connected to Yai Motor on address 0x0" + String (I2C_CLIENT_YAI_MOTOR) );
+	}else{
+		yaiOS.logWarn("I2C Not connected to Yai Motor on address 0x0" + String (I2C_CLIENT_YAI_MOTOR));
+	}
+	resWire = yaiCommunicator.scannI2CClient(I2C_CLIENT_YAI_SERVO);
+	if(resWire){
+		yaiOS.logDebug("I2C [OK] connected to Yai Servo on address 0x0" + String (I2C_CLIENT_YAI_SERVO) );
+	}else{
+		yaiOS.logWarn("I2C Not connected to Yai Servo on address 0x0" + String (I2C_CLIENT_YAI_SERVO));
+	}
+
 	char* ssid;
 	char* password;
 
@@ -145,6 +165,10 @@ void setup(void){
 		yaiUtil.string2Serial(yaiCommand);
 		String responseMsg = yaiOS.executeCommand(yaiCommand);
 		message += "\n \n >> " + responseMsg;
+		server.sendHeader("Access-Control-Allow-Origin", "*");
+	    server.sendHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
+		server.sendHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
 		server.send(200, "text/plain", message);
 	});
 

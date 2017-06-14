@@ -1,10 +1,11 @@
 #ifndef YaiOS_h
 #define YaiOS_h
-
+#include <Wire.h>
 #include <Arduino.h>
 #include "ServoLink.h"
 #include "YaiCommons.h"
 #include <SD.h>
+//#include "YaiCommunicator.h"
 
 static int PinSDCard = 15;
 class YaiParam{
