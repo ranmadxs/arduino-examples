@@ -29,6 +29,7 @@ class YaiParseFile{
 		int codeStatus;
 		int totalLines;
 };
+
 class YaiCmd{
   public:
     YaiCmd(){};
@@ -47,6 +48,8 @@ class YaiOS {
    	YaiOS(){
    		logEnabled = false;
    	};
+
+   	int countFilesInDirectory(File dir);
 
    	YaiParseFile baseSDTemplate(String fileName);
 
@@ -150,36 +153,9 @@ class YaiOS {
     String macStr;
     boolean logEnabled;    
 	YaiUtil yaiUtil;
-	//YaiFile yaiFile;
 	int paramsYai;
-
-  int countFilesInDirectory(File dir) {
-    int count = 0;
-    while (true) {
-
-      File entry =  dir.openNextFile();
-      if (! entry) {
-        // no more files
-        break;
-      }
-      if (!entry.isDirectory()) {
-        count++;
-      }
-      entry.close();
-    }
-    return count;
-  }
   
-  String getNewLogFileName(int index, int ceros){
-    String res = String(index);
-    String strIndex = String (index);
-
-    int totalCeros = ceros - strIndex.length();
-    for (int j = 0; j < totalCeros; j++){
-      res =  "0" + res;
-    }
-    return res;
-  }
+	String getNewLogFileName(int index, int ceros);
   
     void logBase(String tipo, String msgLog){
        if(logEnabled){

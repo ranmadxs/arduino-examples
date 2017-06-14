@@ -1,6 +1,35 @@
 #include "YaiOS.h"
 
-YaiParseFile YaiOS::getFileLogLines(int lineInit, int lineEnd, boolean printSerial){
+int YaiOS::countFilesInDirectory(File dir) {
+	int count = 0;
+	while (true) {
+
+		File entry = dir.openNextFile();
+		if (!entry) {
+			// no more files
+			break;
+		}
+		if (!entry.isDirectory()) {
+			count++;
+		}
+		entry.close();
+	}
+	return count;
+}
+
+String YaiOS::getNewLogFileName(int index, int ceros){
+  String res = String(index);
+  String strIndex = String (index);
+
+  int totalCeros = ceros - strIndex.length();
+  for (int j = 0; j < totalCeros; j++){
+    res =  "0" + res;
+  }
+  return res;
+}
+
+YaiParseFile YaiOS::getFileLogLines(int lineInit, int lineEnd,
+		boolean printSerial) {
 	YaiParseFile yaiFile;
 	String contentLogFile = "";
 	int countLine = 0;
@@ -9,46 +38,48 @@ YaiParseFile YaiOS::getFileLogLines(int lineInit, int lineEnd, boolean printSeri
 	yaiFile.fileExist = false;
 	char ltr;
 	String lineStr = "";
-    if(logEnabled){
-    	File logFile = SD.open(logFileName);
-    	if (logFile) {
+	if (logEnabled) {
+		File logFile = SD.open(logFileName);
+		if (logFile) {
 			yaiFile.fileExist = true;
 			yaiFile.codeStatus = 200;
 			yaiFile.contentType = "text/plain";
 			while (logFile.available()) {
 				countLine++;
-				if(countLine >= lineInit && countLine <= lineEnd){
+				if (countLine >= lineInit && countLine <= lineEnd) {
 					//ltr = logFile.read();
 					lineStr = logFile.readStringUntil('\n');
 					contentLogFile = contentLogFile + lineStr;
-					if(printSerial){
+					if (printSerial) {
 						Serial.println(lineStr);
 					}
 					//contentLogFile = contentLogFile.concat('\n');
 				}
-				if( countLine > lineEnd){
+				if (countLine > lineEnd) {
 					break;
 				}
 			}
-    	}
-    	logFile.close();
-    }
-    yaiFile.totalLines = countLine;
-    yaiFile.content = contentLogFile;
+		}
+		logFile.close();
+	}
+	yaiFile.totalLines = countLine;
+	yaiFile.content = contentLogFile;
 	return yaiFile;
 }
 
-boolean YaiOS::existsFile(String fileName){
+boolean YaiOS::existsFile(String fileName) {
 	boolean existe = false;
 	File myFile = SD.open(fileName);
-	if(myFile){
+	if (myFile) {
 		existe = true;
 	}
 	myFile.close();
 	return existe;
-};
+}
+;
 
-YaiParseFile YaiOS::parseSDFile(String fileName, YaiParam params[], int totalParams) {
+YaiParseFile YaiOS::parseSDFile(String fileName, YaiParam params[],
+		int totalParams) {
 	YaiParseFile yaiFile;
 	int countLine = 0;
 	String strReturn = "File not found in SD (" + fileName + ")";
@@ -64,8 +95,8 @@ YaiParseFile YaiOS::parseSDFile(String fileName, YaiParam params[], int totalPar
 		myFile = SD.open(fileName);
 		if (myFile) {
 			while (myFile.available()) {
-				ltr = myFile.read();
-				SD_Read += ltr;
+				//ltr = myFile.read();
+				SD_Read += myFile.readStringUntil('\n');
 				countLine++;
 			}
 			if (totalParams > 0) {
