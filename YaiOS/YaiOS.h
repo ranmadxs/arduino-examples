@@ -162,7 +162,7 @@ class YaiOS {
        if(logEnabled){
         File logFile = SD.open(logFileName, FILE_WRITE);
         if (logFile) {
-          logFile.print("["+tipo+"] (");
+          logFile.print("["+tipo+"]  (");
           logFile.print(String(millis()));
           logFile.print(") ");
           logFile.println(msgLog);

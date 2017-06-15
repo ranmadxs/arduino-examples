@@ -164,7 +164,7 @@ void setup(void){
 		yaiCommand.message = jsonCommand;
 		yaiUtil.string2Serial(yaiCommand);
 		String responseMsg = yaiOS.executeCommand(yaiCommand);
-		message += "\n \n >> " + responseMsg;
+		message += "\n" + responseMsg;
 		server.sendHeader("Access-Control-Allow-Origin", "*");
 	    server.sendHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
 		server.sendHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");

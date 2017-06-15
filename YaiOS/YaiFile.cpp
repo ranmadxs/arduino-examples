@@ -38,6 +38,7 @@ YaiParseFile YaiOS::getFileLogLines(int lineInit, int lineEnd,
 	yaiFile.fileExist = false;
 	char ltr;
 	String lineStr = "";
+	//Serial.println("lineInit:" + String(lineInit)+ "  lineEnd:" + lineEnd);
 	if (logEnabled) {
 		File logFile = SD.open(logFileName);
 		if (logFile) {
@@ -46,9 +47,9 @@ YaiParseFile YaiOS::getFileLogLines(int lineInit, int lineEnd,
 			yaiFile.contentType = "text/plain";
 			while (logFile.available()) {
 				countLine++;
+				lineStr = logFile.readStringUntil('\n');
 				if (countLine >= lineInit && countLine <= lineEnd) {
 					//ltr = logFile.read();
-					lineStr = logFile.readStringUntil('\n');
 					contentLogFile = contentLogFile + lineStr;
 					if (printSerial) {
 						Serial.println(lineStr);
