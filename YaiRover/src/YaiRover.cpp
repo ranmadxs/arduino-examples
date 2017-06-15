@@ -94,6 +94,9 @@ void setup(void) {
 	//Serial.begin(115200);
 	Serial.begin(9600);
 	Serial.println("");
+	Serial.println(" ##########################################");
+	Serial.println(" ################ YaiRover ################");
+	Serial.println(" ##########################################");
 	yaiOS.initSD();
 	yaiOS.logInfo("SD card connected");
 
@@ -147,19 +150,14 @@ void setup(void) {
 	}
 	String yaiIP = WiFi.localIP().toString();
 	if (!connectedWifi) {
+		ssid = "None";
 		WiFi.mode(WIFI_AP);
-		WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
-		WiFi.softAP(apSsid);
-		dnsServer.setTTL(300);
-		dnsServer.setErrorReplyCode(DNSReplyCode::ServerFailure);
-		dnsServer.start(DNS_PORT, "yairover.ddns.com", apIP);
-		ssid = apSsid;
-		//IPAddress ipAddrs = apIP.IPAddress();
-		//yaiIP = ipAddrs.toString();
-		yaiIP = apIP.toString();
+	}else{
+		WiFi.mode(WIFI_AP_STA);
+		//WiFi.mode(WIFI_AP);
 	}
+	//WiFi.mode(WIFI_AP_STA);
 
-	Serial.println("");
 	Serial.print("Connected to: ");
 	Serial.println(ssid);
 	yaiOS.logInfo("Connected to: " + String(ssid));
@@ -171,6 +169,17 @@ void setup(void) {
 		Serial.println("MDNS responder started");
 	}
 	yaiOS.logInfo("IP: " + yaiOS.getClientIP());
+
+	WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
+	WiFi.softAP(apSsid);
+	dnsServer.setTTL(300);
+	dnsServer.setErrorReplyCode(DNSReplyCode::ServerFailure);
+	dnsServer.start(DNS_PORT, "yairover.ddns.com", apIP);
+
+	Serial.println("DNS Server OK ip:" + apIP.toString() );
+	Serial.println("ssid:" + String(apSsid));
+	yaiOS.setServerIP(apIP.toString());
+	yaiOS.setServerSsid(String(apSsid));
 
 	server.on("/", handleRoot);
 	server.on("/api", handleAPI);

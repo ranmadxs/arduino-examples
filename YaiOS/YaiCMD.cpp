@@ -51,9 +51,11 @@ String YaiOS::executeCommand(YaiCommand yaiCommand){
 		if(command == YAI_SERIAL_CMD_GET_IP){
 			propagate = false;
 			resultStr = "OK";
-			content = "{\"IP\":\""+ YaiOS::getClientIP()+"\"";
+			content = "{\"CLIENT_IP\":\""+ YaiOS::getClientIP()+"\"";
 			if(yaiCommand.p1 == "true"){
 				content += ", \"MAC\":\""+ YaiOS::getMac()+"\"";
+				content += ", \"DNS_IP\":\""+ YaiOS::getServerIP()+"\"";
+				content += ", \"DNS_SSID\":\""+ YaiOS::getServerSsid()+"\"";
 			}
 			content += "}";
 			jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":"+content+"}";

@@ -48,6 +48,7 @@ class YaiOS {
   public:
    	YaiOS(){
    		logEnabled = false;
+   		serverIP = "0.0.0.0";
    	};
 
    	int countFilesInDirectory(File dir);
@@ -147,10 +148,28 @@ class YaiOS {
     	macStr = macIN;
     }
     
+    void setServerIP(String _ip){
+    	serverIP = _ip;
+    }
+
+    String getServerIP(){
+    	return serverIP;
+    }
+
+    void setServerSsid(String _ssid){
+    	serverSsid = _ssid;
+    }
+
+    String getServerSsid(){
+    	return serverSsid;
+    }
+
   private:    
     String logFileName;
     ServoLink servoLn;
     String clientIP;
+    String serverIP;
+    String serverSsid;
     String macStr;
     boolean logEnabled;    
 	YaiUtil yaiUtil;
