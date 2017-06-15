@@ -62,9 +62,9 @@ class YaiOS {
       String logFolder = String(YAI_LOG_FOLDER);
       if (!SD.begin(PinSDCard)) {
         logEnabled = false;
-        Serial.println("No se pudo inicializar SD Card");
+        Serial.println("Error iniciando SD Card");
       }else{
-        Serial.println("SD Card Inicializado!!!!");     
+        Serial.println("SD Card connected !!!!");
         File folderRootLogs = SD.open(logFolder);
         if(folderRootLogs){
         	logEnabled = true;

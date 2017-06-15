@@ -3,6 +3,7 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
+#include <DNSServer.h>
 #include <Wire.h>
 #include "YaiOS.h"
 #include "YaiCommunicator.h"
@@ -15,23 +16,25 @@
  *      Author: esanchez
  */
 
+const byte DNS_PORT = 53;
+IPAddress apIP(192, 168, 1, 1);
+DNSServer dnsServer;
+boolean connectedWifi = false;
 const int totalWifi = 3;
 const int retryWifi = 17;
+#define apSsid "YaiDNSServer"
 
-char* arrayWifi[totalWifi][2] = {
-  {"VTR-YAI-5Ghz", "Pana8bc1108"},
-  {"yai", "1101000000"},
-  {"GalaxyJ1", "1101000000"}
-};
+char* arrayWifi[totalWifi][2] = { { "VTR-YAI-5Ghz", "Pana8bc1108" }, { "yai",
+		"1101000000" }, { "GalaxyJ1", "1101000000" } };
 
 YaiOS yaiOS;
 YaiUtil yaiUtil;
 YaiCommunicator yaiCommunicator;
 
-void serialController(){
+void serialController() {
 	YaiCommand yaiCommand;
 	yaiCommand = yaiUtil.commandSerialFilter();
-	if(yaiCommand.execute){
+	if (yaiCommand.execute) {
 		yaiOS.executeCommand(yaiCommand);
 	}
 }
@@ -39,106 +42,130 @@ void serialController(){
 ESP8266WebServer server(80);
 
 void handleRoot() {
-  String htmlSrc;
-  htmlSrc = yaiOS.getIndex();
-  server.send ( 200, "text/html", htmlSrc );
+	String htmlSrc;
+	htmlSrc = yaiOS.getIndex();
+	server.send(200, "text/html", htmlSrc);
 }
 
-void handleAPI(){
-	  String htmlSrc;
-	  htmlSrc = yaiOS.getAPI();
-	  server.send ( 200, "text/html", htmlSrc );
+void handleAPI() {
+	String htmlSrc;
+	htmlSrc = yaiOS.getAPI();
+	server.send(200, "text/html", htmlSrc);
 }
 
-void handleAPIServo(){
-    String htmlSrc;
-    htmlSrc = yaiOS.getAPIServo();
-    server.send ( 200, "text/html", htmlSrc );
+void handleAPIServo() {
+	String htmlSrc;
+	htmlSrc = yaiOS.getAPIServo();
+	server.send(200, "text/html", htmlSrc);
 }
 
-void handleRoverJoystick(){
-    String htmlSrc;
-    htmlSrc = yaiOS.getRoverJoystick();
-    server.send ( 200, "text/html", htmlSrc );
+void handleRoverJoystick() {
+	String htmlSrc;
+	htmlSrc = yaiOS.getRoverJoystick();
+	server.send(200, "text/html", htmlSrc);
 }
 
-void handleNotFound(){
-  String content_type = "text/plain";
-  String message = "File Not Found\n\n";
-  int codeStatus = 404;
-  message += "URI: ";
-  message += server.uri();
-  message += "\nMethod: ";
-  message += (server.method() == HTTP_GET)?"GET":"POST";
-  message += "\nArguments: ";
-  message += server.args();
-  message += "\n";
-  for (uint8_t i=0; i<server.args(); i++){
-    message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
-  }
+void handleNotFound() {
+	String content_type = "text/plain";
+	String message = "File Not Found\n\n";
+	int codeStatus = 404;
+	message += "URI: ";
+	message += server.uri();
+	message += "\nMethod: ";
+	message += (server.method() == HTTP_GET) ? "GET" : "POST";
+	message += "\nArguments: ";
+	message += server.args();
+	message += "\n";
+	for (uint8_t i = 0; i < server.args(); i++) {
+		message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
+	}
 
-  YaiParseFile yaiFile = yaiOS.baseSDTemplate(server.uri());
-  if(yaiFile.fileExist){
-	  message = yaiFile.content;
-	  content_type = yaiFile.contentType;
-	  codeStatus = yaiFile.codeStatus;
-  }
-  server.send(codeStatus, content_type, message);
+	YaiParseFile yaiFile = yaiOS.baseSDTemplate(server.uri());
+	if (yaiFile.fileExist) {
+		message = yaiFile.content;
+		content_type = yaiFile.contentType;
+		codeStatus = yaiFile.codeStatus;
+	}
+	server.send(codeStatus, content_type, message);
 }
 
-void setup(void){
+void setup(void) {
 
 	//Serial.begin(115200);
 	Serial.begin(9600);
 	Serial.println("");
 	yaiOS.initSD();
-	yaiOS.logInfo("SD card inicializada");
+	yaiOS.logInfo("SD card connected");
 
 	Wire.begin(I2C_MASTER_SDA_PIN, I2C_MASTER_SCL_PIN);
 	Wire.setClockStretchLimit(15000);
-	String masterWireLog = "I2C MasterBus " + String(MAX_I2C_COMAND) + " Bytes ready!";
+	String masterWireLog = "I2C MasterBus " + String(MAX_I2C_COMAND)
+			+ " Bytes ready!";
 	Serial.println(masterWireLog);
 	yaiOS.logInfo(masterWireLog);
 	boolean resWire = yaiCommunicator.scannI2CClient(I2C_CLIENT_YAI_MOTOR);
-	if(resWire){
-		yaiOS.logDebug("I2C [OK] connected to Yai Motor on address 0x0" + String (I2C_CLIENT_YAI_MOTOR) );
-	}else{
-		yaiOS.logWarn("I2C Not connected to Yai Motor on address 0x0" + String (I2C_CLIENT_YAI_MOTOR));
+	if (resWire) {
+		yaiOS.logDebug(
+				"I2C [OK] connected to Yai Motor on address 0x0"
+						+ String(I2C_CLIENT_YAI_MOTOR));
+	} else {
+		yaiOS.logWarn(
+				"I2C Not connected to Yai Motor on address 0x0"
+						+ String(I2C_CLIENT_YAI_MOTOR));
 	}
 	resWire = yaiCommunicator.scannI2CClient(I2C_CLIENT_YAI_SERVO);
-	if(resWire){
-		yaiOS.logDebug("I2C [OK] connected to Yai Servo on address 0x0" + String (I2C_CLIENT_YAI_SERVO) );
-	}else{
-		yaiOS.logWarn("I2C Not connected to Yai Servo on address 0x0" + String (I2C_CLIENT_YAI_SERVO));
+	if (resWire) {
+		yaiOS.logDebug(
+				"I2C [OK] connected to Yai Servo on address 0x0"
+						+ String(I2C_CLIENT_YAI_SERVO));
+	} else {
+		yaiOS.logWarn(
+				"I2C Not connected to Yai Servo on address 0x0"
+						+ String(I2C_CLIENT_YAI_SERVO));
 	}
 
 	char* ssid;
 	char* password;
 
-	for (int j = 0; j<totalWifi; j++){
+	for (int j = 0; j < totalWifi; j++) {
 		Serial.print("Conectando a " + String(arrayWifi[j][0]) + " ");
-	    ssid = arrayWifi[j][0];
-	    password = arrayWifi[j][1];
-	    WiFi.begin(ssid, password);
-	    for (int k = 0; k < retryWifi; k++){
-	    	if(WiFi.status() == WL_CONNECTED){
-	    		k = retryWifi;
-	    		j = totalWifi;
-	    		Serial.print(" Conectado!!!");
-	    	}else{
-	    		delay(500);
-	    		Serial.print(".");
-	    	}
-	    }
-	    Serial.println("");
+		ssid = arrayWifi[j][0];
+		password = arrayWifi[j][1];
+		WiFi.begin(ssid, password);
+		for (int k = 0; k < retryWifi; k++) {
+			if (WiFi.status() == WL_CONNECTED) {
+				k = retryWifi;
+				j = totalWifi;
+				connectedWifi = true;
+				Serial.print(" Conectado!!!");
+			} else {
+				delay(500);
+				Serial.print(".");
+			}
+		}
+		Serial.println("");
 	}
+	String yaiIP = WiFi.localIP().toString();
+	if (!connectedWifi) {
+		WiFi.mode(WIFI_AP);
+		WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
+		WiFi.softAP(apSsid);
+		dnsServer.setTTL(300);
+		dnsServer.setErrorReplyCode(DNSReplyCode::ServerFailure);
+		dnsServer.start(DNS_PORT, "yairover.ddns.com", apIP);
+		ssid = apSsid;
+		//IPAddress ipAddrs = apIP.IPAddress();
+		//yaiIP = ipAddrs.toString();
+		yaiIP = apIP.toString();
+	}
+
 	Serial.println("");
 	Serial.print("Connected to: ");
 	Serial.println(ssid);
 	yaiOS.logInfo("Connected to: " + String(ssid));
 	Serial.print("IP address: ");
-	Serial.println(WiFi.localIP());
-	yaiOS.setClientIP(WiFi.localIP().toString());
+	Serial.println(yaiIP);
+	yaiOS.setClientIP(yaiIP);
 	yaiOS.setMac(WiFi.macAddress());
 	if (MDNS.begin("esp8266")) {
 		Serial.println("MDNS responder started");
@@ -149,44 +176,45 @@ void setup(void){
 	server.on("/api", handleAPI);
 	server.on("/apiServo", handleAPIServo);
 	server.on("/roverJoystick", handleRoverJoystick);
-	server.on("/cmd", [](){
-		String message = "";
-		String jsonCommand = "";
-		for (uint8_t i=0; i<server.args(); i++){
-			jsonCommand += server.arg(i);
-			if(i + 1 < server.args()){
-				jsonCommand += ",";
-			}
-		}
-		message += " << " + jsonCommand;
-		YaiCommand yaiCommand;
-		yaiCommand.type = String(YAI_COMMAND_TYPE_SERIAL);
-		yaiCommand.message = jsonCommand;
-		yaiUtil.string2Serial(yaiCommand);
-		String responseMsg = yaiOS.executeCommand(yaiCommand);
-		message += "\n" + responseMsg;
-		server.sendHeader("Access-Control-Allow-Origin", "*");
-	    server.sendHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
-		server.sendHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	server.on("/cmd",
+			[]() {
+				String message = "";
+				String jsonCommand = "";
+				for (uint8_t i=0; i<server.args(); i++) {
+					jsonCommand += server.arg(i);
+					if(i + 1 < server.args()) {
+						jsonCommand += ",";
+					}
+				}
+				message += " << " + jsonCommand;
+				YaiCommand yaiCommand;
+				yaiCommand.type = String(YAI_COMMAND_TYPE_SERIAL);
+				yaiCommand.message = jsonCommand;
+				yaiUtil.string2Serial(yaiCommand);
+				String responseMsg = yaiOS.executeCommand(yaiCommand);
+				message += "\n" + responseMsg;
+				server.sendHeader("Access-Control-Allow-Origin", "*");
+				server.sendHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
+				server.sendHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-		server.send(200, "text/plain", message);
-	});
+				server.send(200, "text/plain", message);
+			});
 
-	server.on("/pipelineCmd", []{
+	server.on("/pipelineCmd", [] {
 		String message = "{\"RESULT\"=\"OK\"";
-	    int totalCmds = 0;
-	    String responseMsg = "\"EXECUTE\":0";
-	    if(server.args() > 0){
-	    	String pipeline[server.args()];
-	    	for (uint8_t i=0; i<server.args(); i++){
-	    		pipeline[i] = server.arg(i);
-	  			totalCmds++;
-	  		}
-	  		responseMsg = yaiOS.executeCommand(pipeline, totalCmds);
-	    }
-	    message += ", \"PIPELINE\":{\"TOTAL_IN\":"+String(totalCmds);
-	    message += ", " + responseMsg + "}";
-	    server.send(200, "text/plain", message);
+		int totalCmds = 0;
+		String responseMsg = "\"EXECUTE\":0";
+		if(server.args() > 0) {
+			String pipeline[server.args()];
+			for (uint8_t i=0; i<server.args(); i++) {
+				pipeline[i] = server.arg(i);
+				totalCmds++;
+			}
+			responseMsg = yaiOS.executeCommand(pipeline, totalCmds);
+		}
+		message += ", \"PIPELINE\":{\"TOTAL_IN\":"+String(totalCmds);
+		message += ", " + responseMsg + "}";
+		server.send(200, "text/plain", message);
 	});
 
 	server.onNotFound(handleNotFound);
@@ -196,7 +224,10 @@ void setup(void){
 	yaiOS.logInfo("HTTP server started");
 }
 
-void loop(void){
+void loop(void) {
+	if (!connectedWifi) {
+		dnsServer.processNextRequest();
+	}
 	server.handleClient();
 	serialController();
 }
