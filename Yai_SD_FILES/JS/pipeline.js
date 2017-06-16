@@ -88,7 +88,7 @@ function constructTrueFalse(varp){
 	$("#label_"+varp).after(html);	
 }
 
-$( document ).ready(function() {
+//$( document ).ready(function() {
 	var id = 0;
 	var LASER_ACTION = 100004;
 	var ROVER_STOP 	= 100002;
@@ -99,7 +99,7 @@ $( document ).ready(function() {
 	var SERVO_STOP = 200003;
 	var OBSTACLE_READER = 300001;
 	
-	$("#command").change(function(){
+	$("#command").on( "change", function() {
 		reconstruct();
 		$(".params").removeAttr('disabled');
 		if(this.value == LASER_ACTION){
@@ -203,7 +203,7 @@ $( document ).ready(function() {
 		
 		
 	});
-	$("#agregar").click(function(){
+	$("#agregar").on( "click", function() {
 		id++;		
 		var cmd = $("#command").val();
 		if(cmd > 0){
@@ -221,7 +221,7 @@ $( document ).ready(function() {
 			pipeline.push(TIPO_CALL+","+$("#command option:selected").val()+","+p1+","+p2+","+p3+","+p4+","+p5+","+p6+","+p7);
 		}
 	});
-	$("#ejecutar").click(function(){
+	$("#ejecutar").on( "click", function() {
 		var data = new FormData();	
 		for	(j = 0; j < pipeline.length; j++){
 			data.append('cmd['+j+']', pipeline[j]);
@@ -235,4 +235,4 @@ $( document ).ready(function() {
 		};
 		xhr.send(data);		
 	});	
-});
+//});

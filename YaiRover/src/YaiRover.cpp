@@ -16,9 +16,10 @@
  *      Author: esanchez
  */
 
-//const byte DNS_PORT = 53;
-//IPAddress apIP(192, 168, 1, 1);
-//DNSServer dnsServer;
+const byte DNS_PORT = 53;
+IPAddress apLocalIp(192, 168, 50, 1);
+IPAddress apSubnetMask(255, 255, 255, 0);
+DNSServer dnsServer;
 boolean connectedWifi = false;
 const int totalWifi = 3;
 const int retryWifi = 17;
@@ -152,16 +153,17 @@ void setup(void) {
 	String yaiIP = WiFi.localIP().toString();
 	if (!connectedWifi) {
 		ssid = "None";
-	//	WiFi.mode(WIFI_AP);
-	//}else{
-	//	WiFi.mode(WIFI_AP_STA);
-		//WiFi.mode(WIFI_AP);
 	}
-	//WiFi.mode(WIFI_AP_STA);
-    IPAddress apLocalIp(192, 168, 50, 1);
-    IPAddress apSubnetMask(255, 255, 255, 0);
+
     WiFi.softAPConfig(apLocalIp, apLocalIp, apSubnetMask);
     WiFi.softAP(apSsid);
+	dnsServer.setTTL(300);
+	dnsServer.setErrorReplyCode(DNSReplyCode::ServerFailure);
+	dnsServer.start(DNS_PORT, "yairover.ddns.com", apLocalIp);
+	Serial.println("DNS Server OK ip:" + apLocalIp.toString() );
+	Serial.println("ssid:" + String(apSsid));
+	yaiOS.setServerIP(apLocalIp.toString());
+	yaiOS.setServerSsid(String(apSsid));
 
 	Serial.print("Connected to: ");
 	Serial.println(ssid);
@@ -175,17 +177,6 @@ void setup(void) {
 	}
 	MDNS.addService("http", "tcp", 80);
 	yaiOS.logInfo("IP: " + yaiOS.getClientIP());
-
-	//WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
-	//WiFi.softAP(apSsid);
-	//dnsServer.setTTL(300);
-	//dnsServer.setErrorReplyCode(DNSReplyCode::ServerFailure);
-	//dnsServer.start(DNS_PORT, "yairover.ddns.com", apIP);
-
-	Serial.println("DNS Server OK ip:" + apLocalIp.toString() );
-	Serial.println("ssid:" + String(apSsid));
-	yaiOS.setServerIP(apLocalIp.toString());
-	yaiOS.setServerSsid(String(apSsid));
 
 	server.on("/", handleRoot);
 	server.on("/api", handleAPI);
@@ -241,7 +232,7 @@ void setup(void) {
 
 void loop(void) {
 	//if (!connectedWifi) {
-	//	dnsServer.processNextRequest();
+		dnsServer.processNextRequest();
 	//}
 	server.handleClient();
 	serialController();

@@ -21,16 +21,17 @@ function actCmd(cmd, p1, p2, p3, p4, p5, p6, p7) {
 	$('#iframeLogs').attr("src", url);
 }
 
-$( document ).ready(function() {
+//$( document ).ready(function() {
 	init = START_LOG;
 	end = END_LOG;
 	
-	$("#siguiente").click(function(){
+	$("#siguiente").on( "click", function() {
+		alert("XDDDD");
 		init = end;
 		end = end + delta;
 		actCmd('100005', init, end);		
 	});
-	$("#anterior").click(function(){
+	$("#anterior").on( "click", function() {
 		end = init;
 		init = init - delta;
 		if (init < 1){
@@ -39,4 +40,4 @@ $( document ).ready(function() {
 		}
 		actCmd('100005', init, end);		
 	});	
-});
+//});
