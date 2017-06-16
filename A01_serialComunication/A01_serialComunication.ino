@@ -1,4 +1,4 @@
-// Serial test script
+#include <Arduino.h>// Serial test script
 
 int i = 0;
 String readString;

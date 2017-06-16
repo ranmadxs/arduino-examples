@@ -1,5 +1,6 @@
 //Sample using LiquidCrystal library
 #include <LiquidCrystal.h>
+#include <Arduino.h>
  
 /*******************************************************
  
