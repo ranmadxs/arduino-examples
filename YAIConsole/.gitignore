@@ -1,3 +1,4 @@
 .pioenvs
 .piolibdeps
 lib/YaiCommons
+lib/YaiLCD

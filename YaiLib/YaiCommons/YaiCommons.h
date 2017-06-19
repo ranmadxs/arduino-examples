@@ -66,6 +66,13 @@ class YaiCommand{
 		String p6;
 		String p7;
 		boolean execute;
+		boolean print;
+
+	//String toString(){
+	//	    char szRet[16];
+	//	    sprintf(szRet,"%s %s %s %s", message, type, command, p1);
+	//	    return String(szRet);
+	//}
 };
 
 class YaiUtil{
@@ -78,6 +85,7 @@ class YaiUtil{
 			yaiCommand.type = String(YAI_COMMAND_TYPE_NONE);
 			yaiCommand.message = "";
 			yaiCommand.execute = false;
+			yaiCommand.print = false;
 			if (Serial.available() >0) {
 				serialIn = Serial.readStringUntil('\n');
 				if (serialIn.length() >0){
@@ -94,6 +102,7 @@ class YaiUtil{
 			yaiCommand.execute = false;
 			yaiCommand.type = String(YAI_COMMAND_TYPE_NONE);
 			if(yaiCommand.message != ""){
+				  yaiCommand.print = true;
 				  String root[9];
 				  if(yaiCommand.message.indexOf("RESULT") > 0){
 					  yaiCommand.type = String(YAI_COMMAND_TYPE_RESULT);
