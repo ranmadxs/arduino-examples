@@ -191,7 +191,7 @@ void setup(void) {
   }
   Serial.println(F("OK!"));
 
-  bmpDraw("foca.bmp", 0, 0);
+  bmpDraw("woof.bmp", 0, 0);
   //delay(10000);
 }
 
