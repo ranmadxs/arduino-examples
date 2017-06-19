@@ -91,20 +91,20 @@ class YaiUtil{
 				if (serialIn.length() >0){
 					yaiCommand.message = serialIn;
 					yaiCommand.type=String(YAI_COMMAND_TYPE_SERIAL);
-					string2Serial(yaiCommand);
+					string2YaiCommand(yaiCommand);
 				}
 			}
 			return yaiCommand;
 		}
 
-		void string2Serial(YaiCommand &yaiCommand){
+		void string2YaiCommand(YaiCommand &yaiCommand){
 			yaiCommand.command = "";
 			yaiCommand.execute = false;
 			yaiCommand.type = String(YAI_COMMAND_TYPE_NONE);
 			if(yaiCommand.message != ""){
 				  yaiCommand.print = true;
 				  String root[9];
-				  if(yaiCommand.message.indexOf("RESULT") > 0){
+				  if(yaiCommand.message.indexOf(String(YAI_COMMAND_TYPE_RESULT)) > 0){
 					  yaiCommand.type = String(YAI_COMMAND_TYPE_RESULT);
 				  }else{
 					  getElementRoot(yaiCommand.message, root);

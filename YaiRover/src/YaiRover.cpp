@@ -207,7 +207,7 @@ void setup(void) {
 			});
 
 	server.on("/pipelineCmd", [] {
-		String message = "{\"RESULT\"=\"OK\"";
+		String message = "{\""+String(YAI_COMMAND_TYPE_RESULT)+"\":\"OK\"";
 		int totalCmds = 0;
 		String responseMsg = "\"EXECUTE\":0";
 		if(server.args() > 0) {

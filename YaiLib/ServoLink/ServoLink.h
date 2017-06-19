@@ -66,11 +66,11 @@ class ServoLink{
       }
     }
 
-    String servoMove(int servoType, int servoDirection, int servoMovement, int speedDelay);
+    YaiCommand servoMove(int servoType, int servoDirection, int servoMovement, int speedDelay);
 
-    String servoAngle(int servoType, int servoDirection, int angle);
+    YaiCommand servoAngle(int servoType, int servoDirection, int angle);
 
-    String servoStop(int servoType, int servoDirection);
+    YaiCommand servoStop(int servoType, int servoDirection);
 
   private:
 
@@ -142,11 +142,11 @@ class ServoLink{
     String write(int servoDirection, int angle){
     	String direction = "None";
     	if (SERVO_DIRECTION_HORIZONTAL == servoDirection){
-    		direction = "HORIZONTAL";
+    		direction = "HORI";
     		servoH.write(angle);
     	}
     	if (SERVO_DIRECTION_VERTICAL == servoDirection){
-    		direction = "VERTICAL";
+    		direction = "VERT";
     		servoV.write(angle);
     	}
     	return direction;
@@ -163,7 +163,7 @@ class ServoLink{
         int minPos = 0;
 
         if (servoMovement == SERVO_CLOCKWISE){
-        	movement = "HORARIO";
+        	movement = "HORA";
         	pos = posCurrent + delta;
         	if(pos > maxPos){
         		pos = maxPos;
@@ -173,7 +173,7 @@ class ServoLink{
         }
 
     	if (servoMovement == SERVO_COUNTER_CLOCKWISE){
-    		movement = "ANTI_HORARIO";
+    		movement = "AHOR";
     		pos = posCurrent - delta;
     		if (pos < minPos){
     			pos = 0;
