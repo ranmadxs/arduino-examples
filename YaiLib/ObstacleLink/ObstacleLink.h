@@ -26,11 +26,13 @@ public:
 	}
 
 	//Retorna distancia en cms
-	String distancia(int _tipo, int directionId) {
+	YaiCommand distancia(int _tipo, int directionId) {
+		YaiCommand yaiResp;
 		tipo = _tipo;
 		float distancia = getDistanceObstacle(directionId);
-		String resp = "{\"DISTANCE\":" + String(distancia) + "}";
-		return resp;
+		//String resp = "{\"DISTANCE\":" + String(distancia) + "}";
+		yaiResp.p2 = String(distancia);
+		return yaiResp;
 	}
 
 	float getDistanceObstacle(int directionId){

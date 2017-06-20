@@ -22,9 +22,6 @@ YaiCommand executeCommand(YaiCommand yaiCommand){
 	YaiCommand yaiResponseSvc;
 	yaiResponse.type = String(YAI_COMMAND_TYPE_RESULT);
 	yaiResponse.p1 = String(STATUS_NOK);
-	yaiResponse.p2 = String(YAI_COMMAND_TYPE_NONE);
-	yaiResponse.p3 = String(YAI_COMMAND_TYPE_NONE);
-	yaiResponse.p4 = String(YAI_COMMAND_TYPE_NONE);
 	//String content = "Command not found";
 	//String resultStr = "NOK";
 	//String responseSvc;
@@ -76,10 +73,9 @@ void serialController(){
 	yaiCommand = yaiUtil.commandSerialFilter();
 	if(yaiCommand.execute){
 		yaiResCmd = executeCommand(yaiCommand);
-		if(yaiResCmd.p1 == String(STATUS_OK)){
+		//if(yaiResCmd.p1 == String(STATUS_OK)){
 			Serial.println(yaiResCmd.type + "," + yaiResCmd.p1 + "," + yaiResCmd.p2 + "," + yaiResCmd.p3 + "," + yaiResCmd.p4);
-		}
-
+		//}
 	}
 }
 

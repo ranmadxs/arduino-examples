@@ -32,6 +32,21 @@ YaiOS yaiOS;
 YaiUtil yaiUtil;
 YaiCommunicator yaiCommunicator;
 
+
+YaiCommand propagateCommand(YaiCommand yaiCommand){
+	YaiCommand yaiCommandProp;
+	yaiCommandProp.p1 = String(STATUS_NOK);
+	if(yaiCommand.type == String(YAI_COMMAND_TYPE_SERIAL)){
+		yaiCommandProp.p1 = String(STATUS_OK);
+		Serial.println(yaiCommand.message);
+	}
+	if(yaiCommand.type == String(YAI_COMMAND_TYPE_I2C)){
+		yaiCommandProp.p1 = String(STATUS_OK);
+		yaiCommunicator.sendI2CCommand(yaiCommand.message, yaiCommand.address);
+	}
+	return yaiCommandProp;
+}
+
 void serialController() {
 	YaiCommand yaiCommand;
 	yaiCommand = yaiUtil.commandSerialFilter();
@@ -196,7 +211,7 @@ void setup(void) {
 				YaiCommand yaiCommand;
 				yaiCommand.type = String(YAI_COMMAND_TYPE_SERIAL);
 				yaiCommand.message = jsonCommand;
-				yaiUtil.string2Serial(yaiCommand);
+				yaiUtil.string2YaiCommand(yaiCommand);
 				String responseMsg = yaiOS.executeCommand(yaiCommand);
 				message += "\n" + responseMsg;
 				server.sendHeader("Access-Control-Allow-Origin", "*");

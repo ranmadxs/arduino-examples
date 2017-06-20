@@ -80,7 +80,7 @@ public:
 		tft.setTextSize(1);
 		tft.setCursor(0, 0);
 
-		tft.println("YaiConsole Ready2 ..");
+		tft.println("YaiConsole Ready ...");
 
 		posY = height / 2 - 30;
 		tft.drawLine(TS_MINX, posY - 1 , TS_MAXX, posY - 1, BLUE);

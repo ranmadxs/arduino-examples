@@ -1,6 +1,6 @@
 #include "YaiOS.h"
 #include <Wire.h>
-//#include "YaiCommunicator.h"
+#include "YaiCommunicator.h"
 
 
 //https://www.w3schools.com/code/tryit.asp?filename=FFHYS1V0HNCL
@@ -14,7 +14,7 @@ String YaiOS::executeCommand(String pipelineCommand[], int totalCmds){
 		YaiCommand yaiCommand;
 		yaiCommand.type = String(YAI_COMMAND_TYPE_SERIAL);
 		yaiCommand.message = pipelineCommand[i];
-		yaiUtil.string2Serial(yaiCommand);
+		yaiUtil.string2YaiCommand(yaiCommand);
 		logDebug("CMD:" + yaiCommand.command + ", P1:" + yaiCommand.p1);
 		executeCommand(yaiCommand);
 	}
@@ -65,11 +65,6 @@ String YaiOS::executeCommand(YaiCommand yaiCommand){
 		if(command == OBSTACLE_READER){
 			resultStr = "OK";
 			propagate = true;
-
-			//if(yaiCommand.type == String("YAI_COMMAND_TYPE_I2C")){
-			//	propagate = false;
-			//	yaiCommunicator.sendI2CCommand(yaiCommand.message, I2C_CLIENT_YAI_MOTOR);
-			//}
 		}
 
 		//Comandos que se propagan con delay
@@ -86,6 +81,7 @@ String YaiOS::executeCommand(YaiCommand yaiCommand){
 		Serial.println(yaiCommand.message);
 		logDebug("Propagando: " + yaiCommand.message);
 		jsonResult = "{\"RESULT\":\""+resultStr+"\", \"CONTENT\":\"PROPAGATE\", \"TYPE\":"+yaiCommand.type+"}";
+		//YaiOS::propagateCommand(yaiCommand);
 	}else{
 		if(!getLogs){
 			Serial.println(jsonResult);
@@ -95,3 +91,18 @@ String YaiOS::executeCommand(YaiCommand yaiCommand){
 	return jsonResult;
 }
 
+/*
+YaiCommand YaiOS::propagateCommand(YaiCommand yaiCommand){
+	YaiCommand yaiCommandProp;
+	yaiCommandProp.p1 = String(STATUS_NOK);
+	if(yaiCommand.type == String(YAI_COMMAND_TYPE_SERIAL)){
+		yaiCommandProp.p1 = String(STATUS_OK);
+		Serial.println(yaiCommand.message);
+	}
+	if(yaiCommand.type == String(YAI_COMMAND_TYPE_I2C)){
+		yaiCommandProp.p1 = String(STATUS_OK);
+		//yaiCommunicator.sendI2CCommand(yaiCommand.message, yaiCommand.address);
+	}
+	return yaiCommandProp;
+}
+*/

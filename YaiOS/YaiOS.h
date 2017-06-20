@@ -123,6 +123,8 @@ class YaiOS {
     //Execute jsonCommand
     String executeCommand(YaiCommand command);
 
+    YaiCommand propagateCommand(YaiCommand command);
+
     String getClientIP(){
       return clientIP;
     }

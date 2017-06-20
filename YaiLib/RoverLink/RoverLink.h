@@ -2,6 +2,7 @@
 #define RoverLink_h
 
 #include <Arduino.h> 
+#include "YaiCommons.h"
 
 //Derecha
 static int PinOUTA   = 4; // (D1)
@@ -29,7 +30,7 @@ class RoverLink {
     //Detiene el Rover
     void motorStop(int roverType);
 
-    String motorMove(String roverType, String moveType);
+    YaiCommand motorMove(String roverType, String moveType);
 
     void laser(boolean active);
   

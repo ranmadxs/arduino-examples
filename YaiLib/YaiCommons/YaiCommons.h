@@ -53,20 +53,38 @@
 #define STATUS_OK								"OK"
 #define STATUS_NOK								"NOK"
 
-class YaiCommand{
-	public:
-		String message;
-		String type;
-		String command;
-		String p1;
-		String p2;
-		String p3;
-		String p4;
-		String p5;
-		String p6;
-		String p7;
-		boolean execute;
-		boolean print;
+class YaiCommand {
+public:
+	YaiCommand() {
+		execute = false;
+		print = false;
+		propagate = false;
+		message = "";
+		type = String(YAI_COMMAND_TYPE_NONE);
+		p1 = String(YAI_COMMAND_TYPE_NONE);
+		p2 = String(YAI_COMMAND_TYPE_NONE);
+		p3 = String(YAI_COMMAND_TYPE_NONE);
+		p4 = String(YAI_COMMAND_TYPE_NONE);
+		p5 = String(YAI_COMMAND_TYPE_NONE);
+		p6 = String(YAI_COMMAND_TYPE_NONE);
+		p7 = String(YAI_COMMAND_TYPE_NONE);
+		address = 0;
+	}
+
+	String message;
+	String type;
+	String command;
+	String p1;
+	String p2;
+	String p3;
+	String p4;
+	String p5;
+	String p6;
+	String p7;
+	boolean execute;
+	boolean print;
+	boolean propagate;
+	int address;
 
 	//String toString(){
 	//	    char szRet[16];
@@ -75,91 +93,93 @@ class YaiCommand{
 	//}
 };
 
-class YaiUtil{
-	public:
-		YaiUtil(){}
+class YaiUtil {
+public:
+	YaiUtil() {
+	}
 
-		YaiCommand commandSerialFilter(){
-			String serialIn;
-			YaiCommand yaiCommand;
-			yaiCommand.type = String(YAI_COMMAND_TYPE_NONE);
-			yaiCommand.message = "";
-			yaiCommand.execute = false;
-			yaiCommand.print = false;
-			if (Serial.available() >0) {
-				serialIn = Serial.readStringUntil('\n');
-				if (serialIn.length() >0){
-					yaiCommand.message = serialIn;
-					yaiCommand.type=String(YAI_COMMAND_TYPE_SERIAL);
-					string2YaiCommand(yaiCommand);
-				}
-			}
-			return yaiCommand;
-		}
-
-		void string2YaiCommand(YaiCommand &yaiCommand){
-			yaiCommand.command = "";
-			yaiCommand.execute = false;
-			yaiCommand.type = String(YAI_COMMAND_TYPE_NONE);
-			if(yaiCommand.message != ""){
-				  yaiCommand.print = true;
-				  String root[9];
-				  if(yaiCommand.message.indexOf(String(YAI_COMMAND_TYPE_RESULT)) > 0){
-					  yaiCommand.type = String(YAI_COMMAND_TYPE_RESULT);
-				  }else{
-					  getElementRoot(yaiCommand.message, root);
-					  yaiCommand.type = root[0];
-					  if(yaiCommand.type == String(YAI_COMMAND_TYPE_SERIAL) ||
-							  yaiCommand.type == String(YAI_COMMAND_TYPE_SPI) ||
-							  yaiCommand.type == String(YAI_COMMAND_TYPE_WIFI) ||
-							  yaiCommand.type == String(YAI_COMMAND_TYPE_I2C))
-					  yaiCommand.execute = true;
-					  yaiCommand.command = root[1];
-					  yaiCommand.p1 = root[2];
-					  yaiCommand.p2 = root[3];
-					  yaiCommand.p3 = root[4];
-					  yaiCommand.p4 = root[5];
-					  yaiCommand.p5 = root[6];
-					  yaiCommand.p6 = root[7];
-					  yaiCommand.p7 = root[8];
-				  }
+	YaiCommand commandSerialFilter() {
+		String serialIn;
+		YaiCommand yaiCommand;
+		yaiCommand.type = String(YAI_COMMAND_TYPE_NONE);
+		yaiCommand.message = "";
+		yaiCommand.execute = false;
+		yaiCommand.print = false;
+		if (Serial.available() > 0) {
+			serialIn = Serial.readStringUntil('\n');
+			if (serialIn.length() > 0) {
+				yaiCommand.message = serialIn;
+				yaiCommand.type = String(YAI_COMMAND_TYPE_SERIAL);
+				string2YaiCommand(yaiCommand);
 			}
 		}
+		return yaiCommand;
+	}
 
-		char *strSplit(char *str, const char *delim, char **save){
-		    char *res, *last;
+	void string2YaiCommand(YaiCommand &yaiCommand) {
+		yaiCommand.command = "";
+		yaiCommand.execute = false;
+		yaiCommand.type = String(YAI_COMMAND_TYPE_NONE);
+		if (yaiCommand.message != "") {
+			yaiCommand.print = true;
+			String root[9];
+			if (yaiCommand.message.indexOf(String(YAI_COMMAND_TYPE_RESULT))
+					> 0) {
+				yaiCommand.type = String(YAI_COMMAND_TYPE_RESULT);
+			} else {
+				getElementRoot(yaiCommand.message, root);
+				yaiCommand.type = root[0];
+				if (yaiCommand.type == String(YAI_COMMAND_TYPE_SERIAL)
+						|| yaiCommand.type == String(YAI_COMMAND_TYPE_SPI)
+						|| yaiCommand.type == String(YAI_COMMAND_TYPE_WIFI)
+						|| yaiCommand.type == String(YAI_COMMAND_TYPE_I2C))
+					yaiCommand.execute = true;
+				yaiCommand.command = root[1];
+				yaiCommand.p1 = root[2];
+				yaiCommand.p2 = root[3];
+				yaiCommand.p3 = root[4];
+				yaiCommand.p4 = root[5];
+				yaiCommand.p5 = root[6];
+				yaiCommand.p6 = root[7];
+				yaiCommand.p7 = root[8];
+			}
+		}
+	}
 
-		    if( !save )
-		        return strtok(str, delim);
-		    if( !str && !(str = *save) )
-		        return NULL;
-		    last = str + strlen(str);
-		    if( (*save = res = strtok(str, delim)) )
-		    {
-		        *save += strlen(res);
-		        if( *save < last )
-		            (*save)++;
-		        else
-		            *save = NULL;
-		    }
-		    return res;
-		};
+	char *strSplit(char *str, const char *delim, char **save) {
+		char *res, *last;
 
-		void getElementRoot(String myString, String rootElement[]){
-		  char copy[64];
-		  myString.toCharArray(copy, 64);
-		  char *p = copy;
-		  char *str;
+		if (!save)
+			return strtok(str, delim);
+		if (!str && !(str = *save))
+			return NULL;
+		last = str + strlen(str);
+		if ((*save = res = strtok(str, delim))) {
+			*save += strlen(res);
+			if (*save < last)
+				(*save)++;
+			else
+				*save = NULL;
+		}
+		return res;
+	}
+	;
 
-		  int i = 0;
+	void getElementRoot(String myString, String rootElement[]) {
+		char copy[64];
+		myString.toCharArray(copy, 64);
+		char *p = copy;
+		char *str;
 
-		  while ((str = strSplit(p, ",", &p)) != NULL){
-		    rootElement[i] = str;
-		    i++;
-		  }
-		};
+		int i = 0;
+
+		while ((str = strSplit(p, ",", &p)) != NULL) {
+			rootElement[i] = str;
+			i++;
+		}
+	}
+	;
 };
 
 #endif
-
 

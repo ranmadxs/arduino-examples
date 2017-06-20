@@ -1,5 +1,5 @@
 #ifndef YaiCommunicator_h
-#define YaiCommunicato_h
+#define YaiCommunicator_h
 
 #include <Arduino.h>
 #include "YaiCommons.h"
@@ -7,11 +7,11 @@
 #define MAX_I2C_COMAND 32
 #define MAX_I2C_CONTENT 26
 
-int I2C_MASTER_SDA_PIN = 4;
-int I2C_MASTER_SCL_PIN = 5;
+static int I2C_MASTER_SDA_PIN = 4;
+static int I2C_MASTER_SCL_PIN = 5;
 
-int I2C_CLIENT_YAI_SERVO = 8;
-int I2C_CLIENT_YAI_MOTOR = 9;
+static int I2C_CLIENT_YAI_SERVO = 8;
+static int I2C_CLIENT_YAI_MOTOR = 9;
 
 //#ifndef YaiBufferCommand_h
 //#define YaiBufferCommand_h
