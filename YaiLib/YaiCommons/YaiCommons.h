@@ -69,6 +69,7 @@ public:
 		p6 = String(YAI_COMMAND_TYPE_NONE);
 		p7 = String(YAI_COMMAND_TYPE_NONE);
 		address = 0;
+		json = "";
 	}
 
 	String message;
@@ -81,6 +82,7 @@ public:
 	String p5;
 	String p6;
 	String p7;
+	String json;
 	boolean execute;
 	boolean print;
 	boolean propagate;

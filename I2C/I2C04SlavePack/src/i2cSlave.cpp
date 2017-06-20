@@ -14,12 +14,17 @@ void receiveEvent(int countToRead) {
 	if(requestFromMaster.status == String(STATUS_OK)){
 		receive = true;
 		commandI2C = requestFromMaster.content;
+		Serial.print(" >> ");
+		Serial.println(commandI2C);
 	}
 }
 
 void requestEvent() {
-	yaiCommunicator.sendI2CToMaster(answer);
-	Serial.println("<< " + answer);
+	if(receive){
+		yaiCommunicator.sendI2CToMaster(answer);
+		receive = false;
+		Serial.println("<< " + answer);
+	}	
 }
 
 void setup() {
@@ -31,9 +36,8 @@ void setup() {
 }
 
 void loop() {
-	if(receive){
-		Serial.print(" >> ");
-		Serial.println(commandI2C);
-		receive = false;
-	}
+	//if(receive){
+	//	Serial.print(" >> ");
+	//	Serial.println(commandI2C);		
+	//}
 }

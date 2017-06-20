@@ -63,6 +63,28 @@ public:
 		return res;
 	}
 
+	YaiCommand propagateCommand(YaiCommand yaiCommand){
+		String response;
+		//yaiCommandProp.p1 = String(STATUS_NOK);
+		if(yaiCommand.type == String(YAI_COMMAND_TYPE_SERIAL)){
+			Serial.print("SERIAL >> ");
+			yaiCommand.p1 = String(STATUS_OK);
+			Serial.println(yaiCommand.message);
+			yaiCommand.type = String(YAI_COMMAND_TYPE_RESULT);
+		}
+		if(yaiCommand.type == String(YAI_COMMAND_TYPE_I2C)){
+			yaiCommand.p1 = String(STATUS_OK);
+			Serial.print("I2C  (0x0" + String(yaiCommand.address) + ") >>");
+			Serial.println(yaiCommand.message);
+			sendI2CCommand(yaiCommand.message, yaiCommand.address);
+			yaiCommand.type = String(YAI_COMMAND_TYPE_RESULT);
+			delay(850);
+			response = receiveCommand(yaiCommand.address);
+			Serial.println(">> " + response);
+		}
+		return yaiCommand;
+	}
+
 	YaiBufferCommand receiveI2CFromMaster() {
 		String resp = "";
 		YaiBufferCommand yaiI2CCmd;
@@ -89,6 +111,7 @@ public:
 			char b = Wire.read();
 			resp += b;
 			countChars++;
+			delay(50);
 		}
 
 		return resp;
@@ -112,6 +135,7 @@ public:
 		Serial.println("<< " + request1);
 		//delay(800);
 		sendI2Cpackage(request1, clientAddress);
+		delay(100);
 		if (totalParts > 1) {
 			String cmd2 = command.substring(MAX_I2C_CONTENT);
 			String request2 = buildI2Cpackage(cmd2, totalParts, 2);

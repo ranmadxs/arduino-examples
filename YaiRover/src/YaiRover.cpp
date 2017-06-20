@@ -25,33 +25,36 @@ const int totalWifi = 3;
 const int retryWifi = 17;
 #define apSsid "YaiDNSServer"
 
-char* arrayWifi[totalWifi][2] = { { "VTR-YAI-5Ghz", "Pana8bc1108" }, { "yai",
-		"1101000000" }, { "GalaxyJ1", "1101000000" } };
+char* arrayWifi[totalWifi][2] = {
+		{ "yai", "1101000000" },
+		{ "VTR-YAI-5Ghz", "Pana8bc1108" },
+		{ "GalaxyJ1", "1101000000" } };
 
 YaiOS yaiOS;
 YaiUtil yaiUtil;
 YaiCommunicator yaiCommunicator;
 
-
-YaiCommand propagateCommand(YaiCommand yaiCommand){
-	YaiCommand yaiCommandProp;
-	yaiCommandProp.p1 = String(STATUS_NOK);
-	if(yaiCommand.type == String(YAI_COMMAND_TYPE_SERIAL)){
-		yaiCommandProp.p1 = String(STATUS_OK);
-		Serial.println(yaiCommand.message);
+YaiCommand commandFactoryExecute(YaiCommand yaiCommand){
+	YaiCommand yaiResCmd;
+	if (yaiCommand.execute) {
+		if(yaiCommand.print){
+			Serial.print("<< ");  //-> Esto se transforma en log debug
+			Serial.println(yaiCommand.message);
+		}
+		yaiResCmd = yaiOS.executeCommand(yaiCommand);
+		yaiResCmd = yaiCommunicator.propagateCommand(yaiResCmd);
 	}
-	if(yaiCommand.type == String(YAI_COMMAND_TYPE_I2C)){
-		yaiCommandProp.p1 = String(STATUS_OK);
-		yaiCommunicator.sendI2CCommand(yaiCommand.message, yaiCommand.address);
-	}
-	return yaiCommandProp;
+	return yaiResCmd;
 }
 
 void serialController() {
+	YaiCommand yaiResCmd;
 	YaiCommand yaiCommand;
 	yaiCommand = yaiUtil.commandSerialFilter();
-	if (yaiCommand.execute) {
-		yaiOS.executeCommand(yaiCommand);
+	yaiResCmd = commandFactoryExecute(yaiCommand);
+	if(yaiResCmd.type == String(YAI_COMMAND_TYPE_RESULT)){
+		Serial.print(">> ");
+		Serial.println(yaiResCmd.json);
 	}
 }
 
@@ -212,7 +215,8 @@ void setup(void) {
 				yaiCommand.type = String(YAI_COMMAND_TYPE_SERIAL);
 				yaiCommand.message = jsonCommand;
 				yaiUtil.string2YaiCommand(yaiCommand);
-				String responseMsg = yaiOS.executeCommand(yaiCommand);
+				YaiCommand yaiCmdResp = commandFactoryExecute(yaiCommand);
+				String responseMsg = yaiCmdResp.json;
 				message += "\n" + responseMsg;
 				server.sendHeader("Access-Control-Allow-Origin", "*");
 				server.sendHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS");

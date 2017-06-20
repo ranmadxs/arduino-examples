@@ -121,9 +121,7 @@ class YaiOS {
     };
 
     //Execute jsonCommand
-    String executeCommand(YaiCommand command);
-
-    YaiCommand propagateCommand(YaiCommand command);
+    YaiCommand executeCommand(YaiCommand command);
 
     String getClientIP(){
       return clientIP;

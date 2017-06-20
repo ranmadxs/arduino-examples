@@ -5,9 +5,12 @@
 #include <string.h>
 #include <Thread.h>
 #include <ThreadController.h>
+#include <Wire.h>
+#include "YaiCommunicator.h"
 
 RoverLink roverLn;
 ObstacleLink obstacleLn;
+YaiCommunicator yaiCommunicator;
 
 YaiUtil yaiUtil;
 
@@ -91,14 +94,33 @@ void serialController(){
 	}
 }
 
+void receiveEvent(int countToRead) {
+	YaiBufferCommand requestFromMaster = yaiCommunicator.receiveI2CFromMaster();
+	if(requestFromMaster.status == String(STATUS_OK)){
+		receive = true;
+		commandI2C = requestFromMaster.content;
+	}
+}
+
+void requestEvent() {
+	yaiCommunicator.sendI2CToMaster(answer);
+	Serial.println("<< " + answer);
+}
+
 void setup() {
 	Serial.begin(9600);
+	Serial.println("***********************");
 	Serial.println("Yai motor inicializado");
+	Serial.println("***********************");
 	Serial.println("Serial port ready");
 	threadObstacleRun.onRun(callbackObstacleRead);
 	threadObstacleRun.setInterval(TIME_INTERVAL_SERVO);
 	threadController.add(&threadObstacleRun);
 	Serial.println("Thread Obstacle inicializado");
+	Wire.begin(I2C_CLIENT_YAI_MOTOR);
+	Wire.onRequest(requestEvent);
+	Wire.onReceive(receiveEvent);
+	Serial.println("I2C ready! " + String(MAX_I2C_COMAND) + " Bytes");
 }
 
 void loop() {
