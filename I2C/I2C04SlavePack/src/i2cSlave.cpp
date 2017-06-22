@@ -6,25 +6,37 @@ int I2C_CLIENT = 9;
 String answer = "{\"DISTANCE\":0.00}";
 
 YaiCommunicator yaiCommunicator;
-boolean receive = false;
+boolean receiveFull = false;
 String commandI2C = "";
+String answerOk = "OK";
+boolean receive = true;
 
 void receiveEvent(int countToRead) {
 	YaiBufferCommand requestFromMaster = yaiCommunicator.receiveI2CFromMaster();
+	receive = true;
 	if(requestFromMaster.status == String(STATUS_OK)){
-		receive = true;
+		receiveFull = true;
 		commandI2C = requestFromMaster.content;
-		Serial.print(" >> ");
-		Serial.println(commandI2C);
 	}
+	//	commandI2C = requestFromMaster.content;
+	//	answerOk = commandI2C;
+	//}else{
+	answerOk = "p"+String(requestFromMaster.part)+"/"+String(requestFromMaster.total);
+		//receive = true;
+	//}
 }
 
 void requestEvent() {
-	if(receive){
-		yaiCommunicator.sendI2CToMaster(answer);
-		receive = false;
-		Serial.println("<< " + answer);
-	}	
+	//if(receiveFull){
+	//	yaiCommunicator.sendI2CToMaster(answer);
+	//	receiveFull = false;
+	//	Serial.println("<< " + answer);
+	//}
+	//if(receive){
+	yaiCommunicator.sendI2CToMaster(answerOk);
+	//	Serial.println(answerOk);
+	//	receive = false;
+	//}
 }
 
 void setup() {
@@ -36,8 +48,14 @@ void setup() {
 }
 
 void loop() {
-	//if(receive){
-	//	Serial.print(" >> ");
-	//	Serial.println(commandI2C);		
-	//}
+	if(receive){
+		Serial.print(" >> ");
+		Serial.println(answerOk);
+		receive = false;
+	}
+	if(receiveFull){
+		Serial.print(" Full >> ");
+		Serial.println(commandI2C);
+		receiveFull = false;
+	}
 }
