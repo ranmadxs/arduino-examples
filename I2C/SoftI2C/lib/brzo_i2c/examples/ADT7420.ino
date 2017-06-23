@@ -39,7 +39,7 @@ uint8_t ICACHE_RAM_ATTR get_temp_celsius(float *t) {
 
 	brzo_i2c_start_transaction(ADT7420_ADR, 400);
 		buffer[0] = 0x03;
-		buffer[1] = 0xA0;
+		buffer[1] = 0xA0;	
 
 		// Sends 2 bytes from the beginning of buffer, i.e. buffer[0] and buffer[1], no repeated start
 		brzo_i2c_write(buffer, 2, false);
@@ -53,7 +53,7 @@ uint8_t ICACHE_RAM_ATTR get_temp_celsius(float *t) {
 		buffer[0] = 0x00;
 		// Sends buffer[0], with repeated start
 		brzo_i2c_write(buffer, 1, true);
-
+		
 		// Receives 2 bytes and saves them to buffer[0] and buffer[1], no repeated start
 		brzo_i2c_read(buffer, 2, false);
 
@@ -64,14 +64,14 @@ uint8_t ICACHE_RAM_ATTR get_temp_celsius(float *t) {
 		// NOTE: The last i2c command within a transaction must not have a repeated start!
 		// i.e. before calling brzo_i2c_end_transaction() you should have brzo_i2c_...(..., ..., false);
 	bcode = brzo_i2c_end_transaction();
-
+	
 
 	// For the example with buffer[7] and buffer[8] you do
 	// ADC_code = ((buffer[7] << 8) | buffer[8]);
 
 	ADC_code = ((buffer[0] << 8) | buffer[1]);
 	*t = ADC_code / 128.0;
-
+	
 	return bcode;
 }
 
