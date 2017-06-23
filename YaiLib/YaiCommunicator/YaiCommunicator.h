@@ -191,7 +191,14 @@ private:
 		char copyStr[MAX_I2C_COMAND];
 		pkg.toCharArray(copyStr, MAX_I2C_COMAND);
 		Wire.write(copyStr);
-		Wire.endTransmission();
+		Wire.flush();
+		int wireRes = Wire.endTransmission(false);
+		Serial.println("wireRes::" + String(wireRes));
+		if(wireRes == 4){
+			Serial.println("Iniciando denuevo");
+			Wire.begin(I2C_MASTER_SDA_PIN, I2C_MASTER_SCL_PIN);
+			Wire.setClockStretchLimit(15000);
+		}
 	}
 
 	String buildI2Cpackage(String command, int total, int part) {

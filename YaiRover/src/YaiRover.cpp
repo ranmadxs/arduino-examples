@@ -119,7 +119,6 @@ void setup(void) {
 	Serial.println(" ##########################################");
 	yaiOS.initSD();
 	yaiOS.logInfo("SD card connected");
-
 	Wire.begin(I2C_MASTER_SDA_PIN, I2C_MASTER_SCL_PIN);
 	Wire.setClockStretchLimit(15000);
 	String masterWireLog = "I2C MasterBus " + String(MAX_I2C_COMAND)

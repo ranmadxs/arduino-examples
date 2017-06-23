@@ -47,6 +47,7 @@ void setup() {
 	Serial.println("I2CPack Slave ready! " + String(MAX_I2C_COMAND) + " Bytes");
 }
 
+int i = 0;
 void loop() {
 	if(receive){
 		Serial.print(" >> ");
@@ -57,5 +58,10 @@ void loop() {
 		Serial.print(" Full >> ");
 		Serial.println(commandI2C);
 		receiveFull = false;
+	}
+	i++;
+	if(i == 200){
+		Serial.println("live");
+		i = 0;
 	}
 }

@@ -28,7 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 uint8_t SDA_PIN = 5;
 uint8_t SCL_PIN = 4;
-uint8_t ADT7420_ADR = 0x49;
+uint8_t ADT7420_ADR = 0x09;
 uint8_t buffer[10];
 uint8_t error = 0;
 float temp = 0.0;
@@ -77,7 +77,7 @@ uint8_t ICACHE_RAM_ATTR get_temp_celsius(float *t) {
 
 void setup() {
 	delay(1000);
-	Serial.begin(115200);
+	Serial.begin(9600);
 	brzo_i2c_setup(SDA_PIN, SCL_PIN, 2000);
 }
 
