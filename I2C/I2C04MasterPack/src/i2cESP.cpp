@@ -17,11 +17,38 @@ void setup() {
 	delay(2000);
 }
 
+String cmd1;
+String request1;
+String cmdRec;
+
 void loop() {
-	yaiCommunicator.sendI2CCommand(exampleCommand, I2C_CLIENT);
-	delay(500);
-	response = yaiCommunicator.receiveCommand(I2C_CLIENT);
-	Serial.println(">> " + response);
+/*
+	cmd1 = exampleCommand.substring(0, MAX_I2C_COMAND);
+	request1 = yaiCommunicator.buildI2Cpackage(cmd1, 2, 1);
+	yaiCommunicator.sendI2Cpackage(request1, I2C_CLIENT);
+
+	delay(100);
+	Serial.print(">> Receive data from slave: ");
+
+	cmdRec = yaiCommunicator.receiveCommand(I2C_CLIENT);
+
+	Serial.print("(" + String(cmdRec.length()) + " num chars) :: ");
+	Serial.println(cmdRec);
+
+	cmd1 = exampleCommand.substring(MAX_I2C_COMAND);
+	request1 = yaiCommunicator.buildI2Cpackage(cmd1, 2, 2);
+	yaiCommunicator.sendI2Cpackage(request1, I2C_CLIENT);
+	delay(100);
+	Serial.print(">> Receive data from slave Part2: ");
+
+	cmdRec = yaiCommunicator.receiveCommand(I2C_CLIENT);
+	Serial.print("(" + String(cmdRec.length()) + " num chars) :: ");
+	Serial.println(cmdRec);
+*/
+
+	cmdRec = yaiCommunicator.sendI2CCommand(exampleCommand, I2C_CLIENT);
+	Serial.print("(" + String(cmdRec.length()) + " num chars) :: ");
+	Serial.println(cmdRec);
 	delay(5500);
 
 }

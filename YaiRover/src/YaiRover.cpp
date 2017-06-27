@@ -7,7 +7,7 @@
 #include <Wire.h>
 #include "YaiOS.h"
 #include "YaiCommunicator.h"
-
+//String exampleCommand = "I2C,100003,true,None,None,None,None,None,None";
 /*
  * Main.cpp
  *
@@ -249,9 +249,13 @@ void setup(void) {
 }
 
 void loop(void) {
+	//String cmdRec = yaiCommunicator.sendI2CCommand(exampleCommand, 9);
+	//Serial.print("(" + String(cmdRec.length()) + " num chars) :: ");
+	//Serial.println(cmdRec);
 	//if (!connectedWifi) {
 		dnsServer.processNextRequest();
 	//}
 	server.handleClient();
 	serialController();
+	//delay(3000);
 }

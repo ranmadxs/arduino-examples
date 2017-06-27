@@ -116,10 +116,6 @@ class YaiOS {
 
     String getYoistickJS();
 
-    void callBackServoMovement(){
-      servoLn.callBackMovement();
-    };
-
     //Execute jsonCommand
     YaiCommand executeCommand(YaiCommand command);
 
@@ -166,7 +162,6 @@ class YaiOS {
 
   private:    
     String logFileName;
-    ServoLink servoLn;
     String clientIP;
     String serverIP;
     String serverSsid;

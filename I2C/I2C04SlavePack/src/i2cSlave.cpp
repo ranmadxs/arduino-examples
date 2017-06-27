@@ -9,19 +9,24 @@ YaiCommunicator yaiCommunicator;
 boolean receiveFull = false;
 String commandI2C = "";
 String answerOk = "OK";
-boolean receive = true;
+boolean receive = false;
+String respToMaster;
+
 
 void receiveEvent(int countToRead) {
 	YaiBufferCommand requestFromMaster = yaiCommunicator.receiveI2CFromMaster();
 	receive = true;
+	answerOk = "P"+String(requestFromMaster.part)+"/"+String(requestFromMaster.total)+",OK";
+	respToMaster = answerOk;
 	if(requestFromMaster.status == String(STATUS_OK)){
 		receiveFull = true;
 		commandI2C = requestFromMaster.content;
+		respToMaster = "RES,1.2";
 	}
 	//	commandI2C = requestFromMaster.content;
 	//	answerOk = commandI2C;
 	//}else{
-	answerOk = "p"+String(requestFromMaster.part)+"/"+String(requestFromMaster.total);
+
 		//receive = true;
 	//}
 }
@@ -32,8 +37,7 @@ void requestEvent() {
 	//	receiveFull = false;
 	//	Serial.println("<< " + answer);
 	//}
-	//if(receive){
-	yaiCommunicator.sendI2CToMaster(answerOk);
+	yaiCommunicator.sendI2CToMaster(respToMaster);
 	//	Serial.println(answerOk);
 	//	receive = false;
 	//}
@@ -59,9 +63,9 @@ void loop() {
 		Serial.println(commandI2C);
 		receiveFull = false;
 	}
-	i++;
-	if(i == 200){
-		Serial.println("live");
-		i = 0;
-	}
+	//i++;
+	//if(i == 200){
+	//	Serial.println("live");
+	//	i = 0;
+	//}
 }

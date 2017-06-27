@@ -1,5 +1,4 @@
 #include "YaiOS.h"
-#include <Wire.h>
 #include "YaiCommunicator.h"
 
 
