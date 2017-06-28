@@ -69,22 +69,29 @@ public:
 
 	YaiCommand propagateCommand(YaiCommand yaiCommand) {
 		String response;
-		//yaiCommandProp.p1 = String(STATUS_NOK);
+		YaiCommand yaiRsp;
+		yaiRsp.p1 = String(STATUS_NOK);
+		yaiRsp.type = yaiCommand.type;
+		yaiRsp.message = "\""+ String(YAI_COMMAND_TYPE_NONE) + "\"";
 		if (yaiCommand.type == String(YAI_COMMAND_TYPE_SERIAL)) {
 			Serial.print("SERIAL >> ");
-			yaiCommand.p1 = String(STATUS_OK);
+			yaiRsp.p1 = String(STATUS_OK);
 			Serial.println(yaiCommand.message);
-			yaiCommand.type = String(YAI_COMMAND_TYPE_RESULT);
+			yaiRsp.type = String(YAI_COMMAND_TYPE_RESULT);
 		}
 		if (yaiCommand.type == String(YAI_COMMAND_TYPE_I2C)) {
-			yaiCommand.p1 = String(STATUS_OK);
-			yaiCommand.type = String(YAI_COMMAND_TYPE_RESULT);
+			yaiRsp.p1 = String(STATUS_OK);
+			yaiRsp.type = String(YAI_COMMAND_TYPE_RESULT);
 
 			String cmdRec = sendI2CCommand(yaiCommand.message, yaiCommand.address);
 			Serial.print("(" + String(cmdRec.length()) + " num chars) :: ");
 			Serial.println(cmdRec);
+			String respuestaLimpia = cmdRec.substring(5);
+			respuestaLimpia.replace("#", "");
+			yaiRsp.message = respuestaLimpia;
+			//yaiRsp.message = respuestaLimpia;
 		}
-		return yaiCommand;
+		return yaiRsp;
 	}
 
 	YaiBufferCommand receiveI2CFromMaster() {
@@ -131,20 +138,18 @@ public:
 		}
 		String cmd1 = command.substring(0, MAX_I2C_CONTENT);
 		String request1 = buildI2Cpackage(cmd1, totalParts, 1);
-		//Serial.println("<< " + request1);
-		//delay(800);
 		sendI2Cpackage(request1, clientAddress);
-		delay(100);
+		delay(200);
 		cmdRec = receiveCommand(clientAddress);
-		Serial.println(" === " + cmdRec);
+		//Serial.println(" === " + cmdRec);
 		if (totalParts > 1) {
 			String cmd2 = command.substring(MAX_I2C_CONTENT);
 			String request2 = buildI2Cpackage(cmd2, totalParts, 2);
-			Serial.println("<< " + request2);
+			//Serial.println("<< " + request2);
 			sendI2Cpackage(request2, clientAddress);
-			delay(100);
+			delay(200);
 			cmdRec = receiveCommand(clientAddress);
-			Serial.println(" === " + cmdRec);
+			//Serial.println(" === " + cmdRec);
 		}
 		return cmdRec;
 	}
@@ -205,10 +210,12 @@ private:
 		//Serial.println("===============");
 		//yaiI2CCommand.print();
 		//Serial.println("===============");
+		Serial.print("yaiI2CCommand.content2:::");
+		Serial.println(yaiI2CCommand.content);
 		if (yaiI2CBuffer.part < yaiI2CCommand.part) {
 			//Serial.print("PART BUFFER: ");
 			yaiI2CBuffer.part = yaiI2CCommand.part;
-			yaiI2CBuffer.content += yaiI2CCommand.content;
+			yaiI2CBuffer.content = yaiI2CBuffer.content + yaiI2CCommand.content;
 			yaiI2CBuffer.total = yaiI2CCommand.total;
 			//Serial.println(String(yaiI2CBuffer.part));
 			//Serial.print("Total: ");
@@ -218,6 +225,8 @@ private:
 			//Serial.println("TOTAL BUFFER ");
 			yaiI2CBuffer.status = String(STATUS_OK);
 		}
+		Serial.print("yaiI2CBuffer.content:::::");
+		Serial.println(yaiI2CBuffer.content);
 	}
 
 protected:

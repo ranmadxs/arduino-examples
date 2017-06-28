@@ -16,12 +16,12 @@ String respToMaster;
 void receiveEvent(int countToRead) {
 	YaiBufferCommand requestFromMaster = yaiCommunicator.receiveI2CFromMaster();
 	receive = true;
-	answerOk = "P"+String(requestFromMaster.part)+"/"+String(requestFromMaster.total)+",OK";
+	answerOk = "PART"+String(requestFromMaster.part)+"/"+String(requestFromMaster.total)+",OK";
 	respToMaster = answerOk;
 	if(requestFromMaster.status == String(STATUS_OK)){
 		receiveFull = true;
 		commandI2C = requestFromMaster.content;
-		respToMaster = "RES,1.2";
+		respToMaster = "RESULT,OK,true,NONE,NONE";
 	}
 	//	commandI2C = requestFromMaster.content;
 	//	answerOk = commandI2C;

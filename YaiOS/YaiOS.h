@@ -5,7 +5,7 @@
 #include "ServoLink.h"
 #include "YaiCommons.h"
 #include <SD.h>
-//#include "YaiCommunicator.h"
+#include "YaiCommunicator.h"
 
 static int PinSDCard = 15;
 class YaiParam{
@@ -57,7 +57,7 @@ class YaiOS {
 
    	boolean existsFile(String fileName);
 
-   	String executeCommand(String pipelineCommand[], int totalCmds);
+   	String executeCommand(String pipelineCommand[], int totalCmds, YaiCommunicator yaiCommunicator);
 
     void initSD(){
       String logFolder = String(YAI_LOG_FOLDER);
@@ -117,7 +117,7 @@ class YaiOS {
     String getYoistickJS();
 
     //Execute jsonCommand
-    YaiCommand executeCommand(YaiCommand command);
+    YaiCommand executeCommand(YaiCommand command, YaiCommunicator yaiCommunicator);
 
     String getClientIP(){
       return clientIP;

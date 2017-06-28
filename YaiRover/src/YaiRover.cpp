@@ -41,8 +41,8 @@ YaiCommand commandFactoryExecute(YaiCommand yaiCommand){
 			Serial.print("<< ");  //-> Esto se transforma en log debug
 			Serial.println(yaiCommand.message);
 		}
-		yaiResCmd = yaiOS.executeCommand(yaiCommand);
-		yaiResCmd = yaiCommunicator.propagateCommand(yaiResCmd);
+		yaiResCmd = yaiOS.executeCommand(yaiCommand, yaiCommunicator);
+		//yaiResCmd = yaiCommunicator.propagateCommand(yaiResCmd);
 	}
 	return yaiResCmd;
 }
@@ -234,7 +234,7 @@ void setup(void) {
 				pipeline[i] = server.arg(i);
 				totalCmds++;
 			}
-			responseMsg = yaiOS.executeCommand(pipeline, totalCmds);
+			responseMsg = yaiOS.executeCommand(pipeline, totalCmds, yaiCommunicator);
 		}
 		message += ", \"PIPELINE\":{\"TOTAL_IN\":"+String(totalCmds);
 		message += ", " + responseMsg + "}";

@@ -148,6 +148,24 @@ public:
 		}
 	}
 
+	void string2YaiRespCommand(YaiCommand &yaiCommand) {
+		yaiCommand.execute = false;
+		yaiCommand.type = String(YAI_COMMAND_TYPE_NONE);
+		if (yaiCommand.message.indexOf(String(YAI_COMMAND_TYPE_RESULT))
+				> 0) {
+
+			String root[9];
+			getElementRoot(yaiCommand.message, root);
+			yaiCommand.type = root[0];
+			yaiCommand.p1 = root[1];
+			yaiCommand.p2 = root[2];
+			yaiCommand.p3 = root[3];
+			yaiCommand.p4 = root[4];
+		}
+
+
+	}
+
 	char *strSplit(char *str, const char *delim, char **save) {
 		char *res, *last;
 

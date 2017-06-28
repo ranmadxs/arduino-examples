@@ -3,24 +3,25 @@
 #include "YaiCommons.h"
 #include "ObstacleLink.h"
 #include <string.h>
-#include <Thread.h>
-#include <ThreadController.h>
+//#include <Thread.h>
+//#include <ThreadController.h>
 #include <Wire.h>
 #include "YaiCommunicator.h"
 
 RoverLink roverLn;
 ObstacleLink obstacleLn;
 YaiCommunicator yaiCommunicator;
+String answerI2C = "RDY";
 
 YaiUtil yaiUtil;
 
 int TIME_INTERVAL_SERVO = 15;
-Thread threadObstacleRun;
-ThreadController threadController;
+//Thread threadObstacleRun;
+//ThreadController threadController;
 
-void callbackObstacleRead(){
-	obstacleLn.callbackObstacleRead();
-}
+//void callbackObstacleRead(){
+//	obstacleLn.callbackObstacleRead();
+//}
 
 YaiCommand executeCommand(YaiCommand yaiCommand){
 	YaiCommand yaiResponse;
@@ -95,16 +96,24 @@ void serialController(){
 }
 
 void receiveEvent(int countToRead) {
+	YaiCommand yaiResCmdI2C;
+	YaiCommand yaiCommandI2C;
 	YaiBufferCommand requestFromMaster = yaiCommunicator.receiveI2CFromMaster();
+	String answerOk = "PART"+String(requestFromMaster.part)+"/"+String(requestFromMaster.total)+",OK";
+	Serial.println(answerOk);
 	if(requestFromMaster.status == String(STATUS_OK)){
-		receive = true;
-		commandI2C = requestFromMaster.content;
+		Serial.println(requestFromMaster.content);
+	//	receive = true;
+	//	commandI2C = requestFromMaster.content;
+	//	yaiCommandI2C.message = requestFromMaster.content;
+	//	yaiResCmdI2C = executeCommand(yaiCommandI2C);
+	//	answerI2C = "XDDD";
 	}
 }
 
 void requestEvent() {
-	yaiCommunicator.sendI2CToMaster(answer);
-	Serial.println("<< " + answer);
+	yaiCommunicator.sendI2CToMaster(answerI2C);
+	//Serial.println("<< " + answer);
 }
 
 void setup() {
@@ -113,9 +122,9 @@ void setup() {
 	Serial.println("Yai motor inicializado");
 	Serial.println("***********************");
 	Serial.println("Serial port ready");
-	threadObstacleRun.onRun(callbackObstacleRead);
-	threadObstacleRun.setInterval(TIME_INTERVAL_SERVO);
-	threadController.add(&threadObstacleRun);
+	//threadObstacleRun.onRun(callbackObstacleRead);
+	//threadObstacleRun.setInterval(TIME_INTERVAL_SERVO);
+	//threadController.add(&threadObstacleRun);
 	Serial.println("Thread Obstacle inicializado");
 	Wire.begin(I2C_CLIENT_YAI_MOTOR);
 	Wire.onRequest(requestEvent);
@@ -125,6 +134,6 @@ void setup() {
 
 void loop() {
  serialController();
- threadController.run();
+ //threadController.run();
 }
 
