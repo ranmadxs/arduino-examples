@@ -23,6 +23,7 @@ public:
 	int total; //1Byte
 	String content; //26Byte
 	String status;
+	String partContent;
 
 	String toString() {
 		String res = "{\"type\":\"" + String(type) + "\", \"part\":"
@@ -108,9 +109,9 @@ public:
 			yaiI2CCmd = buildI2CCommand(resp);
 			//Serial.println(yaiI2CCmd.content);
 			bufferingI2C(yaiI2CCmd);
-
 		}
 		//Serial.println("=========>> " + resp);
+		yaiI2CBuffer.partContent = resp;
 		return yaiI2CBuffer;
 	}
 
@@ -139,7 +140,7 @@ public:
 		String cmd1 = command.substring(0, MAX_I2C_CONTENT);
 		String request1 = buildI2Cpackage(cmd1, totalParts, 1);
 		sendI2Cpackage(request1, clientAddress);
-		delay(200);
+		delay(150);
 		cmdRec = receiveCommand(clientAddress);
 		//Serial.println(" === " + cmdRec);
 		if (totalParts > 1) {
@@ -147,7 +148,7 @@ public:
 			String request2 = buildI2Cpackage(cmd2, totalParts, 2);
 			//Serial.println("<< " + request2);
 			sendI2Cpackage(request2, clientAddress);
-			delay(200);
+			delay(300);
 			cmdRec = receiveCommand(clientAddress);
 			//Serial.println(" === " + cmdRec);
 		}
@@ -210,8 +211,8 @@ private:
 		//Serial.println("===============");
 		//yaiI2CCommand.print();
 		//Serial.println("===============");
-		Serial.print("yaiI2CCommand.content2:::");
-		Serial.println(yaiI2CCommand.content);
+		//Serial.print("yaiI2CCommand.content2:::");
+		//Serial.println(yaiI2CCommand.content);
 		if (yaiI2CBuffer.part < yaiI2CCommand.part) {
 			//Serial.print("PART BUFFER: ");
 			yaiI2CBuffer.part = yaiI2CCommand.part;
@@ -225,8 +226,8 @@ private:
 			//Serial.println("TOTAL BUFFER ");
 			yaiI2CBuffer.status = String(STATUS_OK);
 		}
-		Serial.print("yaiI2CBuffer.content:::::");
-		Serial.println(yaiI2CBuffer.content);
+		//Serial.print("yaiI2CBuffer.content:::::");
+		//Serial.println(yaiI2CBuffer.content);
 	}
 
 protected:

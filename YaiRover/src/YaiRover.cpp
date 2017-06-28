@@ -7,7 +7,6 @@
 #include <Wire.h>
 #include "YaiOS.h"
 #include "YaiCommunicator.h"
-//String exampleCommand = "I2C,100003,true,None,None,None,None,None,None";
 /*
  * Main.cpp
  *
