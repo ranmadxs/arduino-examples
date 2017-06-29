@@ -1,19 +1,20 @@
 #include <Arduino.h>
-#include "RoverLink.h"
+//#include "RoverLink.h"
 #include "YaiCommons.h"
-#include "ObstacleLink.h"
+//#include "ObstacleLink.h"
 #include <string.h>
 //#include <Thread.h>
 //#include <ThreadController.h>
 #include <Wire.h>
 #include "YaiCommunicator.h"
 
-RoverLink roverLn;
+//RoverLink roverLn;
+
 //ObstacleLink obstacleLn;
 YaiCommunicator yaiCommunicator;
 //String answerI2C = "RDY";
 
-//YaiUtil yaiUtil;
+YaiUtil yaiUtil;
 
 //int TIME_INTERVAL_SERVO = 15;
 //Thread threadObstacleRun;
@@ -23,62 +24,93 @@ YaiCommunicator yaiCommunicator;
 //	obstacleLn.callbackObstacleRead();
 //}
 
-/*
+
 YaiCommand executeCommand(YaiCommand yaiCommand){
 	YaiCommand yaiResponse;
 	YaiCommand yaiResponseSvc;
-	yaiResponse.type = String(YAI_COMMAND_TYPE_RESULT);
-	yaiResponse.p1 = String(STATUS_NOK);
+	//yaiResponse.type = String(YAI_COMMAND_TYPE_RESULT);
+	//yaiResponse.p1 = String(STATUS_NOK);
+	//yaiResponse.p2 = String(YAI_COMMAND_TYPE_NONE);
+	//yaiResponse.p3 = String(YAI_COMMAND_TYPE_NONE);
+	//yaiResponse.p4 = String(YAI_COMMAND_TYPE_NONE);
+	yaiResponse.type = "RESULT";
+	yaiResponse.p1 = "NOK";
+	yaiResponse.p2 = "NONE";
+	yaiResponse.p3 = "NONE";
+	yaiResponse.p4 = "NONE";
 	//String content = "Command not found";
 	//String resultStr = "NOK";
 	//String responseSvc;
 	String commandRoot = yaiCommand.command;
+	Serial.print("commandRoot::");
+	Serial.println(commandRoot);
+	Serial.print("p1::");
+	Serial.println(yaiCommand.p1);
 	//String jsonResult = "{\""+String(YAI_COMMAND_TYPE_RESULT)+"\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
-	//boolean respCommand = false;
+	boolean respCommand = false;
+	int rovStopCmd = 100002;
 	if (commandRoot == String(ROVER_STOP)){
-		yaiResponse.p1 = String(STATUS_OK);
+		Serial.println(ROVER_STOP);
+		yaiResponse.p1 ="OK";
 		//resultStr = "OK";
-		//respCommand = true;
-	    roverLn.motorStop(yaiCommand.p1.toInt());
+		respCommand = true;
+	    //roverLn.motorStop(yaiCommand.p1.toInt());
 	    //content = "{\"TIME:\":" + yaiCommand.p2 + ", \"ROVER\":\"STOP\"}";
 	}
 	if (commandRoot == String(LASER_ACTION)){
 		yaiResponse.p1 = String(STATUS_OK);
 		//resultStr = "OK";
-		//respCommand = true;
+		respCommand = true;
 	    //content = "{\"LASER_STATUS\": "+yaiCommand.p1+", \"TIME\": " + yaiCommand.p2 + "}";
 	    boolean activar = false;
 	    if(yaiCommand.p1 == "true"){
 	    	activar = true;
 	    }
 	    yaiResponse.p2 = yaiCommand.p1;
-	    roverLn.laser(activar);
+	    //roverLn.laser(activar);
 	}
 	if(commandRoot == String(ROVER_MOVE_MANUAL_BODY)){
+		Serial.println("ROVER_MOVE_MANUAL_BODY");
 		yaiResponse.p1 = String(STATUS_OK);
 		//resultStr = "OK";
-		//respCommand = true;
-		yaiResponseSvc = roverLn.motorMove(yaiCommand.p1, yaiCommand.p4);
+		respCommand = true;
+		//yaiResponseSvc = roverLn.motorMove(yaiCommand.p1, yaiCommand.p4);
 		yaiResponse.p2 = yaiResponseSvc.p2;
 	    //content = "{\"TIME:\":" + yaiCommand.p2 + ", \"ROVER\":\""+responseSvc+"\"}";
 	}
 	if (commandRoot == String(OBSTACLE_READER)){
-		yaiResponse.p1 = String(STATUS_OK);
+		yaiResponse.p1 = "OK";
 		//resultStr = "OK";
-		//respCommand = true;
-		yaiResponseSvc = obstacleLn.distancia(yaiCommand.p1.toInt(), yaiCommand.p2.toInt());
-		yaiResponse.p2 = yaiResponseSvc.p2;
+		respCommand = true;
+		//yaiResponseSvc = obstacleLn.distancia(yaiCommand.p1.toInt(), yaiCommand.p2.toInt());
+		//yaiResponse.p2 = yaiResponseSvc.p2;
+		yaiResponse.p2 = "0.0";
 	    //content = "{\"OBSTACLE_SENSOR\":"+responseSvc+"}";
 	}
 
-	//if(respCommand){
+	String msgResp = yaiResponse.type + "," + yaiResponse.p1 + "," + yaiResponse.p2 + "," +
+				yaiResponse.p3 + "," + yaiResponse.p4;
+	Serial.println("----------");
+	Serial.print(yaiResponse.type);
+	Serial.print(" p1 : ");
+	Serial.print(yaiResponse.p1);
+	Serial.print(" p2 : ");
+	Serial.print(yaiResponse.p2);
+	Serial.print(" p3 : ");
+	Serial.print(yaiResponse.p3);
+	Serial.print(" p4 : ");
+	Serial.println(yaiResponse.p4);
+	Serial.println("------------");
+	Serial.println(msgResp);
+	Serial.println("------------**");
+	yaiResponse.message = msgResp;
 	//	jsonResult = "{\""+String(YAI_COMMAND_TYPE_RESULT)+"\"";
 	//	Serial.print(jsonResult);
 	//	jsonResult += ":\""+resultStr+"\", \"CONTENT\":";
 	//    Serial.print(":\""+resultStr+"\", \"CONTENT\":");
 	//    jsonResult += content + "}";
 	//   Serial.println(content + "}");
-	//}
+
 
 	return yaiResponse;
 }
@@ -95,7 +127,7 @@ void serialController(){
 		//}
 	}
 }
-*/
+
 String bufferCmd = "";
 boolean receiveFull = false;
 String commandI2C = "";
@@ -104,15 +136,15 @@ boolean receive = false;
 String respToMaster;
 
 void receiveEvent(int countToRead) {
+
 	YaiBufferCommand requestFromMaster = yaiCommunicator.receiveI2CFromMaster();
-	receive = true;
 	answerOk = "PART"+String(requestFromMaster.part)+"/"+String(requestFromMaster.total)+",OK";
 	respToMaster = answerOk;
 	if(requestFromMaster.status == String(STATUS_OK)){
-		receiveFull = true;
 		commandI2C = requestFromMaster.content;
-		respToMaster = "RESULT,OK,true,NONE,NONE";
+		receiveFull = true;
 	}
+	receive = true;
 	/*
 	YaiCommand yaiResCmdI2C;
 	YaiCommand yaiCommandI2C;
@@ -155,7 +187,6 @@ void setup() {
 }
 
 void loop() {
- //serialController();
  //threadController.run();
 	if(receive){
 		Serial.print(" >> ");
@@ -163,8 +194,21 @@ void loop() {
 		receive = false;
 	}
 	if(receiveFull){
+		YaiCommand yaiCommandI2C;
+		YaiCommand yaiResCmdI2C;
+
 		Serial.print(" Full >> ");
 		Serial.println(commandI2C);
+		yaiCommandI2C.message = commandI2C;
+		yaiUtil.string2YaiCommand(yaiCommandI2C);
+
+		if(yaiCommandI2C.execute){
+			yaiResCmdI2C = executeCommand(yaiCommandI2C);
+			answerOk = yaiResCmdI2C.message;
+		}
+
 		receiveFull = false;
 	}
+
+	//serialController();
 }

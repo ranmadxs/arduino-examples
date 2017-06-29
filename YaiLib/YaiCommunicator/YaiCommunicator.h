@@ -148,7 +148,7 @@ public:
 			String request2 = buildI2Cpackage(cmd2, totalParts, 2);
 			//Serial.println("<< " + request2);
 			sendI2Cpackage(request2, clientAddress);
-			delay(300);
+			delay(500);
 			cmdRec = receiveCommand(clientAddress);
 			//Serial.println(" === " + cmdRec);
 		}
