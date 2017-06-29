@@ -1,5 +1,5 @@
 #include <Arduino.h>
-//#include "RoverLink.h"
+#include "RoverLink.h"
 #include "YaiCommons.h"
 //#include "ObstacleLink.h"
 #include <string.h>
@@ -8,7 +8,7 @@
 #include <Wire.h>
 #include "YaiCommunicator.h"
 
-//RoverLink roverLn;
+RoverLink roverLn;
 
 //ObstacleLink obstacleLn;
 YaiCommunicator yaiCommunicator;
@@ -50,25 +50,24 @@ YaiCommand executeCommand(YaiCommand yaiCommand){
 	boolean respCommand = false;
 	int rovStopCmd = 100002;
 	if (commandRoot == String(ROVER_STOP)){
-		Serial.println(ROVER_STOP);
+		Serial.println("ROVER_STOP");
 		yaiResponse.p1 ="OK";
 		//resultStr = "OK";
 		respCommand = true;
-	    //roverLn.motorStop(yaiCommand.p1.toInt());
+	    roverLn.motorStop(yaiCommand.p1.toInt());
 	    //content = "{\"TIME:\":" + yaiCommand.p2 + ", \"ROVER\":\"STOP\"}";
 	}
 	if (commandRoot == String(LASER_ACTION)){
+		Serial.println("LASER_ACTION");
 		yaiResponse.p1 = String(STATUS_OK);
 		//resultStr = "OK";
 		respCommand = true;
 	    //content = "{\"LASER_STATUS\": "+yaiCommand.p1+", \"TIME\": " + yaiCommand.p2 + "}";
 	    boolean activar = false;
-	    if(yaiCommand.p1 == "true"){
-	    	activar = true;
-	    }
 	    yaiResponse.p2 = yaiCommand.p1;
 	    //roverLn.laser(activar);
 	}
+
 	if(commandRoot == String(ROVER_MOVE_MANUAL_BODY)){
 		Serial.println("ROVER_MOVE_MANUAL_BODY");
 		yaiResponse.p1 = String(STATUS_OK);
@@ -76,6 +75,8 @@ YaiCommand executeCommand(YaiCommand yaiCommand){
 		respCommand = true;
 		//yaiResponseSvc = roverLn.motorMove(yaiCommand.p1, yaiCommand.p4);
 		yaiResponse.p2 = yaiResponseSvc.p2;
+		Serial.print("Moviendose a::");
+		Serial.println(yaiResponseSvc.p2);
 	    //content = "{\"TIME:\":" + yaiCommand.p2 + ", \"ROVER\":\""+responseSvc+"\"}";
 	}
 	if (commandRoot == String(OBSTACLE_READER)){
@@ -110,7 +111,6 @@ YaiCommand executeCommand(YaiCommand yaiCommand){
 	//    Serial.print(":\""+resultStr+"\", \"CONTENT\":");
 	//    jsonResult += content + "}";
 	//   Serial.println(content + "}");
-
 
 	return yaiResponse;
 }
@@ -208,6 +208,17 @@ void loop() {
 		}
 
 		receiveFull = false;
+
+		/*
+		String commandRoot = yaiCommandI2C.command;
+		if(commandRoot == String(LASER_ACTION)){
+		    if(yaiCommandI2C.p1 == "true"){
+		    	digitalWrite(12, HIGH);
+		    }else{
+		    	digitalWrite(12, LOW);
+		    }
+		}
+		*/
 	}
 
 	//serialController();
