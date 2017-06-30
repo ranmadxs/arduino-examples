@@ -24,22 +24,64 @@ public:
 	String content; //26Byte
 	String status;
 	String partContent;
-
-	String toString() {
-		String res = "{\"type\":\"" + String(type) + "\", \"part\":"
-				+ String(part) + ", \"total\":" + String(total)
-				+ ", \"content\":\"" + String(content) + "\"}";
-		return res;
-	}
+	boolean recibeFull;
 };
+
 //#endif
 
 class YaiCommunicator {
 public:
 	YaiCommunicator() {
-		bufferI2CInit();
+		//bufferI2CInit();
 		yaiMotorReady = false;
 		yaiServoReady = false;
+	}
+
+	void requestEvent(String msgReq){
+		int lenAnsw = msgReq.length();
+		int difLen = 0;
+
+		if (lenAnsw >= MAX_I2C_COMAND) {
+			lenAnsw = MAX_I2C_COMAND;
+		} else {
+			difLen = MAX_I2C_COMAND - lenAnsw;
+		}
+
+		byte response[MAX_I2C_COMAND];
+		for (byte i = 0; i < lenAnsw; i++) {
+			response[i] = (byte) msgReq.charAt(i);
+		}
+		if (difLen > 0) {
+			for (byte i = lenAnsw; i < MAX_I2C_COMAND; i++) {
+				response[i] = 0x23;
+			}
+		}
+		Wire.write(response, sizeof(response));
+	}
+
+	YaiBufferCommand receiveEvent(String masterCmd){
+		YaiBufferCommand yaiBufferCmd;
+
+		String requestI2C = "";
+		while (0 < Wire.available()) {
+			char c = Wire.read();
+			requestI2C += c;
+		}
+
+		int part = requestI2C.substring(3, 4).toInt();
+		int total = requestI2C.substring(4, 5).toInt();
+		masterCmd = masterCmd + requestI2C.substring(5);
+		yaiBufferCmd.recibeFull = false;
+
+		if (part == total) {
+			yaiBufferCmd.recibeFull = true;
+			masterCmd.replace("#", "");
+		}
+
+		yaiBufferCmd.part = part;
+		yaiBufferCmd.total = total;
+		yaiBufferCmd.content = masterCmd;
+		return yaiBufferCmd;
 	}
 
 	boolean scannI2CClient(int clientAddress) {
@@ -148,7 +190,7 @@ public:
 			String request2 = buildI2Cpackage(cmd2, totalParts, 2);
 			//Serial.println("<< " + request2);
 			sendI2Cpackage(request2, clientAddress);
-			delay(500);
+			delay(200);
 			cmdRec = receiveCommand(clientAddress);
 			//Serial.println(" === " + cmdRec);
 		}

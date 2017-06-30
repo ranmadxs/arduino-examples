@@ -3,6 +3,7 @@
 #include "YaiCommons.h"
 #include "ObstacleLink.h"
 #include "RoverLink.h"
+//#include "YaiCommunicator.h"
 
 #define ANSWERSIZE 32
 
@@ -13,8 +14,15 @@ YaiUtil yaiUtil;
 String masterCmd = "";
 boolean reciveFullI2C = false;
 String requestI2C = "";
+//YaiCommunicator yaiCommunicator;
 
 void receiveEvent(int countToRead) {
+	/*
+	YaiBufferCommand yaiBuffer = yaiCommunicator.receiveEvent(masterCmd);
+	masterCmd = yaiBuffer.content;
+	reciveFullI2C = yaiBuffer.recibeFull;
+	*/
+
 	requestI2C = "";
 	while (0 < Wire.available()) {
 		char c = Wire.read();
@@ -28,9 +36,11 @@ void receiveEvent(int countToRead) {
 	if (part == total) {
 		reciveFullI2C = true;
 	}
+
 }
 
 void requestEvent() {
+
 	int lenAnsw = answer.length();
 	int difLen = 0;
 
@@ -50,6 +60,8 @@ void requestEvent() {
 		}
 	}
 	Wire.write(response, sizeof(response));
+
+	//yaiCommunicator.requestEvent(answer);
 }
 
 String execute(String masterCommand) {
