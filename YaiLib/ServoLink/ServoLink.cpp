@@ -3,14 +3,20 @@
 
 //default speed = 15
 // creo dos thread uno que haga move simepre que no este stop y el otro que haga el stop.
-YaiCommand ServoLink::servoMove(int servoType, int servoDirection,
+String ServoLink::servoMove(int servoType, int servoDirection,
 		int servoMovement, int speedDeplay) {
 	String result = "";
-	YaiCommand respYai;
+	String respYai;
 	ServoLink::setServoType(servoType, servoDirection);
 	ServoLink::setSpeedDelay(servoDirection, speedDeplay);
 	int pos;
 	String direction = "None";
+	Serial.println("ServoLink::servoMove");
+
+	Serial.print(SERVO_DIRECTION_HORIZONTAL);
+	Serial.print("==");
+	Serial.println(servoDirection);
+
 	if (SERVO_DIRECTION_HORIZONTAL == servoDirection) {
 		direction = "HORI";
 		directionFlagH = true;
@@ -21,13 +27,13 @@ YaiCommand ServoLink::servoMove(int servoType, int servoDirection,
 		directionFlagV = true;
 		movementServoV = servoMovement;
 	}
-	respYai.p2 = direction;
+	respYai = direction;
 	//return "{\"ACTION\":\"MOVE\", \"DIRECTION\":\"" + direction + "\"}";
 	return respYai;
 }
 
-YaiCommand ServoLink::servoStop(int servoType, int servoDirection) {
-	YaiCommand respYai;
+String ServoLink::servoStop(int servoType, int servoDirection) {
+	String respYai;
 
 	ServoLink::setServoType(servoType, servoDirection);
 	String directionName = "None";
@@ -44,7 +50,7 @@ YaiCommand ServoLink::servoStop(int servoType, int servoDirection) {
 		directionFlagV = false;
 		directionFlagH = false;
 	}
-	respYai.p2 = directionName;
+	respYai = directionName;
 	//return "{\"ACTION\":\"STOP\", \"DIRECTION\":" + directionName + "}";
 	return respYai;
 }
@@ -53,9 +59,9 @@ YaiCommand ServoLink::servoStop(int servoType, int servoDirection) {
  * p2: directionName
  * p3: angle
  */
-YaiCommand ServoLink::servoAngle(int servoType, int servoDirection, int angle) {
+String ServoLink::servoAngle(int servoType, int servoDirection, int angle) {
 
-	YaiCommand respYai;
+	String respYai;
 
 	ServoLink::setServoType(servoType, servoDirection);
 	int maxAngle = ServoLink::getMaxAngle(servoType);
@@ -79,8 +85,8 @@ YaiCommand ServoLink::servoAngle(int servoType, int servoDirection, int angle) {
 		//directionName = "\"" + ServoLink::write(servoDirection, angle) + "\"";
 		directionName = ServoLink::write(servoDirection, angle);
 	}
-	respYai.p2 = directionName;
-	respYai.p3 = String(angle);
+	respYai = directionName+","+String(angle);
+
 	//String result = "{ \"DIRECTION\":" + directionName + ", \"ANGLE:\":"
 	//		+ String(angle) + "}";
 	return respYai;

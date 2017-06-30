@@ -66,11 +66,11 @@ class ServoLink{
       }
     }
 
-    YaiCommand servoMove(int servoType, int servoDirection, int servoMovement, int speedDelay);
+    String servoMove(int servoType, int servoDirection, int servoMovement, int speedDelay);
 
-    YaiCommand servoAngle(int servoType, int servoDirection, int angle);
+    String servoAngle(int servoType, int servoDirection, int angle);
 
-    YaiCommand servoStop(int servoType, int servoDirection);
+    String servoStop(int servoType, int servoDirection);
 
   private:
 

@@ -17,54 +17,31 @@ void callBackServoMovement(){
 	servoLink.callBackMovement();
 }
 
-YaiCommand executeCommand(YaiCommand yaiCommand){
-	YaiCommand yaiResponse;
-	YaiCommand yaiResponseSvc;
-	yaiResponse.type = String(YAI_COMMAND_TYPE_RESULT);
-	yaiResponse.p1 = String(STATUS_NOK);
-	//String content = "Command not found";
-	//String resultStr = "NOK";
-	//String responseSvc;
-	String commandRoot = yaiCommand.command;
-	//String jsonResult = "{\""+String(YAI_COMMAND_TYPE_RESULT)+"\":\""+resultStr+"\", \"CONTENT\":"+content+"}";
-	//boolean respCommand = false;
-	//Serial.println("Cmd:" + commandRoot);
+String executeCommand(String masterCommand){
+	String responseExe = String(YAI_COMMAND_TYPE_RESULT);
+	String resultStr = String(STATUS_NOK);
+	String content = String(YAI_COMMAND_TYPE_NONE);
+	String rootCmd[9];
+	yaiUtil.getElementRoot(masterCommand, rootCmd);
+	String commandRoot = rootCmd[1];
 	if (commandRoot == String(SERVO_ACTION_ANGLE)){
-		//resultStr = "OK";
-		yaiResponse.p1 = String(STATUS_OK);
-		//respCommand = true;
-		yaiResponseSvc = servoLink.servoAngle(yaiCommand.p1.toInt(), yaiCommand.p3.toInt(), yaiCommand.p4.toInt());
-		yaiResponse.p2 = yaiResponseSvc.p2;
-		yaiResponse.p3 = yaiResponseSvc.p3;
-		//content = "{\"TIME:\":" + yaiCommand.p2 + ", \"SERVO\":"+responseSvc+"}";
+		resultStr = String(STATUS_OK);
+		content = servoLink.servoAngle(rootCmd[2].toInt(), rootCmd[4].toInt(), rootCmd[5].toInt());
 	}
 	if (commandRoot == String(SERVO_ACTION_CONTINUOUS)){
-		//resultStr = "OK";
-		yaiResponse.p1 = String(STATUS_OK);
+		resultStr = String(STATUS_OK);
 		//respCommand = true;
-		yaiResponseSvc = servoLink.servoMove(yaiCommand.p1.toInt(), yaiCommand.p3.toInt(), yaiCommand.p4.toInt(), yaiCommand.p5.toInt());
-		yaiResponse.p2 = yaiResponseSvc.p2;
-		//content = "{\"TIME:\":" + yaiCommand.p2 + ", \"SERVO\":"+responseSvc+"}";
+		content = servoLink.servoMove(rootCmd[2].toInt(), rootCmd[4].toInt(), rootCmd[5].toInt(), rootCmd[6].toInt());
 	}
 	if(commandRoot == String(SERVO_STOP)){
-		//resultStr = "OK";
-		yaiResponse.p1 = String(STATUS_OK);
+		resultStr = String(STATUS_OK);
 		//respCommand = true;
-		yaiResponseSvc = servoLink.servoStop(yaiCommand.p1.toInt(), yaiCommand.p3.toInt());
-		yaiResponse.p2 = yaiResponseSvc.p2;
-		//content = "{\"TIME:\":" + yaiCommand.p2 + ", \"SERVO\":"+responseSvc+"}";
+		content = servoLink.servoStop(rootCmd[2].toInt(), rootCmd[4].toInt());
 	}
-	/*
-	if(respCommand){
-		jsonResult = "{\""+String(YAI_COMMAND_TYPE_RESULT)+"\"";
-		Serial.print(jsonResult);
-		jsonResult += ":\""+resultStr+"\", \"CONTENT\":";
-	    Serial.print(":\""+resultStr+"\", \"CONTENT\":");
-	    jsonResult += content + "}";
-	    Serial.println(content + "}");
-	}
-	*/
-	return yaiResponse;
+
+	responseExe = responseExe + "," + resultStr + "," + content;
+
+	return responseExe;
 }
 
 void serialController(){
@@ -72,10 +49,10 @@ void serialController(){
 	YaiCommand yaiResCmd;
 	yaiCommand = yaiUtil.commandSerialFilter();
 	if(yaiCommand.execute){
-		yaiResCmd = executeCommand(yaiCommand);
-		//if(yaiResCmd.p1 == String(STATUS_OK)){
-			Serial.println(yaiResCmd.type + "," + yaiResCmd.p1 + "," + yaiResCmd.p2 + "," + yaiResCmd.p3 + "," + yaiResCmd.p4);
-		//}
+		String respSerialCmd = executeCommand(yaiCommand.message);
+		if (yaiCommand.print) {
+			Serial.println("<< [SERIAL]" +respSerialCmd);
+		}
 	}
 }
 
