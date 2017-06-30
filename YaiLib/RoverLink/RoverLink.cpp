@@ -20,8 +20,8 @@ void RoverLink::motorStop(int roverType) {
 
 //TODO: Debe generalizarse por movimiento de rueda y no por el sentido,
 //es decir que ruedas pertenecn a que tipo de movimiento por tipo de rover
-YaiCommand RoverLink::motorMove(String roverType, String moveType) {
-	YaiCommand yaiResp;
+String RoverLink::motorMove(String roverType, String moveType) {
+	String yaiResp;
 	String directionName = String(YAI_COMMAND_TYPE_NONE);
 	RoverLink::motorHalt2WD();
 	if (moveType == String(ROVER_BODY_MOVE_TYPE_FORWARD)) {
@@ -45,7 +45,7 @@ YaiCommand RoverLink::motorMove(String roverType, String moveType) {
 		digitalWrite(PinOUTD, HIGH);
 	}
 
-	yaiResp.p2 = directionName;
+	yaiResp = directionName;
 	return yaiResp;
 }
 
