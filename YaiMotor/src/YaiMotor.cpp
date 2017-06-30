@@ -109,7 +109,7 @@ void serialController() {
 	if (yaiCommand.execute) {
 		String respSerialCmd = execute(yaiCommand.message);
 		if (yaiCommand.print) {
-			Serial.println("<< [SERIAL]" +respSerialCmd);
+			Serial.println("<< [SERIAL] " +respSerialCmd);
 		}
 	}
 }
@@ -132,7 +132,7 @@ void loop() {
 		reciveFullI2C = false;
 		masterCmd.replace("#", "");
 		answer = execute(masterCmd);
-		Serial.println("<< [I2C]" + answer);
+		Serial.println("<< [I2C] " + answer);
 		masterCmd = "";
 	}
 	serialController();

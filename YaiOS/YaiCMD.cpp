@@ -100,7 +100,7 @@ YaiCommand YaiOS::executeCommand(YaiCommand yaiCommand, YaiCommunicator yaiCommu
 			propagate = true;
 			int tiempoStop = yaiCommand.p2.toInt();
 
-			yaiResponse.address = I2C_CLIENT_YAI_SERVO;
+			yaiCommand.address = I2C_CLIENT_YAI_SERVO;
 			delay(tiempoStop);
 			yaiResponse = yaiCommunicator.propagateCommand(yaiCommand);
 		}
@@ -110,7 +110,7 @@ YaiCommand YaiOS::executeCommand(YaiCommand yaiCommand, YaiCommunicator yaiCommu
 			propagate = true;
 			int tiempoStop = yaiCommand.p2.toInt();
 
-			yaiResponse.address = I2C_CLIENT_YAI_SERVO;
+			yaiCommand.address = I2C_CLIENT_YAI_SERVO;
 			delay(tiempoStop);
 			yaiResponse = yaiCommunicator.propagateCommand(yaiCommand);
 		}
