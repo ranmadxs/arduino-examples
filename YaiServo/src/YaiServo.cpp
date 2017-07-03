@@ -120,7 +120,9 @@ void setup() {
 	Wire.onRequest(requestEvent); // data request to slave
 	Wire.onReceive(receiveEvent); // data slave received
 	Serial.begin(9600);
-	Serial.println("Yai servo inicializado");
+	Serial.println("***********************");
+	Serial.println("Yai servo inicializado V0.0.1-SNAPSHOT");
+	Serial.println("***********************");
 	Serial.println("Serial port ready");
 	threadServoRun.onRun(callBackServoMovement);
 	threadServoRun.setInterval(TIME_INTERVAL_SERVO);

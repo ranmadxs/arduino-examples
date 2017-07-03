@@ -113,9 +113,9 @@ void setup(void) {
 	Serial.begin(9600);
 	WiFi.mode(WIFI_AP_STA);
 	Serial.println("");
-	Serial.println(" ##########################################");
-	Serial.println(" ################ YaiRover ################");
-	Serial.println(" ##########################################");
+	Serial.println(" ##############################");
+	Serial.println(" ## YaiRover v0.0.1-SNAPSHOT ##");
+	Serial.println(" ##############################");
 	yaiOS.initSD();
 	yaiOS.logInfo("SD card connected");
 	Wire.begin(I2C_MASTER_SDA_PIN, I2C_MASTER_SCL_PIN);
