@@ -30,7 +30,7 @@ void serialController(){
 void setup() {
   Serial.begin(9600);
   yaiLCD.init();
-  Serial.println("YaiConsole Ready");
+  Serial.println("YaiConsole V0.0.1-SNAPSHOT");
 
 }
 
