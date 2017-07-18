@@ -1,34 +1,95 @@
-#include <MyRealTimeClock.h>
+// Example sketch for interfacing with the DS1302 timekeeping chip.
+//
+// Copyright (c) 2009, Matt Sparks
+// All rights reserved.
+//
+// http://quadpoint.org/projects/arduino-ds1302
+#include <arduino.h>
+#include <stdio.h>
+#include <DS1302.h>
 
-MyRealTimeClock myRTC(6, 7, 8); // Assign Digital Pins 
+namespace {
+
+// Set the appropriate digital I/O pin connections. These are the pin
+// assignments for the Arduino as well for as the DS1302 chip. See the DS1302
+// datasheet:
+//
+//   http://datasheets.maximintegrated.com/en/ds/DS1302.pdf
+const int kCePin = 5;  // Chip Enable <-RESET
+const int kIoPin = 6;  // Input/Output  <-DAT
+const int kSclkPin = 7;  // Serial Clock
+
+// Create a DS1302 object.
+DS1302 rtc(kCePin, kIoPin, kSclkPin);
+
+String dayAsString(const Time::Day day) {
+	switch (day) {
+	case Time::kSunday:
+		return "Domingo";
+	case Time::kMonday:
+		return "Lunes";
+	case Time::kTuesday:
+		return "Martes";
+	case Time::kWednesday:
+		return "Miércoles";
+	case Time::kThursday:
+		return "Jueves";
+	case Time::kFriday:
+		return "Viernes";
+	case Time::kSaturday:
+		return "Sábado";
+	}
+	return "(Unknown day)";
+}
+
+boolean isConnected(const Time::Day day) {
+	if (day > 0 && day < 7) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+void printTime() {
+	// Get the current time and date from the chip.
+	Time t = rtc.time();
+
+	// Name the day of the week.
+	const String day = dayAsString(t.day);
+
+	// Format the time and date and insert into the temporary buffer.
+	char buf[50];
+	snprintf(buf, sizeof(buf), "%s %04d-%02d-%02d %02d:%02d:%02d", day.c_str(),
+			t.yr, t.mon, t.date, t.hr, t.min, t.sec);
+
+	// Print the formatted string to serial so we can see the time.
+	Serial.println(buf);
+}
+
+}  // namespace
 
 void setup() {
 	Serial.begin(9600);
+	Time t = rtc.time();
+	// Initialize a new chip by turning off write protection and clearing the
+	// clock halt flag. These methods needn't always be called. See the DS1302
+	// datasheet for details.
+	//rtc.writeProtect(false);
+	//rtc.halt(false);
 
+	// Make a new time object to set the date and time.
+	// Monday, Julio 17, 2017 at 22:11:0.
+	//Time t(2017, 7, 17, 22, 26, 0, Time::kMonday);
+	//rtc.time(t);
+	Serial.print("RTC Time ");
+	Serial.println(isConnected(t.day));
 
-	/* To set the current time and date in specific format 
-	| Second 00 | Minute 59 | Hour 10 | Day 12 |  Month 07 | Year 2015 |
-	*/
+	// Set the time and date on the chip.
 
-	myRTC.setDS1302Time(00, 59, 10, 12 , 10, 07, 2015);
 }
 
+// Loop and print the time every second.
 void loop() {
-
-	// Allow the update of variables for time / accessing the individual element. 
-	myRTC.updateTime();
-
-	Serial.print("Current Date / Time: "); 
-	Serial.print(myRTC.dayofmonth); // Element 1
-	Serial.print("/"); 
-	Serial.print(myRTC.month); // Element 2
-	Serial.print("/");
-	Serial.print(myRTC.year); // Element 3
-	Serial.print(" ");
-	Serial.print(myRTC.hours); // Element 4
-	Serial.print(":");
-	Serial.print(myRTC.minutes); // Element 5
-	Serial.print(":");
-	Serial.println(myRTC.seconds); // Element 6
-	delay( 5000);
+	printTime();
+	delay(1000);
 }
