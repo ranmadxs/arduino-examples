@@ -82,7 +82,7 @@ public:
 
 		tft.println("YaiConsole Ready ...");
 
-		posY = height / 2 - 30;
+		posY = height / 2 - 80;
 		tft.drawLine(TS_MINX, posY - 1 , TS_MAXX, posY - 1, BLUE);
 	}
 
