@@ -8,6 +8,7 @@
 #include "YaiCommunicator.h"
 
 static int PinSDCard = 15;
+
 class YaiParam{
   public:
     YaiParam(){};
