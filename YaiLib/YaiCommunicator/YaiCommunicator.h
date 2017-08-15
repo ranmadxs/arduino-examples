@@ -146,10 +146,14 @@ public:
 		}
 		Serial.println("-------------------");
 		Serial.println(resp);
+		//Serial.print(resp.length());
+		//Serial.print("==");
+		//Serial.println(MAX_I2C_COMAND - 1);
 		Serial.println("-------------------");
-		if (resp.length() == MAX_I2C_COMAND - 1) {
+		if (resp.length() >= MAX_I2C_COMAND - 1) {
+			Serial.println("XDDD");
 			yaiI2CCmd = buildI2CCommand(resp);
-			//Serial.println(yaiI2CCmd.content);
+			Serial.println(yaiI2CCmd.content);
 			bufferingI2C(yaiI2CCmd);
 		}
 		//Serial.println("=========>> " + resp);
@@ -208,6 +212,8 @@ public:
 		YaiBufferCommand cmd1;
 		cmd1.type = String(YAI_COMMAND_TYPE_I2C);
 		cmd1.part = command.substring(3, 4).toInt();
+		Serial.print("Part::");
+		Serial.println(cmd1.part);
 		cmd1.total = command.substring(4, 5).toInt();
 		String contenido = command.substring(5);
 		contenido.replace("#", "");

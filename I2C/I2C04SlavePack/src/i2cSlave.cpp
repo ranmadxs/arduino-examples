@@ -5,42 +5,68 @@
 int I2C_CLIENT = 9;
 String answer = "{\"DISTANCE\":0.00}";
 
+#define ANSWERSIZE 32
 YaiCommunicator yaiCommunicator;
 boolean receiveFull = false;
 String commandI2C = "";
 String answerOk = "OK";
 boolean receive = false;
 String respToMaster;
-
+boolean reciveFullI2C = false;
+String masterCmd = "";
+String requestI2C = "";
 
 void receiveEvent(int countToRead) {
-	YaiBufferCommand requestFromMaster = yaiCommunicator.receiveI2CFromMaster();
-	receive = true;
-	answerOk = "PART"+String(requestFromMaster.part)+"/"+String(requestFromMaster.total)+",OK";
-	respToMaster = answerOk;
-	if(requestFromMaster.status == String(STATUS_OK)){
-		receiveFull = true;
-		commandI2C = requestFromMaster.content;
-		respToMaster = "RESULT,OK,true,NONE,NONE";
-	}
-	//	commandI2C = requestFromMaster.content;
-	//	answerOk = commandI2C;
-	//}else{
+	/*
+	YaiBufferCommand yaiBuffer = yaiCommunicator.receiveEvent(masterCmd);
+	masterCmd = yaiBuffer.content;
+	reciveFullI2C = yaiBuffer.recibeFull;
+	*/
 
-		//receive = true;
-	//}
+	requestI2C = "";
+	while (0 < Wire.available()) {
+		char c = Wire.read();
+		requestI2C += c;
+	}
+
+	Serial.print("requestI2C::");
+	Serial.println(requestI2C);
+	String part = requestI2C.substring(4, 5);
+	Serial.print(part);
+	String total = requestI2C.substring(5, 6);
+	Serial.print("/");
+	Serial.println(total);
+	masterCmd = masterCmd + requestI2C.substring(6);
+	receive = true;
+	if (part == total) {
+		reciveFullI2C = true;
+	}
+
 }
 
 void requestEvent() {
-	//if(receiveFull){
-	//	yaiCommunicator.sendI2CToMaster(answer);
-	//	receiveFull = false;
-	//	Serial.println("<< " + answer);
-	//}
-	yaiCommunicator.sendI2CToMaster(respToMaster);
-	//	Serial.println(answerOk);
-	//	receive = false;
-	//}
+
+	int lenAnsw = answer.length();
+	int difLen = 0;
+
+	if (lenAnsw >= ANSWERSIZE) {
+		lenAnsw = ANSWERSIZE;
+	} else {
+		difLen = ANSWERSIZE - lenAnsw;
+	}
+
+	byte response[ANSWERSIZE];
+	for (byte i = 0; i < lenAnsw; i++) {
+		response[i] = (byte) answer.charAt(i);
+	}
+	if (difLen > 0) {
+		for (byte i = lenAnsw; i < ANSWERSIZE; i++) {
+			response[i] = 0x23;
+		}
+	}
+	Wire.write(response, sizeof(response));
+
+	//yaiCommunicator.requestEvent(answer);
 }
 
 void setup() {
@@ -53,19 +79,17 @@ void setup() {
 
 int i = 0;
 void loop() {
+
 	if(receive){
-		Serial.print(" >> ");
-		Serial.println(answerOk);
 		receive = false;
+		Serial.println("<< " + masterCmd);
+		//masterCmd = "";
 	}
-	if(receiveFull){
-		Serial.print(" Full >> ");
-		Serial.println(commandI2C);
-		receiveFull = false;
+
+	if (reciveFullI2C) {
+		reciveFullI2C = false;
+		masterCmd.replace("#", "");
+		Serial.println("<< [I2C] " + masterCmd);
+		masterCmd = "";
 	}
-	//i++;
-	//if(i == 200){
-	//	Serial.println("live");
-	//	i = 0;
-	//}
 }

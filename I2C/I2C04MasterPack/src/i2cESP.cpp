@@ -2,8 +2,8 @@
 #include <Wire.h>
 #include "YaiCommunicator.h"
 
-int I2C_CLIENT = 9;
-String exampleCommand = "I2C,100003,true,None,None,None,None,None,None";
+int I2C_CLIENT = 3;
+String exampleCommand = "I2C,100002,1001,0,None,None,None,None,None";
 String response;
 YaiCommunicator yaiCommunicator;
 
