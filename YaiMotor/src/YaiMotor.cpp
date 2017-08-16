@@ -15,6 +15,8 @@ String masterCmd = "";
 boolean reciveFullI2C = false;
 String requestI2C = "";
 //YaiCommunicator yaiCommunicator;
+// este valor se debe setear en cero para el nodemcu para orange pi en 1
+int offset = 1;
 
 void receiveEvent(int countToRead) {
 	/*
@@ -29,9 +31,9 @@ void receiveEvent(int countToRead) {
 		requestI2C += c;
 	}
 
-	int part = requestI2C.substring(3, 4).toInt();
-	int total = requestI2C.substring(4, 5).toInt();
-	masterCmd = masterCmd + requestI2C.substring(5);
+	int part = requestI2C.substring(3 + offset, 4 + offset).toInt();
+	int total = requestI2C.substring(4 + offset, 5 + offset).toInt();
+	masterCmd = masterCmd + requestI2C.substring(5 + offset);
 
 	if (part == total) {
 		reciveFullI2C = true;
