@@ -66,6 +66,10 @@ public:
 	int width;
 	int height;
 
+	void printClientIp(String ip){
+		tft.drawRect(TS_MINX, TS_MINY + dy, 100, 20, color);
+	}
+
 	void init() {
 		tft.reset();
 		tft.begin();
@@ -81,6 +85,8 @@ public:
 		tft.setCursor(0, 0);
 
 		tft.println("YaiConsole Ready ...");
+
+		printClientIp("0.0.0.0");
 
 		posY = height / 2 - 80;
 		tft.drawLine(TS_MINX, posY - 1 , TS_MAXX, posY - 1, BLUE);
