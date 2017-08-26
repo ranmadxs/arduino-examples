@@ -35,7 +35,7 @@ void receiveEvent(int countToRead) {
 	int total = requestI2C.substring(4 + offset, 5 + offset).toInt();
 	masterCmd = masterCmd + requestI2C.substring(5 + offset);
 
-	if (part == total) {
+	if (part == total && masterCmd.length() >= ANSWERSIZE) {
 		reciveFullI2C = true;
 	}
 
@@ -131,6 +131,7 @@ void setup() {
 void loop() {
 
 	if (reciveFullI2C) {
+		Serial.println(">> " + masterCmd);
 		reciveFullI2C = false;
 		masterCmd.replace("#", "");
 		answer = execute(masterCmd);

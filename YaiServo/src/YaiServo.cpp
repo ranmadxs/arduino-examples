@@ -20,6 +20,8 @@ int TIME_INTERVAL_SERVO = 15;
 Thread threadServoRun;
 ThreadController threadController;
 
+int offset = 1;
+
 void callBackServoMovement() {
 	servoLink.callBackMovement();
 }
@@ -66,12 +68,12 @@ void receiveEvent(int countToRead) {
 		requestI2C += c;
 	}
 
-	int part = requestI2C.substring(3, 4).toInt();
-	int total = requestI2C.substring(4, 5).toInt();
-	masterCmd = masterCmd + requestI2C.substring(5);
+	int part = requestI2C.substring(3 + offset, 4 + offset).toInt();
+	int total = requestI2C.substring(4 + offset, 5 + offset).toInt();
+	masterCmd = masterCmd + requestI2C.substring(5 + offset);
 	//Serial.print(">> ");
 	//Serial.println(masterCmd);
-	if (part == total) {
+	if (part == total && masterCmd.length() >= ANSWERSIZE) {
 		reciveFullI2C = true;
 
 	}
@@ -135,6 +137,7 @@ void loop() {
 	serialController();
 	threadController.run();
 	if (reciveFullI2C) {
+		Serial.println(">> " + masterCmd);
 		reciveFullI2C = false;
 		masterCmd.replace("#", "");
 		answer = executeCommand(masterCmd);
