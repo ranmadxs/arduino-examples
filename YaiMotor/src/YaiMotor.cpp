@@ -122,7 +122,7 @@ void setup() {
 	Wire.onReceive(receiveEvent); // data slave received
 	Serial.begin(9600);
 	Serial.println("***********************");
-	Serial.println("Yai motor inicializado v0.0.1-SNAPSHOT");
+	Serial.println("Yai motor inicializado v0.0.2-SNAPSHOT");
 	Serial.println("***********************");
 	Serial.println("Serial port ready");
 	Serial.println("I2C ready!  32 Bytes");
