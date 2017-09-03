@@ -123,7 +123,8 @@ void setup() {
 	Wire.onReceive(receiveEvent); // data slave received
 	Serial.begin(9600);
 	Serial.println("***********************");
-	Serial.println("Yai servo inicializado V0.0.2-SNAPSHOT");
+	servoLink.init();
+	Serial.println("Yai servo inicializado V0.0.3-SNAPSHOT");
 	Serial.println("***********************");
 	Serial.println("Serial port ready");
 	threadServoRun.onRun(callBackServoMovement);

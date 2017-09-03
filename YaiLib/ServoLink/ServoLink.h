@@ -6,16 +6,14 @@
 #include "YaiCommons.h"
 
 //Servo pins
-static int PinServoH   = 5; // (D1)
-static int PinServoV   = 0; // (D3)
+static int PinServoH   = 6; // (D1)
+static int PinServoV   = 7; // (D3)
 
 class ServoLink{
 
   public:
 
 	ServoLink(){
-	  servoH.attach(PinServoH);
-	  servoV.attach(PinServoV);
 	  posH = 0;
 	  posV = 0;
 	  speedDelayServoH = 2;
@@ -30,6 +28,11 @@ class ServoLink{
 	  movementServoV = 0;
 
 	  typeServo = 0;
+	};
+
+	void init(){
+		servoH.attach(PinServoH);
+		servoV.attach(PinServoV);
 	};
 
     void callBackMovement(){
