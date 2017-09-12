@@ -8,14 +8,15 @@
 //Servo pins
 static int PinServoH   = 6; // (D1)
 static int PinServoV   = 7; // (D3)
+static int DEFAULT_INIT_POSITION = 90;
 
 class ServoLink{
 
   public:
 
 	ServoLink(){
-	  posH = 0;
-	  posV = 0;
+	  posH = DEFAULT_INIT_POSITION;
+	  posV = DEFAULT_INIT_POSITION;
 	  speedDelayServoH = 2;
 	  speedDelayServoV = 2;
 	  maxAngle = 180;
