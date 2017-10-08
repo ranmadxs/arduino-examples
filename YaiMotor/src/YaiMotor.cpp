@@ -76,6 +76,7 @@ String execute(String masterCommand) {
 	if (commandRoot == String(ROVER_STOP)) {
 		resultStr = String(STATUS_OK);
 		roverLn.motorStop(rootCmd[2].toInt());
+		content = "STOP";
 	}
 	if (commandRoot == String(LASER_ACTION)) {
 		resultStr = String(STATUS_OK);
