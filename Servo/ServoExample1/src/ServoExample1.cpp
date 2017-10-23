@@ -9,7 +9,7 @@ Servo servo;
 
 void setup() {
   servo.attach(pin);
-  servo.write(40);
+  servo.write(0);
   delay(1000);
 }
 
