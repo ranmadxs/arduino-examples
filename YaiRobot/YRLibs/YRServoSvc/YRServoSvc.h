@@ -11,6 +11,8 @@ class YRServoSvc {
 
 public:
 
+	String SERVO_ACTION_ANGLE = "ANGLE";
+
 	YRServoSvc() {
 	}
 
@@ -33,7 +35,7 @@ public:
 		servos[servoId].detach();
 	}
 
-	int setAngle(String servoType, int servoId, int angle);
+	String setAngle(String servoType, int servoId, int angle);
 
 protected:
 

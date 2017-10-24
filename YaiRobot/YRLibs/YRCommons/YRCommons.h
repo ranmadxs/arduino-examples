@@ -12,6 +12,10 @@
 #define STATUS_NOK								"NOK"
 
 
+#define YR_TYPE_SERVO							"SERVO"
+#define YR_TYPE_FINGERS							"FINGERS"
+
+#define YR_SERVO_ACTION_ANGLE  					"ANGLE"
 
 
 

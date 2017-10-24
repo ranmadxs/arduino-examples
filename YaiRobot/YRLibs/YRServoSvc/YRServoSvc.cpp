@@ -1,15 +1,13 @@
 #include <Arduino.h>
 #include "YRServoSvc.h"
 
-int YRServoSvc::setAngle(String servoType, int servoId, int angle) {
+String YRServoSvc::setAngle(String servoType, int servoId, int angle) {
 
 	int angleServo = servos[servoId].read();
-	Serial.print("YRServo::current Angle=");
-	Serial.println(angleServo);
+	String resp = String(angleServo)+","+String(angle);
 	servos[servoId].write(angle);
-	Serial.print("YRServo::set Angle=");
+	Serial.print("Resp:::");
 	angleServo = servos[servoId].read();
-	Serial.println(angleServo);
-
-	return angleServo;
+	Serial.println(resp);
+	return resp;
 }
