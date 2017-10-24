@@ -13,6 +13,7 @@ public:
 		propagate = false;
 		message = "";
 		type = String(YAI_COMMAND_TYPE_NONE);
+		command = String(YAI_COMMAND_TYPE_NONE);
 		p1 = String(YAI_COMMAND_TYPE_NONE);
 		p2 = String(YAI_COMMAND_TYPE_NONE);
 		p3 = String(YAI_COMMAND_TYPE_NONE);

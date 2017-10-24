@@ -34,3 +34,7 @@ include paths and build them.
 
 More information about PlatformIO Library Dependency Finder
 - http://docs.platformio.org/page/librarymanager/ldf.html
+
+
+mklink /D "lib\YRServoSvc" "C:\trabajos\arduino-examples\YaiRobot\YRLibs\YRServoSvc"
+mklink /D "lib\YRCommons" "C:\trabajos\arduino-examples\YaiRobot\YRLibs\YRCommons"

@@ -1,14 +1,24 @@
 #include <Arduino.h>
-#include "YRCommons.h"
-#include "YRServoSvc.h"
 #include "YRCommand.h"
+#include "YRCommons.h"
+#include "YRUtil.h"
+#include "YRServoSvc.h"
 
 YRServoSvc yrServoSvc;
+YRUtil yaiUtil;
+
+
 
 void serialController() {
-
 	YRCommand yrCommand;
-
+	yrCommand = yaiUtil.commandSerialFilter();
+	if (yrCommand.execute) {
+		//String respSerialCmd = executeCommand(yrCommand.message);
+		if (yrCommand.print) {
+			Serial.println(">> [SERIAL] " + yrCommand.message);
+			//Serial.println("<< [SERIAL] " + respSerialCmd);
+		}
+	}
 }
 
 void setup() {
