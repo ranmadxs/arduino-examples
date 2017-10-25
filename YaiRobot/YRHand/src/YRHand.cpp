@@ -7,6 +7,10 @@
 YRServoSvc yrServoSvc;
 YRUtil yaiUtil;
 int arrayServoId[] = { 9 };
+String masterCmd = "";
+boolean reciveFullI2C = false;
+String requestI2C = "";
+
 
 String executeCommand(String masterCommand) {
 	String responseExe = String(YAI_COMMAND_TYPE_RESULT);
@@ -37,6 +41,56 @@ String executeCommand(String masterCommand) {
 	}
 	responseExe = responseExe + "," + resultStr + "," + content;
 	return responseExe;
+}
+
+void receiveEvent(int countToRead) {
+	/*
+	 YaiBufferCommand yaiBuffer = yaiCommunicator.receiveEvent(masterCmd);
+	 masterCmd = yaiBuffer.content;
+	 reciveFullI2C = yaiBuffer.recibeFull;
+	 */
+
+	requestI2C = "";
+	while (0 < Wire.available()) {
+		char c = Wire.read();
+		requestI2C += c;
+	}
+
+	int part = requestI2C.substring(3 + offset, 4 + offset).toInt();
+	int total = requestI2C.substring(4 + offset, 5 + offset).toInt();
+	masterCmd = masterCmd + requestI2C.substring(5 + offset);
+	//Serial.print(">> ");
+	//Serial.println(masterCmd);
+	if (part == total && masterCmd.length() >= ANSWERSIZE) {
+		reciveFullI2C = true;
+
+	}
+
+}
+
+void requestEvent() {
+
+	int lenAnsw = answer.length();
+	int difLen = 0;
+
+	if (lenAnsw >= ANSWERSIZE) {
+		lenAnsw = ANSWERSIZE;
+	} else {
+		difLen = ANSWERSIZE - lenAnsw;
+	}
+
+	byte response[ANSWERSIZE];
+	for (byte i = 0; i < lenAnsw; i++) {
+		response[i] = (byte) answer.charAt(i);
+	}
+	if (difLen > 0) {
+		for (byte i = lenAnsw; i < ANSWERSIZE; i++) {
+			response[i] = 0x23;
+		}
+	}
+	Wire.write(response, sizeof(response));
+
+	//yaiCommunicator.requestEvent(answer);
 }
 
 void serialController() {

@@ -17,6 +17,6 @@
 
 #define YR_SERVO_ACTION_ANGLE  					"ANGLE"
 
-
+#define ANSWERSIZE 32
 
 #endif
