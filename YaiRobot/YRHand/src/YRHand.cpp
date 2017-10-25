@@ -3,6 +3,7 @@
 #include "YRCommons.h"
 #include "YRUtil.h"
 #include "YRServoSvc.h"
+#include <Wire.h>
 
 YRServoSvc yrServoSvc;
 YRUtil yaiUtil;
@@ -10,7 +11,8 @@ int arrayServoId[] = { 9 };
 String masterCmd = "";
 boolean reciveFullI2C = false;
 String requestI2C = "";
-
+String answer = "";
+int offset = 1;
 
 String executeCommand(String masterCommand) {
 	String responseExe = String(YAI_COMMAND_TYPE_RESULT);
