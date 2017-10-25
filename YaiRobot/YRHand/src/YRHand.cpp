@@ -8,7 +8,6 @@ YRServoSvc yrServoSvc;
 YRUtil yaiUtil;
 
 
-
 String executeCommand(String masterCommand) {
 	String responseExe = String(YAI_COMMAND_TYPE_RESULT);
 	String resultStr = String(STATUS_NOK);
@@ -20,13 +19,10 @@ String executeCommand(String masterCommand) {
 	Serial.println("commandRoot=" + commandRoot);
 	Serial.println("actionRoot="+actionRoot+"=="+yrServoSvc.SERVO_ACTION_ANGLE);
 	if(commandRoot == YR_TYPE_SERVO){
-		Serial.println("......Servo cmd againV2");
 		if (actionRoot == yrServoSvc.SERVO_ACTION_ANGLE) {
-			Serial.println("blaaaaaaaaaaaaaaaaaaaaaaaa");
 			resultStr = String(STATUS_OK);
 			content = yrServoSvc.setAngle(rootCmd[3], rootCmd[4].toInt(),
 					rootCmd[5].toInt());
-
 		}
 	}
 	responseExe = responseExe + "," + resultStr + "," + content;
