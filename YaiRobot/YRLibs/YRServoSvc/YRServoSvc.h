@@ -12,6 +12,7 @@ class YRServoSvc {
 public:
 
 	String SERVO_ACTION_ANGLE = "ANGLE";
+	String SERVO_ACTION_ALL = "ALL";
 
 	YRServoSvc() {
 	}
@@ -21,12 +22,10 @@ public:
 		for (i = 0; i < (sizeof(servoIds)/sizeof(int)); i++) {
 			attach(servoIds[i]);
 		}
-
 	}
 
 	void attach(int servoId) {
-		Serial.print("Servo attach:");
-		Serial.println(servoId);
+		Serial.println("Servo attach GPIO ["+String(servoId)+"]");
 		servos[servoId].attach(servoId);
 		servos[servoId].write(YR_SERVO_INIT_POSITION);
 	}

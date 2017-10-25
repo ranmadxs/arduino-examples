@@ -6,7 +6,7 @@
 
 YRServoSvc yrServoSvc;
 YRUtil yaiUtil;
-
+int arrayServoId[] = { 9 };
 
 String executeCommand(String masterCommand) {
 	String responseExe = String(YAI_COMMAND_TYPE_RESULT);
@@ -17,18 +17,26 @@ String executeCommand(String masterCommand) {
 	String commandRoot = rootCmd[1];
 	String actionRoot = rootCmd[2];
 	Serial.println("commandRoot=" + commandRoot);
-	Serial.println("actionRoot="+actionRoot+"=="+yrServoSvc.SERVO_ACTION_ANGLE);
-	if(commandRoot == YR_TYPE_SERVO){
+	Serial.println("actionRoot=" + actionRoot);
+	String tipoServo = rootCmd[3];
+	if (commandRoot == YR_TYPE_SERVO) {
 		if (actionRoot == yrServoSvc.SERVO_ACTION_ANGLE) {
 			resultStr = String(STATUS_OK);
-			content = yrServoSvc.setAngle(rootCmd[3], rootCmd[4].toInt(),
-					rootCmd[5].toInt());
+			int angulo = rootCmd[5].toInt();
+			String idServo = rootCmd[4];
+			if (idServo == yrServoSvc.SERVO_ACTION_ALL) {
+				content = yrServoSvc.SERVO_ACTION_ALL + String(angulo);
+				for (int i = 0; i < (sizeof(arrayServoId)/sizeof(int)); i++) {
+					yrServoSvc.setAngle(tipoServo, arrayServoId[i], angulo);
+				}
+			} else {
+				content = yrServoSvc.setAngle(tipoServo, idServo.toInt(),
+						angulo);
+			}
 		}
 	}
 	responseExe = responseExe + "," + resultStr + "," + content;
-
 	return responseExe;
-
 }
 
 void serialController() {
@@ -45,17 +53,10 @@ void serialController() {
 
 void setup() {
 	Serial.begin(9600);
-	Serial.println("***********************");
+	Serial.println("***************************");
 	Serial.println("Yai Finger V0.0.1-SNAPSHOT");
-	Serial.println("***********************");
-	//yrServo.setAngle("S3003", 9, 0);
-	int servosIds[] = { 9 };
-	yrServoSvc.init(servosIds);
-	delay(100);
-	yrServoSvc.setAngle("S3003", 9, 20);
-	delay(500);
-	yrServoSvc.setAngle("S3003", 9, 0);
-	delay(100);
+	yrServoSvc.init(arrayServoId);
+	Serial.println("***************************");
 }
 
 void loop() {
