@@ -25,12 +25,12 @@ String executeCommand(String masterCommand) {
 			int angulo = rootCmd[5].toInt();
 			String idServo = rootCmd[4];
 			if (idServo == yrServoSvc.SERVO_ACTION_ALL) {
-				content = yrServoSvc.SERVO_ACTION_ALL + String(angulo);
+				content = yrServoSvc.SERVO_ACTION_ALL +","+ String(angulo);
 				for (int i = 0; i < (sizeof(arrayServoId)/sizeof(int)); i++) {
 					yrServoSvc.setAngle(tipoServo, arrayServoId[i], angulo);
 				}
 			} else {
-				content = yrServoSvc.setAngle(tipoServo, idServo.toInt(),
+				content = idServo + "," + yrServoSvc.setAngle(tipoServo, idServo.toInt(),
 						angulo);
 			}
 		}
