@@ -14,6 +14,8 @@ String requestI2C = "";
 String answer = "";
 int offset = 1;
 
+
+
 String executeCommand(String masterCommand) {
 	String responseExe = String(YAI_COMMAND_TYPE_RESULT);
 	String resultStr = String(STATUS_NOK);
@@ -108,13 +110,26 @@ void serialController() {
 }
 
 void setup() {
+	Wire.begin(I2C_CLIENT_YR_HAND);
+	Wire.onRequest(requestEvent); // data request to slave
+	Wire.onReceive(receiveEvent); // data slave received
 	Serial.begin(9600);
 	Serial.println("***************************");
 	Serial.println("Yai Finger V0.0.1-SNAPSHOT");
+	Serial.println("---------------------------");
+	Serial.println("I2C ready!  32 Bytes");
 	yrServoSvc.init(arrayServoId);
 	Serial.println("***************************");
 }
 
 void loop() {
 	serialController();
+	if (reciveFullI2C) {
+		Serial.println(">> [I2C] " + masterCmd);
+		reciveFullI2C = false;
+		masterCmd.replace("#", "");
+		answer = executeCommand(masterCmd);
+		Serial.println("<< [I2C] " + answer);
+		masterCmd = "";
+	}
 }
