@@ -3,10 +3,12 @@
 #include "YRCommons.h"
 #include "YRUtil.h"
 #include "YRServoSvc.h"
+#include "YRLog.h"
 #include <Wire.h>
 
 YRServoSvc yrServoSvc;
 YRUtil yaiUtil;
+YRLog logger;
 int arrayServoId[] = { 9 };
 String masterCmd = "";
 boolean reciveFullI2C = false;
@@ -24,8 +26,8 @@ String executeCommand(String masterCommand) {
 	yaiUtil.getElementRoot(masterCommand, rootCmd);
 	String commandRoot = rootCmd[1];
 	String actionRoot = rootCmd[2];
-	Serial.println("commandRoot=" + commandRoot);
-	Serial.println("actionRoot=" + actionRoot);
+	logger.debug("commandRoot=" + commandRoot);
+	logger.debug("actionRoot=" + actionRoot);
 	String tipoServo = rootCmd[3];
 	if (commandRoot == YR_TYPE_SERVO) {
 		if (actionRoot == yrServoSvc.SERVO_ACTION_ANGLE) {
@@ -114,10 +116,12 @@ void setup() {
 	Wire.onRequest(requestEvent); // data request to slave
 	Wire.onReceive(receiveEvent); // data slave received
 	Serial.begin(9600);
+	logger.init("YRHand");
 	Serial.println("***************************");
-	Serial.println("Yai Finger V0.0.1-SNAPSHOT");
+	Serial.println("Yai Hand V0.0.1-SNAPSHOT");
 	Serial.println("---------------------------");
-	Serial.println("I2C ready!  32 Bytes");
+	logger.info("I2C ["+String(I2C_CLIENT_YR_HAND)+"] ready!  32 Bytes");
+	Serial.println("---------------------------");
 	yrServoSvc.init(arrayServoId);
 	Serial.println("***************************");
 }
@@ -125,11 +129,11 @@ void setup() {
 void loop() {
 	serialController();
 	if (reciveFullI2C) {
-		Serial.println(">> [I2C] " + masterCmd);
+		logger.info(">> [I2C] " + masterCmd);
 		reciveFullI2C = false;
 		masterCmd.replace("#", "");
 		answer = executeCommand(masterCmd);
-		Serial.println("<< [I2C] " + answer);
+		logger.info("<< [I2C] " + answer);
 		masterCmd = "";
 	}
 }

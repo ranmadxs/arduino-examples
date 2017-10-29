@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <Servo.h>
+#include "YRLog.h"
 
 static String YR_SERVO_TYPE_S3003 = "S3003";
 static int YR_SERVO_INIT_POSITION = 0;
@@ -19,13 +20,14 @@ public:
 
 	void init(int servoIds[]){
 		int i;
+		logger.init("YRServoSvc");
 		for (i = 0; i < (sizeof(servoIds)/sizeof(int)); i++) {
 			attach(servoIds[i]);
 		}
 	}
 
 	void attach(int servoId) {
-		Serial.println("Servo attach GPIO ["+String(servoId)+"]");
+		logger.debug("Servo attach GPIO ["+String(servoId)+"]");
 		servos[servoId].attach(servoId);
 		servos[servoId].write(YR_SERVO_INIT_POSITION);
 	}
@@ -37,7 +39,7 @@ public:
 	String setAngle(String servoType, int servoId, int angle);
 
 protected:
-
+	YRLog logger;
 	Servo servos[16];
 };
 

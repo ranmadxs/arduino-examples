@@ -19,7 +19,7 @@
 
 #define ANSWERSIZE 32
 
-static int I2C_CLIENT_YR_HAND 		= 			2;
+static int I2C_CLIENT_YR_HAND 		= 			3;
 
 
 #endif
