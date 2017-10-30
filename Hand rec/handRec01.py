@@ -45,6 +45,8 @@ while( cap.isOpened() ) :
                     cv2.line(img,start,end,[0,255,0],2)
                     
                     cv2.circle(img,far,5,[0,0,255],-1)
+               if i >= 3:
+                print ("A guardar el archivo")
                print(i)
                i=0
     cv2.imshow('output',drawing)
