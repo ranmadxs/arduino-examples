@@ -67,6 +67,9 @@ def calculateFingers(res,drawing):  # -> finished bool, cnt: finger count
 # Camera
 camera = cv2.VideoCapture(0)
 camera.set(10,200)
+#camera.set(11,60)
+#camera.set(3,320)
+#camera.set(4,240)
 cv2.namedWindow('trackbar')
 cv2.createTrackbar('trh1', 'trackbar', threshold, 100, printThreshold)
 
