@@ -9,6 +9,7 @@
 YRServoSvc yrServoSvc;
 YRUtil yaiUtil;
 YRLog logger;
+//Se deben agregar todos los servos conectados al Hand en este array
 int arrayServoId[] = { 9 };
 String masterCmd = "";
 boolean reciveFullI2C = false;
