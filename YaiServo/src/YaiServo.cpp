@@ -18,7 +18,7 @@ String requestI2C = "";
 
 int TIME_INTERVAL_SERVO = 15;
 Thread threadServoRun;
-ThreadController threadController;
+ThreadController threadServoRun;
 
 int offset = 1;
 
